@@ -7,12 +7,11 @@ export class CardSet {
 
   constructor(baseCard: CardInterface, instances?: Card[]) {
     this.baseCard = baseCard;
+    this.instances = {};
     if (instances) {
       for (const instance of instances) {
         this.setInstance(instance);
       }
-    } else {
-      this.instances = {};
     }
   }
 

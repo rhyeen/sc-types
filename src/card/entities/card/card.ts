@@ -12,7 +12,7 @@ export class Card implements CardInterface {
   rarity: CardRarity;
   abilities?: CardAbility[];
   cost?: number;
-  hash?: string;
+  _hash?: string;
   conditions: CardConditions;
 
   constructor(rarity: CardRarity, type: CardType, abilities?: CardAbility[], cost?: number, cardName?: string, cardId?: string, cardHash?: string) {
@@ -29,9 +29,18 @@ export class Card implements CardInterface {
     this.conditions = new CardConditions();
     if (cardHash) {
       this.hash = cardHash;
-    } else {
-      this.hash = CardHasher.getCardHash(this);
     }
+  }
+
+  get hash():string {
+    if (!this._hash) {
+      this._hash = CardHasher.getCardHash(this.copy());
+    }
+    return this._hash;
+  }
+
+  set hash(hash: string) {
+    this._hash = hash;
   }
 
   toString(): string {
@@ -61,8 +70,6 @@ export class Card implements CardInterface {
   }
 
   copy():Card {
-    const card = new Card(this.rarity, this.type, copyCardAbilities(this.abilities), this.cost, this.name, this.id, this.hash);
-    card.conditions = this.conditions.copy();
-    return card;
+    throw new Error(`to copy a card, it must be of a class that extends Card`);
   }
 }

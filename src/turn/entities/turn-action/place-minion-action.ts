@@ -1,6 +1,5 @@
 import { TurnAction } from "./turn-action";
 import { ActionType } from "../../enums/action-type";
-// @TODO: get from npm-install
 import { Game } from "../../../game/entities/game";
 import { MinionCard } from "../../../card/entities/card/minion-card";
 import { Card } from "../../../card/entities/card/card";
@@ -33,6 +32,7 @@ export class PlaceMinionAction extends TurnAction {
   execute(game: Game):TurnActionResult {
     this.validate(game);
     const result = new TurnActionResult(game);
+    this._payCardCost(result);
     const shield = this._clearFieldSlot(result);
     this._prepareCardForField(result, shield);
     this._placeCardOnField(result);
@@ -41,14 +41,18 @@ export class PlaceMinionAction extends TurnAction {
 
   validate(game: Game) {
     if (game.player.field.length <= this.playerTargetFieldIndex) {
-      throw new Error(`invalid player field index: ${this.playerTargetFieldIndex}`);
+      throw new Error(`invalid player field index: ${this.playerTargetFieldIndex} with player field of size: ${game.player.field.length}`);
     }
     if (game.player.hand.cards.length <= this.playerSourceHandIndex) {
-      throw new Error(`invalid player hand index: ${this.playerSourceHandIndex}`);
+      throw new Error(`invalid player hand index: ${this.playerSourceHandIndex} with player hand of size: ${game.player.hand.cards.length}`);
     }
     const playerSourceHandCard = this._getPlayerSourceHandCard(game);
     if (!(playerSourceHandCard instanceof MinionCard)) {
+      console.log(playerSourceHandCard);
       throw new Error(`player hand card: ${playerSourceHandCard} is not a card that can be placed on the field`);
+    }
+    if (game.player.energy.current < playerSourceHandCard.cost) {
+      throw new Error(`player hand card's cost: ${playerSourceHandCard.cost} is greater than player's current energy: ${game.player.energy.current}`);
     }
   }
 
@@ -58,6 +62,12 @@ export class PlaceMinionAction extends TurnAction {
 
   _getPlayerTargetFieldSlot(game: Game):PlayerFieldSlot {
     return game.player.field[this.playerTargetFieldIndex];
+  }
+
+  _payCardCost(result: TurnActionResult) {
+    const playerSourceHandCard = this._getPlayerSourceHandCard(result.game);
+    result.game.player.energy.decrease(playerSourceHandCard.cost);
+    result.recordGameChange(GameChange.PlayerEnergy);
   }
 
   _clearFieldSlot(result: TurnActionResult):number {

@@ -37,6 +37,9 @@ export function copyCardInterface(cardInterface: CardInterface):CardInterface {
 
 export function copyCardAbilities(abilities: CardAbility[]):CardAbility[] {
   const result = [];
+  if (!abilities) {
+    return result;
+  }
   for (const ability of abilities) {
     result.push(ability.copy());
   }

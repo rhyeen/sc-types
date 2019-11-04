@@ -10,6 +10,7 @@ export class TurnActionResult {
   constructor(game: Game) {
     this.game = game.copy();
     this.gameChanges = new Set();
+    this.cardChanges = new Set();
   }
 
   recordGameChange(gameChange: GameChange) {

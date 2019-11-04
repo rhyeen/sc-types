@@ -11,6 +11,9 @@ export class Status {
 
   set current(value: number) {
     this._current = ValueEnsurer.ensureNonNegative(value);
+    if (this._current > this.max) {
+      this._current = this.max;
+    }
   }
 
   get current() {
@@ -27,6 +30,14 @@ export class Status {
 
   reset() {
     this.current = this.max;
+  }
+
+  decrease(value: number) {
+    this.current -= value;
+  }
+
+  increase(value: number) {
+    this.current += value;
   }
 
   copy():Status {

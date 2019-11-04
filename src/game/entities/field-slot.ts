@@ -41,6 +41,8 @@ export class DungeonFieldSlot extends FieldSlot {
     super(card);
     if (backlog) {
       this.backlog = backlog;
+    } else {
+      this.backlog = [];
     }
   }
 

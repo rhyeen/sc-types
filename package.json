@@ -1,7 +1,7 @@
 {
   "name": "@shardedcards/sc-types",
   "repository": "rhyeen/sc-types",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "author": "Ryan Saunders",
   "license": "UNLICENSED",
@@ -9,7 +9,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "build": "rm -R -f dist && tsc",
-    "deploy": "npm run test && npm run build && npm publish --access public"
+    "deploy": "npm i && npm run test && npm run build && npm publish --access public"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
