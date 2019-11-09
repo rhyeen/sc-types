@@ -9,6 +9,7 @@ import { CardType } from "../../card/enums/card-type";
 import { CardRarity } from "../../card/enums/card-rarity";
 import { MinionCard } from "../../card/entities/card/minion-card";
 import { SpellCard } from "../../card/entities/card/spell-card";
+import { CardBuilder } from "../../card/services/card-builder";
 
 export function defaultGame():Game {
   const cardSets = defaultCardSets();
@@ -78,9 +79,5 @@ function getCardSet(baseCard: CardInterface, numberOfIntances: number):CardSet {
 }
 
 function getCard(cardInterface: CardInterface, instanceId: number):Card {
-  if (cardInterface.type == CardType.Minion) {
-    return new MinionCard(cardInterface.rarity, cardInterface.health, cardInterface.attack, cardInterface.range, cardInterface.abilities, cardInterface.cost, cardInterface.name, `${cardInterface.id}_${instanceId}`, cardInterface.hash);
-  } else {
-    return new SpellCard(cardInterface.rarity, cardInterface.abilities, cardInterface.cost, cardInterface.name, `${cardInterface.id}_${instanceId}`, cardInterface.hash);
-  }
+  return CardBuilder.getTypedCard(cardInterface, `${cardInterface.id}_${instanceId}`);
 }
