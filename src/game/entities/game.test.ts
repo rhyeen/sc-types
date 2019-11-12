@@ -14,3 +14,10 @@ test('ensure copy creates a new instance with different references', () => {
   gameCopy.dungeon.field[0].card.name = 'new name';
   expect(gameCopy.dungeon.field[0].card.name).not.toEqual(game.dungeon.field[0].card.name);
 });
+
+test('json with reduce and hidePrivate set to true', () => {
+  const game = defaultGame();
+  const result = game.json(true, true);
+  expect(result.id).toEqual('GM_1');
+  expect(result.player.health).toEqual(20);
+});

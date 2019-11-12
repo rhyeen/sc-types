@@ -28,6 +28,11 @@ export class FieldSlot {
   }
 
   json():any {
+    if (!this.card) {
+      return {
+        card: null
+      }; 
+    }
     return {
       card: {
         id: this.card.id,
@@ -68,12 +73,16 @@ export class DungeonFieldSlot extends FieldSlot {
   }
 
   json(hidePrivate?: boolean):any {
-    return {
-      card: {
+    let card = null;
+    if (this.card) {
+      card = {
         id: this.card.id,
-        hash: this.card.hash,
-        backlog: this.jsonBacklog(hidePrivate)
-      }
+        hash: this.card.hash
+      };
+    }
+    return {
+      card,
+      backlog: this.jsonBacklog(hidePrivate)
     };
   }
 
