@@ -3,7 +3,7 @@ export class GuidGenerator {
   private static LETTER_RUNES = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 
   static generate(prefix: string, legnth: number): string {
-    let randomCharacters = length - prefix.length - 1;
+    const randomCharacters = length - prefix.length - 1;
     if (randomCharacters <= 0) {
       return prefix;
     }

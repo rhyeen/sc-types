@@ -6,9 +6,9 @@ export class CardNameGenerator {
   static getRandomCardName(card: CardInterface): string {
     const cardNameClauses = this.getNameClauses(card);
     const cardNameClause = this.getRandomCardNameClause(cardNameClauses);
-    let cardNameParts = [];
-    for (let i = 0; i < cardNameClause.length; i++) {
-      cardNameParts.push(this.getRandomCardNamePart(cardNameClause[i]));
+    const cardNameParts = [];
+    for (const _cardNameParts of cardNameClause) {
+      cardNameParts.push(this.getRandomCardNamePart(_cardNameParts));
     }
     return cardNameParts.join(' ');
   }

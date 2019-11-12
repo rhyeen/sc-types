@@ -47,20 +47,21 @@ export class MinionDraftCard extends DraftCard {
   }
 
   regenerateCost() {
-    let cost = this.getMinionStatsCost(0);
+    const cost = this.getMinionStatsCost(0);
     return this.finalizeCost(cost);
   }
 
   private getMinionStatsCost(cost: number):number {
-    cost += this.attack * 0.3;
+    let _cost = cost;
+    _cost += this.attack * 0.3;
     if (this.range <= 0) {
-      cost += -1;
-    } else if (this.range == 1) {
-      cost += 0;
+      _cost += -1;
+    } else if (this.range === 1) {
+      _cost += 0;
     } else {
-      cost += this.range;
+      _cost += this.range;
     }
-    cost += this.health * 0.25;
-    return cost;
+    _cost += this.health * 0.25;
+    return _cost;
   }
 }

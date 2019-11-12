@@ -14,4 +14,8 @@ export class SpellCard extends Card {
     card.conditions = this.conditions.copy();
     return card;
   }
+
+  json():any {
+    throw new Error('@TODO');
+  }
 }

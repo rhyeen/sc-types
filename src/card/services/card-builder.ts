@@ -62,10 +62,10 @@ export class CardBuilder {
     if (cardId) {
       _cardId = cardId;
     }
-    if (card.type == CardType.Minion) {
-      return new MinionCard(card.rarity, card.health, card.attack, card.range, card.abilities, card.cost, card.name, cardId, card.hash);
+    if (card.type === CardType.Minion) {
+      return new MinionCard(card.rarity, card.health, card.attack, card.range, card.abilities, card.cost, card.name, _cardId, card.hash);
     } else {
-      return new SpellCard(card.rarity, card.abilities, card.cost, card.name, cardId, card.hash);
+      return new SpellCard(card.rarity, card.abilities, card.cost, card.name, _cardId, card.hash);
     }
   }
 }

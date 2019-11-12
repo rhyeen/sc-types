@@ -9,13 +9,27 @@ export class Dungeon {
   }
 
   copy(cardSets: Record<string,CardSet>):Dungeon {
-    return new Dungeon(this._copyField(cardSets));
+    return new Dungeon(this.copyField(cardSets));
   }
 
-  _copyField(cardSets: Record<string,CardSet>):DungeonFieldSlot[] {
+  private copyField(cardSets: Record<string,CardSet>):DungeonFieldSlot[] {
     const result = [];
     for (const fieldSlot of this.field) {
       result.push(fieldSlot.copy(cardSets));
+    }
+    return result;
+  }
+
+  json(hidePrivate?: boolean):any {
+    return {
+      field: this.jsonField(hidePrivate)
+    };
+  }
+
+  private jsonField(hidePrivate?: boolean):any {
+    const result = [];
+    for (const fieldSlot of this.field) {
+      result.push(fieldSlot.json(hidePrivate));
     }
     return result;
   }

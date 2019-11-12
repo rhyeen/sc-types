@@ -40,11 +40,39 @@ export class Deck {
     }
     return result;
   }
+
+  json():any {
+    return {
+      cards: this.jsonCards()
+    };
+  }
+
+  protected jsonCards():any {
+    const result = [];
+    for (const card of this.cards) {
+      result.push({
+        id: card.id,
+        hash: card.hash
+      });
+    }
+    return result;
+  }
 }
 
 export class DrawDeck extends Deck {
   constructor(cards?: Card[]) {
     super(cards);
+  }
+
+  json(hidePrivate?: boolean):any {
+    if (hidePrivate) {
+      return {
+        size: this.cards.length
+      };
+    }
+    return {
+      cards: this.jsonCards()
+    };
   }
 }
 

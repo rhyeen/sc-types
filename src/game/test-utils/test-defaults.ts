@@ -7,13 +7,11 @@ import { CardInterface } from "../../card/card.interface";
 import { Card } from "../../card/entities/card/card";
 import { CardType } from "../../card/enums/card-type";
 import { CardRarity } from "../../card/enums/card-rarity";
-import { MinionCard } from "../../card/entities/card/minion-card";
-import { SpellCard } from "../../card/entities/card/spell-card";
 import { CardBuilder } from "../../card/services/card-builder";
 
 export function defaultGame():Game {
   const cardSets = defaultCardSets();
-  return new Game(defaultPlayer(cardSets), defaultDungeon(cardSets), cardSets);
+  return new Game('GM_1', defaultPlayer(cardSets), defaultDungeon(cardSets), cardSets);
 }
 
 export function defaultPlayer(cardSets: Record<string,CardSet>):Player {

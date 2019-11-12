@@ -30,7 +30,7 @@ export class Player {
     const player = new Player(this.health.max, this.energy.max, this.hand.refillSize);
     player.health = this.health.copy();
     player.energy = this.energy.copy();
-    player.field = this._copyField(cardSets);
+    player.field = this.copyField(cardSets);
     player.hand = this.hand.copy(cardSets);
     player.drawDeck = this.drawDeck.copy(cardSets);
     player.discardDeck = this.discardDeck.copy(cardSets);
@@ -38,10 +38,30 @@ export class Player {
     return player;
   }
 
-  _copyField(cardSets: Record<string,CardSet>):PlayerFieldSlot[] {
+  private copyField(cardSets: Record<string,CardSet>):PlayerFieldSlot[] {
     const result = [];
     for (const fieldSlot of this.field) {
       result.push(fieldSlot.copy(cardSets));
+    }
+    return result;
+  }
+
+  json(reduce?: boolean, hidePrivate?: boolean):any {
+    return {
+      health: this.health.json(reduce),
+      energy: this.energy.json(reduce),
+      field: this.jsonField(),
+      hand: this.hand.json(),
+      drawDeck: this.drawDeck.json(hidePrivate),
+      discardDeck: this.discardDeck.json(),
+      lostDeck: this.lostDeck.json(),
+    }
+  }
+
+  private jsonField():any {
+    const result = [];
+    for (const fieldSlot of this.field) {
+      result.push(fieldSlot.json());
     }
     return result;
   }

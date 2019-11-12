@@ -34,17 +34,32 @@ export class CardSet {
   }
 
   copy():CardSet {
-    return new CardSet(this._copyBaseCard(), this._copyInstances());
+    return new CardSet(this.copyBaseCard(), this.copyInstances());
   }
 
-  _copyBaseCard():CardInterface {
+  private copyBaseCard():CardInterface {
     return copyCardInterface(this.baseCard);
   }
 
-  _copyInstances():Card[] {
+  private copyInstances():Card[] {
     const result = [];
     for (const key in this.instances) {
       result.push(this.instances[key].copy());
+    }
+    return result;
+  }
+
+  json(reduce?: boolean):any {
+    return {
+      baseCard: this.baseCard,
+      instances: this.jsonInstances(reduce)
+    }
+  }
+
+  private jsonInstances(reduce?: boolean):any {
+    const result = [];
+    for (const key in this.instances) {
+      result.push(this.instances[key].json(reduce));
     }
     return result;
   }

@@ -35,7 +35,7 @@ export class ActionWithTargets extends TurnAction {
 
   protected targetsJson():any {
     const targets = [];
-    for (let target of this.targets) {
+    for (const target of this.targets) {
       targets.push(target.json());
     }
     return targets;

@@ -12,7 +12,7 @@ export class DraftCardModifier {
     if (mutateParams) {
       returnDraftCard = DraftCard.copy(draftCard);
     }
-    let wasModified = returnDraftCard.addCraftingPart(craftingPart);
+    const wasModified = returnDraftCard.addCraftingPart(craftingPart);
     return {
       draftCard: returnDraftCard,
       wasModified

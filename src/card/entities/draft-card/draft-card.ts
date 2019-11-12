@@ -29,8 +29,8 @@ export class DraftCard implements DraftCardInterface {
   }
 
   static copy(draftCard: DraftCard):DraftCard {
-    let slots = [];
-    for (let slot of draftCard.slots) {
+    const slots = [];
+    for (const slot of draftCard.slots) {
       slots.push(DraftCardAbilitySlot.copy(slot));
     }
     return new DraftCard(draftCard.rarity, draftCard.type, slots, draftCard.cost);
@@ -44,8 +44,8 @@ export class DraftCard implements DraftCardInterface {
     if (!this.slots) {
       return null;
     }
-    let cardAbilites = [];
-    for (let slot of this.slots) {
+    const cardAbilites = [];
+    for (const slot of this.slots) {
       if (slot.isFilled()) {
         cardAbilites.push(slot.ability);
       }
@@ -70,13 +70,13 @@ export class DraftCard implements DraftCardInterface {
       return false;
     }
     const matchingSlot = this.getMatchingSlot(part);
-    if (matchingSlot != -1) {
+    if (matchingSlot !== -1) {
       this.slots[matchingSlot].modify(part);
       this.regenerateCost();
       return true;
     }
     const fittedSlot = this.getFittedSlot(part);
-    if (fittedSlot != -1) {
+    if (fittedSlot !== -1) {
       this.slots[fittedSlot].fill(part);
       this.regenerateCost();
       return true;
@@ -110,13 +110,14 @@ export class DraftCard implements DraftCardInterface {
   }
 
   protected finalizeCost(cost: number):number {
-    cost += this.getRarityCost();
-    cost += this.getAbilitySlotsCost();
+    let _cost = cost;
+    _cost += this.getRarityCost();
+    _cost += this.getAbilitySlotsCost();
     // @NOTE: we don't want the floor() since we need approximations while still drafting the card.
-    if (cost < 0) {
-      cost = 0;
+    if (_cost < 0) {
+      _cost = 0;
     }
-    return cost;
+    return _cost;
   }
 
   private getRarityCost():number {
@@ -139,7 +140,7 @@ export class DraftCard implements DraftCardInterface {
     if (!this.slots || !this.slots.length) {
       return cost;
     }
-    for (let slot of this.slots) {
+    for (const slot of this.slots) {
       if (slot.isFilled()) {
         cost += this.getAbilityCost(slot.ability);
       }

@@ -14,7 +14,7 @@ export class SpellDraftCard extends DraftCard {
   }
 
   regenerateCost() {
-    let cost = this.getSpellStatsCost(0);
+    const cost = this.getSpellStatsCost(0);
     return this.finalizeCost(cost);
   }
 

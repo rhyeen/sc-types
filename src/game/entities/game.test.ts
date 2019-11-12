@@ -3,7 +3,7 @@ import { defaultCardSets, defaultPlayer, defaultDungeon, defaultGame } from "../
 
 test('init', () => {
   const cardSets = defaultCardSets();
-  const game = new Game(defaultPlayer(cardSets), defaultDungeon(cardSets), cardSets);
+  const game = new Game('GM_1', defaultPlayer(cardSets), defaultDungeon(cardSets), cardSets);
   expect(game.cardSets).toBe(cardSets);
   expect(game.dungeon.field[0].backlog[1]).toBe(cardSets['HS_1'].instances['CD_1_2']);
 });

@@ -45,4 +45,14 @@ export class Status {
     status.current = this.current;
     return status;
   }
+
+  json(reduce?: boolean):any {
+    if (reduce) {
+      return this.max;
+    }
+    return {
+      max: this.max,
+      current: this.current
+    }
+  }
 }

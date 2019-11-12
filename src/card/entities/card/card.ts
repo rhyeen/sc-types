@@ -1,5 +1,5 @@
 import { CardRarity } from "../../enums/card-rarity";
-import { CardInterface, copyCardAbilities } from "../../card.interface";
+import { CardInterface } from "../../card.interface";
 import { CardAbility } from "../card-ability";
 import { CardConditions } from "../card-conditions";
 import { CardType } from "../../enums/card-type";
@@ -48,8 +48,8 @@ export class Card implements CardInterface {
   }
 
   hasAbility(id: string): boolean {
-    for (let ability of this.abilities) {
-      if (ability.id == id) {
+    for (const ability of this.abilities) {
+      if (ability.id === id) {
         return true;
       }
     }
@@ -57,8 +57,8 @@ export class Card implements CardInterface {
   }
 
   getAbility(id: string): CardAbility {
-    for (let ability of this.abilities) {
-      if (ability.id == id) {
+    for (const ability of this.abilities) {
+      if (ability.id === id) {
         return ability;
       }
     }
@@ -71,5 +71,14 @@ export class Card implements CardInterface {
 
   copy():Card {
     throw new Error(`to copy a card, it must be of a class that extends Card`);
+  }
+
+  json(reduce?: boolean):any {
+    if (!reduce) {
+      throw new Error(`to jsonify a card, it must be of a class that extends Card`);
+    }
+    return {
+      id: this.id
+    };
   }
 }

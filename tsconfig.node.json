@@ -3,11 +3,9 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "sourceMap": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "outDir": "dist",
-    "target": "ES2018",
-    "typeRoots": ["./types", "./node_modules/@types"]
+    "module": "commonjs",
+    "outDir": "node",
+    "target": "es2017"
   },
   "exclude": ["./node_modules", "**/*.spec.ts", "**/*.test.ts"],
   "include": ["./src/**/*.ts"]

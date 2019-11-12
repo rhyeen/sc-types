@@ -26,6 +26,15 @@ export class FieldSlot {
     }
     return new FieldSlot(card);
   }
+
+  json():any {
+    return {
+      card: {
+        id: this.card.id,
+        hash: this.card.hash
+      }
+    };
+  }
 }
 
 export class PlayerFieldSlot extends FieldSlot {
@@ -56,5 +65,33 @@ export class DungeonFieldSlot extends FieldSlot {
       backlog.push(CardIdentifier.findCard(backlogCard, cardSets));
     }
     return new DungeonFieldSlot(card, this.backlog);
+  }
+
+  json(hidePrivate?: boolean):any {
+    return {
+      card: {
+        id: this.card.id,
+        hash: this.card.hash,
+        backlog: this.jsonBacklog(hidePrivate)
+      }
+    };
+  }
+
+  private jsonBacklog(hidePrivate?: boolean):any {
+    if (hidePrivate) {
+      return {
+        size: this.backlog.length
+      };
+    }
+    const backlog = [];
+    for (const backlogCard of this.backlog) {
+      backlog.push({
+        id: backlogCard.id,
+        hash: backlogCard.hash
+      });
+    }
+    return {
+      cards: backlog
+    };
   }
 }

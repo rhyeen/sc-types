@@ -24,29 +24,29 @@ export class DraftCardAbilitySlot {
     if (!(part instanceof AbilityCraftingPart)) {
       return false;
     }
-    if (this.ability.tier == CardAbilityTier.Godly) {
+    if (this.ability.tier === CardAbilityTier.Godly) {
       return true;
     }
-    if (this.ability.tier == CardAbilityTier.Legendary && part.tier != CardAbilityTier.Godly) {
+    if (this.ability.tier === CardAbilityTier.Legendary && part.tier !== CardAbilityTier.Godly) {
       return true;
     }
-    if (this.ability.tier == CardAbilityTier.Minion3) {
-      return part.tier == CardAbilityTier.Minion3 || part.tier == CardAbilityTier.Minion2 || part.tier == CardAbilityTier.Minion1;
+    if (this.ability.tier === CardAbilityTier.Minion3) {
+      return part.tier === CardAbilityTier.Minion3 || part.tier === CardAbilityTier.Minion2 || part.tier === CardAbilityTier.Minion1;
     }
-    if (this.ability.tier == CardAbilityTier.Minion2) {
-      return part.tier == CardAbilityTier.Minion2 || part.tier == CardAbilityTier.Minion1;
+    if (this.ability.tier === CardAbilityTier.Minion2) {
+      return part.tier === CardAbilityTier.Minion2 || part.tier === CardAbilityTier.Minion1;
     }
-    if (this.ability.tier == CardAbilityTier.Minion1) {
-      return part.tier == CardAbilityTier.Minion1;
+    if (this.ability.tier === CardAbilityTier.Minion1) {
+      return part.tier === CardAbilityTier.Minion1;
     }
-    if (this.ability.tier == CardAbilityTier.Spell3) {
-      return part.tier == CardAbilityTier.Spell3 || part.tier == CardAbilityTier.Spell2 || part.tier == CardAbilityTier.Spell1;
+    if (this.ability.tier === CardAbilityTier.Spell3) {
+      return part.tier === CardAbilityTier.Spell3 || part.tier === CardAbilityTier.Spell2 || part.tier === CardAbilityTier.Spell1;
     }
-    if (this.ability.tier == CardAbilityTier.Spell2) {
-      return part.tier == CardAbilityTier.Spell2 || part.tier == CardAbilityTier.Spell1;
+    if (this.ability.tier === CardAbilityTier.Spell2) {
+      return part.tier === CardAbilityTier.Spell2 || part.tier === CardAbilityTier.Spell1;
     }
-    if (this.ability.tier == CardAbilityTier.Spell1) {
-      return part.tier == CardAbilityTier.Spell1;
+    if (this.ability.tier === CardAbilityTier.Spell1) {
+      return part.tier === CardAbilityTier.Spell1;
     }
     throw new Error(`unexpected ability tier: ${this.ability.tier}`);    
   }
@@ -66,12 +66,12 @@ export class DraftCardAbilitySlot {
       return false;
     }
     if (!(part instanceof AbilityCraftingPart)) {
-      return;
+      return false;
     }
     if (!part.ability) {
       return false;
     }
-    if (this.ability.id != part.ability.id) {
+    if (this.ability.id !== part.ability.id) {
       return false;
     }
     if (!(this.ability instanceof VariableCardAbility)) {

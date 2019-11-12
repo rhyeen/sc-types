@@ -32,7 +32,7 @@ export class CardHasher {
     hash += this.getCardHashNumber(card.range);
     if (card.abilities && card.abilities.length) {
       hash += "|A";
-      for (let ability of card.abilities) {
+      for (const ability of card.abilities) {
         hash += this.getCardHashAbility(ability);
       }
     }
@@ -71,20 +71,21 @@ export class CardHasher {
   }
 
   private static getCardHashNumber(value: number): string {
-    if (!value) {
+    let _value = value;
+    if (!_value) {
       return '0';
     }
-    if (value < 0) {
-      value = value * -1;
-      if (value >= this.NEGATIVE_HASH_NUMBERS.length) {
+    if (_value < 0) {
+      _value = _value * -1;
+      if (_value >= this.NEGATIVE_HASH_NUMBERS.length) {
         return this.NEGATIVE_HASH_NUMBERS[this.NEGATIVE_HASH_NUMBERS.length - 1];
       }
-      return this.NEGATIVE_HASH_NUMBERS[value];
+      return this.NEGATIVE_HASH_NUMBERS[_value];
     }
-    if (value >= this.POSITIVE_HASH_NUMBERS.length) {
+    if (_value >= this.POSITIVE_HASH_NUMBERS.length) {
       return this.POSITIVE_HASH_NUMBERS[this.POSITIVE_HASH_NUMBERS.length - 1];
     }
-    return this.POSITIVE_HASH_NUMBERS[value];
+    return this.POSITIVE_HASH_NUMBERS[_value];
   }
 
   private static getCardHashAbility(ability: CardAbility): string {
