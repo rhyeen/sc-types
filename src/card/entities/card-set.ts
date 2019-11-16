@@ -1,5 +1,6 @@
 import { Card } from "./card/card";
 import { CardInterface, copyCardInterface } from "../card.interface";
+import { CardHasher } from "../services/card-hasher";
 
 export class CardSet {
   baseCard: CardInterface;
@@ -12,6 +13,9 @@ export class CardSet {
       for (const instance of instances) {
         this.setInstance(instance);
       }
+    }
+    if (!this.baseCard.hash) {
+      this.baseCard.hash = CardHasher.getCardHash(this.baseCard);
     }
   }
 

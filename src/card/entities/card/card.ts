@@ -14,6 +14,7 @@ export class Card implements CardInterface {
   cost?: number;
   _hash?: string;
   conditions: CardConditions;
+  level?: number;
 
   constructor(rarity: CardRarity, type: CardType, abilities?: CardAbility[], cost?: number, cardName?: string, cardId?: string, cardHash?: string) {
     this.type = type;

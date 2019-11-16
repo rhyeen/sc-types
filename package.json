@@ -1,16 +1,16 @@
 {
   "name": "@shardedcards/sc-types",
   "repository": "rhyeen/sc-types",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "",
   "author": "Ryan Saunders",
   "license": "UNLICENSED",
   "scripts": {
     "test": "jest",
+    "test:watch": "jest --watch",
     "lint:es": "tslint --project tsconfig.json",
     "lint:node": "tslint --project tsconfig.node.json",
     "lint": "npm run lint:es && npm run lint:node",
-    "test:watch": "jest --watch",
     "build:es": "rm -R -f dist && tsc",
     "build:node": "rm -R -f node && tsc --project tsconfig.node.json",
     "build": "npm run build:es && npm run build:node",

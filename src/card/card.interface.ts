@@ -14,6 +14,7 @@ export interface CardInterface {
   health?: number;
   range?: number;
   attack?: number;
+  level?: number; // @NOTE: only for dungeon cards
 }
 
 export interface DraftCardInterface {
