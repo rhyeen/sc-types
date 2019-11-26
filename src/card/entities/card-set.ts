@@ -23,6 +23,14 @@ export class CardSet {
     return id in this.instances;
   }
 
+  getInstances(): Card[] {
+    const cards = [];
+    for (let key in this.instances) {
+      cards.push(this.instances[key]);
+    }
+    return cards;
+  }
+
   getInstance(id: string): Card {
     if (!this.hasInstance(id)) {
       throw new Error(`card set does not have the instance ${id}`);
