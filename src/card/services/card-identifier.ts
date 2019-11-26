@@ -1,4 +1,3 @@
-import { GuidGenerator } from "./_generate-guid";
 import { CardInterface } from "../card.interface";
 import { CardNameGenerator } from "./card-name-generator";
 import { CardSet } from "../entities/card-set";
@@ -6,10 +5,6 @@ import { Card } from "../entities/card/card";
 import { CardHasher } from "./card-hasher";
 
 export class CardIdentifier {
-  static generateCardId(): string {
-    return GuidGenerator.generate('CR', 15);
-  }
-
   static generateCardName(card: CardInterface): string {
     if (card.name) {
       return card.name;

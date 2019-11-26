@@ -1,6 +1,7 @@
 import { Card } from "./card/card";
 import { CardInterface, copyCardInterface } from "../card.interface";
 import { CardHasher } from "../services/card-hasher";
+import { CardBuilder } from "../services/card-builder";
 
 export class CardSet {
   baseCard: CardInterface;
@@ -36,6 +37,11 @@ export class CardSet {
       throw new Error(`card set does not have the instance ${id}`);
     }
     return this.instances[id];
+  }
+
+  createInstance() {
+    const instance = CardBuilder.buildCard(this.baseCard);
+    this.instances[instance.id] = instance;
   }
 
   setInstance(instance: Card) {

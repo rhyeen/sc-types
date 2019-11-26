@@ -27,7 +27,7 @@ export class CardBuilder {
     return CardBuilder.getTypedCard(card);
   }
 
-  static buildCardAbilities(cardAbilitiesData:  any): CardAbility[] {
+  static buildCardAbilities(cardAbilitiesData: any): CardAbility[] {
     const result = [];
     if (!cardAbilitiesData || !cardAbilitiesData.length) {
       return result;

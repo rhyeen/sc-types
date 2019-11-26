@@ -4,10 +4,11 @@ import { CardAbility } from "../card-ability";
 import { CardConditions } from "../card-conditions";
 import { CardType } from "../../enums/card-type";
 import { CardHasher } from "../../services/card-hasher";
+import { GuidGenerator } from "../../services/_generate-guid";
 
 export class Card implements CardInterface {
   name: string;
-  id: string;
+  _id: string;
   type: CardType;
   rarity: CardRarity;
   abilities?: CardAbility[];
@@ -25,7 +26,9 @@ export class Card implements CardInterface {
       this.abilities = [];
     }
     this.name = cardName;
-    this.id = cardId;
+    if (cardId) {
+      this.id = cardId;
+    }
     this.cost = cost;
     this.conditions = new CardConditions();
     if (cardHash) {
@@ -33,8 +36,20 @@ export class Card implements CardInterface {
     }
   }
 
+  get id():string {
+    if (!this._id) {
+      this._id = GuidGenerator.generate('CR', 15);
+    }
+    return this._id;
+  }
+
+  set id(id: string) {
+    this._id = id;
+  }
+
   get hash():string {
     if (!this._hash) {
+      this._hash = 'temp';
       this._hash = CardHasher.getCardHash(this.copy());
     }
     return this._hash;
