@@ -24,14 +24,11 @@ export class GameGenerator {
   // @MUTATES: cardSets
   private static addCardToSets(cardSets: Record<string, CardSet>, card: Card):void {
     if (card.hash in cardSets) {
-      cardSets[card.hash].setInstance(card);
-    } else {
-      const instances = [];
-      if (card.id) {
-        instances.push(card);
-      }
-      cardSets[card.hash] = new CardSet(card, instances);
+      return;
     }
+    // @NOTE: the actual creation of the instances is done later, since the ids must be
+    // uniquely generated.
+    cardSets[card.hash] = new CardSet(card);
   }
 
   private static getPossibleDungeonCards(dungeonSeed: any):Record<string, CardSet> {

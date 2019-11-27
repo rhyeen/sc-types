@@ -4,7 +4,7 @@ import { CardRarity } from '../../../card/enums/card-rarity';
 import { CardAbilityHaste, CardAbilityEnergize } from '../../../card/entities/card-ability';
 import { CardInterface } from '../../../card/card.interface';
 
-function defaultField() {
+function defaultSlot() {
   return {
     backlogPartitions: {
       common: { size: 7 },
@@ -28,19 +28,20 @@ function defaultInitial() {
 
 function defaultDungeonCards() {
   return [
-    getDungeonCardData(CardRarity.Common, 1, "CD_COMMON", 1),
-    getDungeonCardData(CardRarity.Common, 2, "CD_COMMON", 5),
-    getDungeonCardData(CardRarity.Common, 1, "CD_COMMON", 6),
-    getDungeonCardData(CardRarity.Epic, 4, "CD_EPIC", 2),
-    getDungeonCardData(CardRarity.Rare, 1, "CD_RARE", 3),
-    getDungeonCardData(CardRarity.Legendary, 5, "CD_LEGENDARY", 4),
+    getDungeonCardData(CardRarity.Common, 1, "CD_1", 1),
+    getDungeonCardData(CardRarity.Common, 2, "CD_5", 5),
+    getDungeonCardData(CardRarity.Common, 1, "CD_6", 6),
+    getDungeonCardData(CardRarity.Epic, 4, "CD_2", 2),
+    getDungeonCardData(CardRarity.Rare, 1, "CD_3", 3),
+    getDungeonCardData(CardRarity.Legendary, 5, "CD_4", 4),
   ];
 }
 
-function getDungeonCardData(rarity: CardRarity, level: number, cardId: string, hashBuster: number):CardInterface {
+function getDungeonCardData(rarity: CardRarity, level: number, forcedCardHash: string, hashBuster: number):CardInterface {
   return {
     name: 'Goblin',
-    id: cardId,
+    id: forcedCardHash,
+    hash: forcedCardHash,
     type: CardType.Minion,
     rarity,
     attack: hashBuster,
@@ -51,10 +52,11 @@ function getDungeonCardData(rarity: CardRarity, level: number, cardId: string, h
   }
 }
 
-function getPlayerCardData(rarity: CardRarity, cardId: string, hashBuster: number):CardInterface {
+function getPlayerCardData(rarity: CardRarity, forcedCardHash: string, hashBuster: number):CardInterface {
   return {
     name: 'Frontline Ravager',
-    id: cardId,
+    id: forcedCardHash,
+    hash: forcedCardHash,
     type: CardType.Minion,
     rarity,
     attack: hashBuster,
@@ -66,17 +68,17 @@ function getPlayerCardData(rarity: CardRarity, cardId: string, hashBuster: numbe
 
 function defaultPlayerCards() {
   return [
-    getPlayerCardData(CardRarity.Standard, "CD_1", 1),
-    getPlayerCardData(CardRarity.Standard, "CD_2", 1),
+    getPlayerCardData(CardRarity.Standard, "CP_WS1", 1),
+    getPlayerCardData(CardRarity.Standard, "CP_WS1", 1),
     {
       name: "Energize",
-      id: "CP_ENERGIZE",
+      id: "CP_EN1",
       type: CardType.Spell,
       rarity: CardRarity.Standard,
       abilities: [new CardAbilityEnergize(1)]
     },
-    getPlayerCardData(CardRarity.Standard, "CD_3", 1),
-    getPlayerCardData(CardRarity.Standard, "CD_4", 1),
+    getPlayerCardData(CardRarity.Standard, "CP_WS1", 1),
+    getPlayerCardData(CardRarity.Standard, "CP_WS1", 1),
   ]
 }
 
@@ -85,9 +87,9 @@ test('init with no base cards', () => {
     dungeonCards: [],
     initial: defaultInitial(),
     field: [
-      defaultField(),
-      defaultField(),
-      defaultField(),
+      defaultSlot(),
+      defaultSlot(),
+      defaultSlot(),
     ]
   };
   const playerContext = {
@@ -106,9 +108,9 @@ test('typical player base cards', () => {
     dungeonCards: [],
     initial: defaultInitial(),
     field: [
-      defaultField(),
-      defaultField(),
-      defaultField(),
+      defaultSlot(),
+      defaultSlot(),
+      defaultSlot(),
     ]
   };
   const playerContext = {
@@ -130,9 +132,9 @@ test('typical dungeon base cards', () => {
     dungeonCards: defaultDungeonCards(),
     initial: defaultInitial(),
     field: [
-      defaultField(),
-      defaultField(),
-      defaultField(),
+      defaultSlot(),
+      defaultSlot(),
+      defaultSlot(),
     ]
   };
   const playerContext = {

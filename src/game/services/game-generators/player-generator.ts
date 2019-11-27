@@ -34,7 +34,7 @@ export class PlayerGenerator {
       if (!hash) {
         hash = CardBuilder.buildCard(cardData).hash;
       }
-      cards.push(cardSets[hash].getInstance(cardData.id));
+      cards.push(cardSets[hash].createInstance());
     }
     return cards;
   }

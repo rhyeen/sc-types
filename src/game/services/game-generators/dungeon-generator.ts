@@ -85,7 +85,7 @@ export class DungeonGenerator {
   private static extractCardSetsByRarity(rarity: CardRarity, cardsData: any[], cardSets: Record<string, CardSet>):CardSet[] {
     const cardSetsFromData = [];
     for (const cardData of cardsData) {
-      if (cardData.rarity != rarity) {
+      if (cardData.rarity !== rarity) {
         continue;
       }
       let hash = cardData.hash;

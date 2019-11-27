@@ -26,7 +26,7 @@ export class CardSet {
 
   getInstances(): Card[] {
     const cards = [];
-    for (let key in this.instances) {
+    for (const key in this.instances) {
       cards.push(this.instances[key]);
     }
     return cards;
