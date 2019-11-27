@@ -2,7 +2,7 @@ import { CardSet } from '../entities/card-set';
 import { Card } from '../entities/card/card';
 
 enum CardHashes {
-  Energize = 'foobar',
+  Energize = 'SS000|A;EN1',
 }
 
 const StartingHandCardHashes = new Set();

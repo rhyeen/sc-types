@@ -1,7 +1,8 @@
 import { GameGenerator } from './game-generator';
 import { CardType } from '../../../card/enums/card-type';
 import { CardRarity } from '../../../card/enums/card-rarity';
-import { CardAbilityHaste } from '../../../card/entities/card-ability';
+import { CardAbilityHaste, CardAbilityEnergize } from '../../../card/entities/card-ability';
+import { CardInterface } from '../../../card/card.interface';
 
 function defaultField() {
   return {
@@ -10,7 +11,8 @@ function defaultField() {
       rare: { size: 5 },
       epic: { size: 3 },
       legendary: { size: 1 },
-    }
+    },
+    levelIncreaseChance: 0
   };
 }
 
@@ -26,22 +28,55 @@ function defaultInitial() {
 
 function defaultDungeonCards() {
   return [
-    {
-      name: 'Frontline Ravager',
-      id: 'CD_RAVAGER',
-      type: CardType.Minion,
-      rarity: CardRarity.Common,
-      attack: 1,
-      health: 5,
-      range: 1,
-      abilities: [new CardAbilityHaste()]
-    }
+    getDungeonCardData(CardRarity.Common, 1, "CD_COMMON", 1),
+    getDungeonCardData(CardRarity.Common, 2, "CD_COMMON", 5),
+    getDungeonCardData(CardRarity.Common, 1, "CD_COMMON", 6),
+    getDungeonCardData(CardRarity.Epic, 4, "CD_EPIC", 2),
+    getDungeonCardData(CardRarity.Rare, 1, "CD_RARE", 3),
+    getDungeonCardData(CardRarity.Legendary, 5, "CD_LEGENDARY", 4),
   ];
+}
+
+function getDungeonCardData(rarity: CardRarity, level: number, cardId: string, hashBuster: number):CardInterface {
+  return {
+    name: 'Goblin',
+    id: cardId,
+    type: CardType.Minion,
+    rarity,
+    attack: hashBuster,
+    health: 1,
+    range: 1,
+    level,
+    abilities: [new CardAbilityHaste()]
+  }
+}
+
+function getPlayerCardData(rarity: CardRarity, cardId: string, hashBuster: number):CardInterface {
+  return {
+    name: 'Frontline Ravager',
+    id: cardId,
+    type: CardType.Minion,
+    rarity,
+    attack: hashBuster,
+    health: 1,
+    range: 1,
+    abilities: [new CardAbilityHaste()]
+  }
 }
 
 function defaultPlayerCards() {
   return [
-
+    getPlayerCardData(CardRarity.Standard, "CD_1", 1),
+    getPlayerCardData(CardRarity.Standard, "CD_2", 1),
+    {
+      name: "Energize",
+      id: "CP_ENERGIZE",
+      type: CardType.Spell,
+      rarity: CardRarity.Standard,
+      abilities: [new CardAbilityEnergize(1)]
+    },
+    getPlayerCardData(CardRarity.Standard, "CD_3", 1),
+    getPlayerCardData(CardRarity.Standard, "CD_4", 1),
   ]
 }
 
@@ -66,10 +101,9 @@ test('init with no base cards', () => {
   expect(game.dungeon.field.length).toBe(3);
 });
 
-
-test('typical player base cards and dungeon base cards', () => {
+test('typical player base cards', () => {
   const dungeonSeed = {
-    dungeonCards: defaultDungeonCards(),
+    dungeonCards: [],
     initial: defaultInitial(),
     field: [
       defaultField(),
@@ -81,9 +115,36 @@ test('typical player base cards and dungeon base cards', () => {
     baseCards: defaultPlayerCards()
   };
   const game = GameGenerator.generateFromSeed('GM_1', dungeonSeed, playerContext);
-  expect(Object.keys(game.cardSets).length).toBe(0);
-  expect(game.player.energy.current).toBe(10);
-  expect(game.player.health.current).toBe(20);
-  expect(game.player.hand.refillSize).toBe(5);
-  expect(game.dungeon.field.length).toBe(3);
+  expect(Object.keys(game.cardSets).length).toBe(2);
+  expect(game.player.drawDeck.cards.length).toBe(1);
+  expect(game.player.discardDeck.cards.length).toBe(4);
+  expect(game.player.drawDeck.cards[0].name).toBe("Energize");
+  expect(game.player.discardDeck.cards[0].name).toBe("Frontline Ravager");
+  expect(game.player.discardDeck.cards[1].name).toBe("Frontline Ravager");
+  expect(game.player.discardDeck.cards[2].name).toBe("Frontline Ravager");
+  expect(game.player.discardDeck.cards[3].name).toBe("Frontline Ravager");
+});
+
+test('typical dungeon base cards', () => {
+  const dungeonSeed = {
+    dungeonCards: defaultDungeonCards(),
+    initial: defaultInitial(),
+    field: [
+      defaultField(),
+      defaultField(),
+      defaultField(),
+    ]
+  };
+  const playerContext = {
+    baseCards: []
+  };
+  const game = GameGenerator.generateFromSeed('GM_1', dungeonSeed, playerContext);
+  expect(Object.keys(game.cardSets).length).toBe(6);
+  expect(game.dungeon.field[0].card.level).toBe(1);
+  expect(game.dungeon.field[1].card.level).toBe(1);
+  expect(game.dungeon.field[2].card.level).toBe(1);
+  expect(game.dungeon.field[0].backlog.length).toBe(15);
+  expect(game.dungeon.field[0].backlog[0].level).toBe(1);
+  expect(game.dungeon.field[1].backlog[14].level).toBe(5);
+  expect(game.dungeon.field[2].backlog[13].level).toBe(4);
 });

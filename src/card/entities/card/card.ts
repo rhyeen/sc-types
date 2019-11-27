@@ -50,7 +50,7 @@ export class Card implements CardInterface {
   get hash():string {
     if (!this._hash) {
       this._hash = 'temp';
-      this._hash = CardHasher.getCardHash(this.copy());
+      this._hash = CardHasher.getCardHash(this.copy(), true);
     }
     return this._hash;
   }

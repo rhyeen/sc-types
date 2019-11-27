@@ -8,7 +8,7 @@ export class CardHasher {
   private static NEGATIVE_HASH_NUMBERS = '0abcdefghijklmnopqrstuvwxyz-';
   private static POSITIVE_HASH_NUMBERS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ+';
 
-  static getCardHash(card: CardInterface): string {
+  static getCardHash(card: CardInterface, ignoreCurrentHash?: true): string {
     /*
     [0]: TYPE: M=MINION | S=SPELL
     [1]: RARITY: C=COMMON | R=RARE | E=EPIC | U=UNDEFINED | L=LEGENDARY | S=STANDARD
@@ -21,7 +21,7 @@ export class CardHasher {
       [X+1-X+2]: ABILITY ID: XY
       [X+3]: ABILITY AMOUNT: 1-Z
     */
-    if (card.hash) {
+    if (card.hash && !ignoreCurrentHash) {
       return card.hash;
     }
     let hash = "";

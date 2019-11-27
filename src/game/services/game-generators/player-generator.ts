@@ -20,8 +20,9 @@ export class PlayerGenerator {
     for (const card of cards) {
       if (CardFinder.isStartingHandCard(card)) {
         player.drawDeck.add(card);
+      } else {
+        player.discardDeck.add(card);
       }
-      player.discardDeck.add(card);
     }
     return player;
   }

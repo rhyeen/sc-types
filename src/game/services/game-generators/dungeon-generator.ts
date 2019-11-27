@@ -34,10 +34,8 @@ export class DungeonGenerator {
     if (!cardSetsByLevel.length) {
       return partition;
     }
-    while (maxNumberOfCards >= partition.length) {
+    while (maxNumberOfCards > partition.length) {
       const levelIndex = DungeonGenerator.getIndexLevel(maxNumberOfCards, partition.length, cardSetsByLevel.length, levelIncreaseChance);
-      console.log(cardSetsByLevel);
-      console.log(levelIndex);
       const cardSet = DungeonGenerator.getRandomCardSet(cardSetsByLevel[levelIndex]);
       partition.push(cardSet.createInstance());
     }
@@ -45,7 +43,7 @@ export class DungeonGenerator {
   }
 
   private static getIndexLevel(maxNumberOfCards: number, currentNumberOfCards: number, numberOfLevels: number, levelIncreaseChance: number):number {
-    const cardsPerLevel = Math.floor(maxNumberOfCards / numberOfLevels);
+    const cardsPerLevel = Math.ceil(maxNumberOfCards / numberOfLevels);
     let levelIndex = Math.floor(currentNumberOfCards / cardsPerLevel);
     while(
       levelIndex < numberOfLevels - 1 &&
