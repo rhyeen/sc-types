@@ -22,11 +22,20 @@ export class Deck {
     this.cards.push(card);
   }
 
-  remove(cardIndex: number) {
+  remove(cardIndex: number):Card {
     if (this.size() <= cardIndex || cardIndex < 0) {
       throw new Error(`cardIndex: ${cardIndex} out of bound of deck of size: ${this.size()}`);
     }
-    this.cards.splice(cardIndex, 1);
+    return this.cards.splice(cardIndex, 1)[0];
+  }
+
+  shuffle() {
+    for (let i = 0; i < this.cards.length; i += 1) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = this.cards[i];
+      this.cards[i] = this.cards[j];
+      this.cards[j] = temp;
+    }
   }
 
   copy(cardSets: Record<string,CardSet>):Deck {
@@ -92,6 +101,12 @@ export class PlayerDiscardDeck extends DiscardDeck {
   constructor(cards?: Card[]) {
     super(cards);
   }
+
+  // @MUTATES: card
+  add(card: Card) {
+    card.clearConditions();
+    this.cards.push(card);
+  }
 }
 
 export class LostDeck extends Deck {
@@ -103,6 +118,12 @@ export class LostDeck extends Deck {
 export class PlayerLostDeck extends LostDeck {
   constructor(cards?: Card[]) {
     super(cards);
+  }
+
+  // @MUTATES: card
+  add(card: Card) {
+    card.clearConditions();
+    this.cards.push(card);
   }
 }
 

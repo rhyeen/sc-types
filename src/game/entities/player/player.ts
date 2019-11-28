@@ -30,6 +30,34 @@ export class Player {
     this.lostDeck = new PlayerLostDeck();
   }
 
+  drawHand() {
+    this.flushHand();
+    this.drawFromDrawDeck();
+    if (this.hand.size() < this.hand.refillSize) {
+      this.shuffleDiscardIntoDrawDeck();
+    }
+    this.drawFromDrawDeck();
+  }
+
+  private drawFromDrawDeck() {
+    while (this.hand.size() < this.hand.refillSize && this.drawDeck.size() > 0) {
+      this.hand.add(this.drawDeck.remove(0));
+    }
+  }
+
+  private shuffleDiscardIntoDrawDeck() {
+    this.discardDeck.shuffle();
+    while (this.discardDeck.size() > 0) {
+      this.drawDeck.add(this.discardDeck.remove(0));
+    }
+  }
+
+  flushHand() {
+    while (this.hand.size() > 0) {
+      this.discardDeck.add(this.hand.remove(0));
+    }
+  }
+
   copy(cardSets: Record<string,CardSet>):Player {
     const player = new Player(this.id, this.name, this.health.max, this.energy.max, this.hand.refillSize);
     player.health = this.health.copy();

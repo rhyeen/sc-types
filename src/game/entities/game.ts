@@ -1,6 +1,7 @@
 import { Player } from './player/player';
 import { Dungeon } from './dungeon';
 import { CardSet } from '../../card/entities/card-set';
+import { MinionCard } from '../../card/entities/card/minion-card';
 
 export class Game {
   id: string;
@@ -53,5 +54,31 @@ export class Game {
       cardSets[record] = this.cardSets[record].json(reduce);
     }
     return cardSets;
+  }
+
+  getValidPlayerMinionAttackTargets(playerSourceFieldIndex: number):number[] {
+    const validAttackTargetFieldIndices = [];
+    const playerCard = this.player.field[playerSourceFieldIndex].card;
+    if (!(playerCard instanceof MinionCard)) {
+      return validAttackTargetFieldIndices;
+    }
+    for (let i = 0; i < this.dungeon.field.length; i += 1) {
+      if (playerCard.range <= Game.getRangeToTarget(playerSourceFieldIndex, i)) {
+        validAttackTargetFieldIndices.push(i);
+      }
+    }
+    return validAttackTargetFieldIndices;
+  }
+
+  private static getRangeToTarget(sourceIndex: number, targetIndex: number):number {
+    return Math.abs(sourceIndex - targetIndex) + 1;
+  }
+
+  dungeonCardCanRetaliate(playerSourceFieldIndex: number, dungeonTargetFieldIndex: number):boolean {
+    const targetCard = this.dungeon.field[dungeonTargetFieldIndex].card;
+    if (!(targetCard instanceof MinionCard)) {
+      return false;
+    }
+    return targetCard.range <= Game.getRangeToTarget(playerSourceFieldIndex, dungeonTargetFieldIndex);
   }
 }

@@ -32,10 +32,10 @@ export class PlaceMinionAction extends TurnAction {
   execute(game: Game):TurnActionResult {
     this.validate(game);
     const result = new TurnActionResult(game);
-    this._payCardCost(result);
-    const shield = this._clearFieldSlot(result);
-    this._prepareCardForField(result, shield);
-    this._placeCardOnField(result);
+    this.payCardCost(result);
+    const shield = this.clearFieldSlot(result);
+    this.prepareCardForField(result, shield);
+    this.placeCardOnField(result);
     return result;
   }
 
@@ -46,7 +46,7 @@ export class PlaceMinionAction extends TurnAction {
     if (game.player.hand.cards.length <= this.playerSourceHandIndex) {
       throw new Error(`invalid player hand index: ${this.playerSourceHandIndex} with player hand of size: ${game.player.hand.cards.length}`);
     }
-    const playerSourceHandCard = this._getPlayerSourceHandCard(game);
+    const playerSourceHandCard = this.getPlayerSourceHandCard(game);
     if (!(playerSourceHandCard instanceof MinionCard)) {
       console.log(playerSourceHandCard);
       throw new Error(`player hand card: ${playerSourceHandCard} is not a card that can be placed on the field`);
@@ -56,28 +56,27 @@ export class PlaceMinionAction extends TurnAction {
     }
   }
 
-  _getPlayerSourceHandCard(game: Game):Card {
+  private getPlayerSourceHandCard(game: Game):Card {
     return game.player.hand.cards[this.playerSourceHandIndex];
   }
 
-  _getPlayerTargetFieldSlot(game: Game):PlayerFieldSlot {
+  private getPlayerTargetFieldSlot(game: Game):PlayerFieldSlot {
     return game.player.field[this.playerTargetFieldIndex];
   }
 
-  _payCardCost(result: TurnActionResult) {
-    const playerSourceHandCard = this._getPlayerSourceHandCard(result.game);
+  private payCardCost(result: TurnActionResult) {
+    const playerSourceHandCard = this.getPlayerSourceHandCard(result.game);
     result.game.player.energy.decrease(playerSourceHandCard.cost);
     result.recordGameChange(GameChange.PlayerEnergy);
   }
 
-  _clearFieldSlot(result: TurnActionResult):number {
-    const playerTargetFieldSlot = this._getPlayerTargetFieldSlot(result.game);
+  private clearFieldSlot(result: TurnActionResult):number {
+    const playerTargetFieldSlot = this.getPlayerTargetFieldSlot(result.game);
     if (!playerTargetFieldSlot.card) {
       return 0;
     }
     result.game.player.discardDeck.add(playerTargetFieldSlot.card);
     result.recordGameChange(GameChange.PlayerDiscardDeck);
-    playerTargetFieldSlot.card.clearConditions();
     result.recordCardChange(playerTargetFieldSlot.card);
     playerTargetFieldSlot.clear();
     result.recordGameChange(GameChange.PlayerField);
@@ -87,8 +86,8 @@ export class PlaceMinionAction extends TurnAction {
     return playerTargetFieldSlot.card.health + playerTargetFieldSlot.card.conditions.shield;
   }
 
-  _prepareCardForField(result: TurnActionResult, shield: number) {
-    const playerSourceHandCard = this._getPlayerSourceHandCard(result.game);
+  private prepareCardForField(result: TurnActionResult, shield: number) {
+    const playerSourceHandCard = this.getPlayerSourceHandCard(result.game);
     // @NOTE: even though technically only minions have shield, there's no reason that is required as it's just a standard conditon.
     playerSourceHandCard.conditions.shield += shield;
     if (!(playerSourceHandCard instanceof MinionCard) || !playerSourceHandCard.hasHaste()) {
@@ -97,9 +96,9 @@ export class PlaceMinionAction extends TurnAction {
     result.recordCardChange(playerSourceHandCard);
   }
 
-  _placeCardOnField(result: TurnActionResult) {
-    const playerSourceHandCard = this._getPlayerSourceHandCard(result.game);
-    const playerTargetFieldSlot = this._getPlayerTargetFieldSlot(result.game);
+  private placeCardOnField(result: TurnActionResult) {
+    const playerSourceHandCard = this.getPlayerSourceHandCard(result.game);
+    const playerTargetFieldSlot = this.getPlayerTargetFieldSlot(result.game);
     playerTargetFieldSlot.fill(playerSourceHandCard);
     result.recordGameChange(GameChange.PlayerField);
     result.game.player.hand.remove(this.playerSourceHandIndex);

@@ -11,8 +11,10 @@ export class FieldSlot {
     }
   }
 
-  clear() {
+  clear():Card {
+    const temp = this.card;
     this.card = null;
+    return temp;
   }
 
   fill(card: Card) {
