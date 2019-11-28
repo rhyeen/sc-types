@@ -4,6 +4,8 @@ import { PlayerHand, PlayerDiscardDeck, PlayerDrawDeck, PlayerLostDeck } from '.
 import { CardSet } from '../../../card/entities/card-set';
 
 export class Player {
+  id: string;
+  name: string;
   health: Status;
   energy: Status;
   field: PlayerFieldSlot[];
@@ -12,7 +14,9 @@ export class Player {
   discardDeck: PlayerDiscardDeck;
   lostDeck: PlayerLostDeck;
 
-  constructor(maxHealth: number, maxEnergy: number, handRefillSize: number) {
+  constructor(id: string, name: string, maxHealth: number, maxEnergy: number, handRefillSize: number) {
+    this.id = id;
+    this.name = name;
     this.health = new Status(maxHealth);
     this.energy = new Status(maxEnergy);
     this.field = [
@@ -27,7 +31,7 @@ export class Player {
   }
 
   copy(cardSets: Record<string,CardSet>):Player {
-    const player = new Player(this.health.max, this.energy.max, this.hand.refillSize);
+    const player = new Player(this.id, this.name, this.health.max, this.energy.max, this.hand.refillSize);
     player.health = this.health.copy();
     player.energy = this.energy.copy();
     player.field = this.copyField(cardSets);

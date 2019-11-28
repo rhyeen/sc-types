@@ -11,7 +11,7 @@ export class PlayerGenerator {
     const maxHealth = PlayerGenerator.getPlayerMaxHealth(dungeonSeed, playerOwnedRelics);
     const maxEnergy = PlayerGenerator.getPlayerMaxEnergy(dungeonSeed, playerOwnedRelics);
     const handRefillSize = PlayerGenerator.getPlayerMaxHandRefillSize(dungeonSeed, playerOwnedRelics);
-    const player = new Player(maxHealth, maxEnergy, handRefillSize);
+    const player = new Player(playerContext.identity.id, playerContext.identity.name, maxHealth, maxEnergy, handRefillSize);
     // @NOTE: All starting hand cards are put into draw deck and other cards into discard deck because when
     // the game begins, a hand will be drawn from the draw deck first, then the discard deck will be shuffled
     // into the draw deck and drawn from.

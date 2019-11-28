@@ -82,6 +82,13 @@ function defaultPlayerCards() {
   ]
 }
 
+function defaultIdentity() {
+  return {
+    id: "US_1",
+    name: "rhyeen",
+  }
+}
+
 test('init with no base cards', () => {
   const dungeonSeed = {
     dungeonCards: [],
@@ -93,6 +100,7 @@ test('init with no base cards', () => {
     ]
   };
   const playerContext = {
+    identity: defaultIdentity(),
     baseCards: []
   };
   const game = GameGenerator.generateFromSeed('GM_1', dungeonSeed, playerContext);
@@ -114,6 +122,7 @@ test('typical player base cards', () => {
     ]
   };
   const playerContext = {
+    identity: defaultIdentity(),
     baseCards: defaultPlayerCards()
   };
   const game = GameGenerator.generateFromSeed('GM_1', dungeonSeed, playerContext);
@@ -138,6 +147,7 @@ test('typical dungeon base cards', () => {
     ]
   };
   const playerContext = {
+    identity: defaultIdentity(),
     baseCards: []
   };
   const game = GameGenerator.generateFromSeed('GM_1', dungeonSeed, playerContext);

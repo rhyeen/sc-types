@@ -15,7 +15,7 @@ export function defaultGame():Game {
 }
 
 export function defaultPlayer(cardSets: Record<string,CardSet>):Player {
-  const player = new Player(20, 10, 5);
+  const player = new Player("US_1", "rhyeen", 20, 10, 5);
   player.hand.add(cardSets['HS_2'].instances['CD_2_0']);
   player.hand.add(cardSets['HS_2'].instances['CD_2_1']);
   player.hand.add(cardSets['HS_2'].instances['CD_2_2']);
