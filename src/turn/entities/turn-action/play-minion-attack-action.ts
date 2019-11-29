@@ -54,7 +54,7 @@ export class PlayMinionAttackAction extends ActionWithTargets {
       if (game.dungeon.field.length <= target.targetOpponentFieldIndex) {
         throw new Error(`invalid opponent field index: ${target.targetOpponentFieldIndex} with dungeon field of size: ${game.dungeon.field.length}`);
       }
-      let attackedCard = game.dungeon.field[target.targetOpponentFieldIndex].card;
+      const attackedCard = game.dungeon.field[target.targetOpponentFieldIndex].card;
       if (!attackedCard || !(attackedCard instanceof MinionCard)) {
         throw new Error(`player minion card must attack field: ${target.targetOpponentFieldIndex} that contains a minion card`);
       }

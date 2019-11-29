@@ -82,9 +82,10 @@ export class DungeonGenerator {
     return cardSetsByLevel;
   }
 
-  private static extractCardSetsByRarity(rarity: CardRarity, cardsData: any[], cardSets: Record<string, CardSet>):CardSet[] {
+  private static extractCardSetsByRarity(rarity: CardRarity, cardsData: Record<string, any>, cardSets: Record<string, CardSet>):CardSet[] {
     const cardSetsFromData = [];
-    for (const cardData of cardsData) {
+    for (const key in cardsData) {
+      const cardData = cardsData[key];
       if (cardData.rarity !== rarity) {
         continue;
       }

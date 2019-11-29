@@ -33,8 +33,8 @@ export class GameGenerator {
 
   private static getPossibleDungeonCards(dungeonSeed: any):Record<string, CardSet> {
     const cardSets = {};
-    for (const baseCard of dungeonSeed.dungeonCards) {
-      GameGenerator.addCardToSets(cardSets, CardBuilder.buildCard(baseCard));
+    for (const key in dungeonSeed.dungeonCards) {
+      GameGenerator.addCardToSets(cardSets, CardBuilder.buildCard(dungeonSeed.dungeonCards[key]));
     }
     return cardSets;
   }

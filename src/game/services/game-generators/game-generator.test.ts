@@ -27,7 +27,7 @@ function defaultInitial() {
 }
 
 function defaultDungeonCards() {
-  return [
+  const cards = [
     getDungeonCardData(CardRarity.Common, 1, "CD_1", 1),
     getDungeonCardData(CardRarity.Common, 2, "CD_5", 5),
     getDungeonCardData(CardRarity.Common, 1, "CD_6", 6),
@@ -35,6 +35,11 @@ function defaultDungeonCards() {
     getDungeonCardData(CardRarity.Rare, 1, "CD_3", 3),
     getDungeonCardData(CardRarity.Legendary, 5, "CD_4", 4),
   ];
+  const dungeonCards = {};
+  for (const card of cards) {
+    dungeonCards[card.hash] = card;
+  }
+  return dungeonCards;
 }
 
 function getDungeonCardData(rarity: CardRarity, level: number, forcedCardHash: string, hashBuster: number):CardInterface {
