@@ -46,10 +46,7 @@ export class Status {
     return status;
   }
 
-  json(reduce?: boolean):any {
-    if (reduce) {
-      return this.max;
-    }
+  json():any {
     return {
       max: this.max,
       current: this.current

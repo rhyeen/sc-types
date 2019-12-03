@@ -1,10 +1,10 @@
-import { Card } from "../entities/card/card";
-import { CardInterface } from "../card.interface";
-import { CardType } from "../enums/card-type";
-import { MinionCard } from "../entities/card/minion-card";
-import { SpellCard } from "../entities/card/spell-card";
-import { CardAbility, CardAbilityEnergize, CardAbilityHaste, CardAbilityReach, CardAbilitySpellshot } from "../entities/card-ability";
-import { StaticCardAbilityId, VariableCardAbilityId } from "../enums/card-ability";
+import { Card } from "../../entities/card/card";
+import { CardInterface } from "../../card.interface";
+import { CardType } from "../../enums/card-type";
+import { MinionCard } from "../../entities/card/minion-card";
+import { SpellCard } from "../../entities/card/spell-card";
+import { CardAbility, CardAbilityEnergize, CardAbilityHaste, CardAbilityReach, CardAbilitySpellshot } from "../../entities/card-ability";
+import { StaticCardAbilityId, VariableCardAbilityId } from "../../enums/card-ability";
 
 export class CardBuilder {
   static buildCard(cardData: any):Card {

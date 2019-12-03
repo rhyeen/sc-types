@@ -8,6 +8,7 @@ import { Card } from "../../card/entities/card/card";
 import { CardType } from "../../card/enums/card-type";
 import { CardRarity } from "../../card/enums/card-rarity";
 import { CardBuilder } from "../../card/services/card-builder";
+import { CardAbilitySpellshot } from "../../card/entities/card-ability";
 
 export function defaultGame():Game {
   const cardSets = defaultCardSets();
@@ -63,6 +64,16 @@ export function defaultCardSets():Record<string, CardSet> {
     health: 2,
     range: 3,
     cost: 3
+  }, 5);
+  cardSets[cardSet.baseCard.hash] = cardSet;
+  cardSet = getCardSet({
+    name: 'light lance',
+    id: 'CD_3',
+    type: CardType.Spell,
+    rarity: CardRarity.Epic,
+    hash: 'HS_3',
+    cost: 3,
+    abilities: [ new CardAbilitySpellshot(1) ]
   }, 5);
   cardSets[cardSet.baseCard.hash] = cardSet;
   return cardSets;

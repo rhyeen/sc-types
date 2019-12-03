@@ -14,9 +14,13 @@ export class CardIdentifier {
 
   static findCard(card: Card, cardSets: Record<string,CardSet>):Card {
     const hash = CardHasher.getCardHash(card);
-    if (!(hash in cardSets)) {
-      throw new Error(`card hash ${hash} does not exist within card sets`);
+    return CardIdentifier.findCardFromIds(card.id, hash, cardSets);
+  }
+
+  static findCardFromIds(cardId: string, cardHash: string, cardSets: Record<string,CardSet>):Card {
+    if (!(cardHash in cardSets)) {
+      throw new Error(`card hash ${cardHash} does not exist within card sets`);
     }
-    return cardSets[hash].getInstance(card.id);
+    return cardSets[cardHash].getInstance(cardId);
   }
 }

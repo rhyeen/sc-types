@@ -78,10 +78,12 @@ export class Player {
     return result;
   }
 
-  json(reduce?: boolean, hidePrivate?: boolean):any {
+  json(hidePrivate?: boolean):any {
     return {
-      health: this.health.json(reduce),
-      energy: this.energy.json(reduce),
+      id: this.id,
+      name: this.name,
+      health: this.health.json(),
+      energy: this.energy.json(),
       field: this.jsonField(),
       hand: this.hand.json(),
       drawDeck: this.drawDeck.json(hidePrivate),

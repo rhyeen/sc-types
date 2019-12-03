@@ -91,6 +91,26 @@ export class PlayerDrawDeck extends DrawDeck {
   }
 }
 
+export class HiddenPlayerDrawDeck extends PlayerDrawDeck {
+  constructor(size: number) {
+    const cards = [];
+    for (let i = 0; i < size; i += 1) {
+      cards.push();
+    }
+    super(cards);
+  }
+
+  add(card: Card) {
+    this.cards.push();
+  }
+
+  json():any {
+    return {
+      size: this.cards.length
+    };
+  }
+}
+
 export class DiscardDeck extends Deck {
   constructor(cards?: Card[]) {
     super(cards);
@@ -159,5 +179,12 @@ export class PlayerHand extends Hand {
       result.push(CardIdentifier.findCard(card, cardSets));
     }
     return result;
+  }
+
+  json():any {
+    return {
+      refillSize: this.refillSize,
+      cards: this.jsonCards()
+    };
   }
 }

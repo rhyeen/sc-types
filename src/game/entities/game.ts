@@ -42,7 +42,7 @@ export class Game {
   json(reduce?: boolean, hidePrivate?: boolean):any {
     return {
       id: this.id,
-      player: this.player.json(reduce, hidePrivate),
+      player: this.player.json(hidePrivate),
       dungeon: this.dungeon.json(hidePrivate),
       cardSets: this.jsonCardSets(reduce)
     };
