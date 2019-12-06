@@ -1,5 +1,5 @@
 import { Card } from "./card/card";
-import { CardInterface, copyCardInterface } from "../card.interface";
+import { CardInterface, copyCardInterface, jsonCardInterface } from "../card.interface";
 import { CardHasher } from "../services/card-hasher";
 import { CardBuilder } from "../services/builders/card-builder";
 
@@ -70,7 +70,7 @@ export class CardSet {
 
   json(reduce?: boolean):any {
     return {
-      baseCard: JSON.parse(JSON.stringify(this.baseCard)),
+      baseCard: jsonCardInterface(this.baseCard),
       instances: this.jsonInstances(reduce)
     }
   }

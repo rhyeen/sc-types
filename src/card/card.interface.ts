@@ -24,6 +24,30 @@ export interface DraftCardInterface {
   cost?: number;
 }
 
+export function jsonCardInterface(cardInterface: CardInterface):any {
+  const cardInterfaceData = {
+    name: cardInterface.name,
+    id: cardInterface.id,
+    type: cardInterface.type,
+    rarity: cardInterface.rarity,
+    hash: cardInterface.hash,
+    abilities: jsonCardAbilities(cardInterface.abilities),
+    cost: cardInterface.cost
+  }
+  if (cardInterface.level) {
+    cardInterfaceData['level'] = cardInterface.level;
+  }
+  if (cardInterface.type == CardType.Minion) {
+    return {
+      ...cardInterfaceData,
+      health: cardInterface.health,
+      range: cardInterface.range,
+      attack: cardInterface.attack
+    }
+  }
+  return cardInterfaceData;
+}
+
 export function copyCardInterface(cardInterface: CardInterface):CardInterface {
   return {
     name: cardInterface.name,
@@ -32,7 +56,11 @@ export function copyCardInterface(cardInterface: CardInterface):CardInterface {
     rarity: cardInterface.rarity,
     hash: cardInterface.hash,
     abilities: copyCardAbilities(cardInterface.abilities),
-    cost: cardInterface.cost
+    cost: cardInterface.cost,
+    health: cardInterface.health,
+    range: cardInterface.range,
+    attack: cardInterface.attack,
+    level: cardInterface.level
   };
 }
 
@@ -45,4 +73,12 @@ export function copyCardAbilities(abilities: CardAbility[]):CardAbility[] {
     result.push(ability.copy());
   }
   return result;
+}
+
+export function jsonCardAbilities(abilities: CardAbility[]):any[] {
+  const abilitiesData = [];
+  for (const ability of abilities) {
+    abilitiesData.push(ability.json());
+  }
+  return abilitiesData;
 }

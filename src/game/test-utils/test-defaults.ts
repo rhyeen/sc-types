@@ -7,7 +7,7 @@ import { CardInterface } from "../../card/card.interface";
 import { Card } from "../../card/entities/card/card";
 import { CardType } from "../../card/enums/card-type";
 import { CardRarity } from "../../card/enums/card-rarity";
-import { CardBuilder } from "../../card/services/card-builder";
+import { CardBuilder } from "../../card/services/builders/card-builder";
 import { CardAbilitySpellshot } from "../../card/entities/card-ability";
 
 export function defaultGame():Game {

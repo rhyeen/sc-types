@@ -48,7 +48,6 @@ export class PlaceMinionAction extends TurnAction {
     }
     const playerSourceHandCard = this.getPlayerSourceHandCard(game);
     if (!(playerSourceHandCard instanceof MinionCard)) {
-      console.log(playerSourceHandCard);
       throw new Error(`player hand card: ${playerSourceHandCard} is not a card that can be placed on the field`);
     }
     if (game.player.energy.current < playerSourceHandCard.cost) {

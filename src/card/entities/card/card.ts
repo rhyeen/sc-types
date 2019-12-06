@@ -93,8 +93,13 @@ export class Card implements CardInterface {
     if (!reduce) {
       throw new Error(`to jsonify a card, it must be of a class that extends Card`);
     }
-    return {
+    const card = {
       id: this.id
     };
+    const conditions = this.conditions.json();
+    if (conditions) {
+      card['conditions'] = conditions;
+    }
+    return card;
   }
 }

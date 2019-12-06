@@ -1,12 +1,12 @@
 export enum CardAbilityTier {
-  Spell1 = "abilityTierSpell1",
-  Spell2 = "abilityTierSpell2",
-  Spell3 = "abilityTierSpell3",
-  Minion1 = "abilityTierMinion1",
-  Minion2 = "abilityTierMinion2",
-  Minion3 = "abilityTierMinion3",
-  Legendary = "abilityTierLegendary",
-  Godly = "abilityTierGodly"
+  Spell1 = "spell1",
+  Spell2 = "spell2",
+  Spell3 = "spell3",
+  Minion1 = "minion1",
+  Minion2 = "minion2",
+  Minion3 = "minion3",
+  Legendary = "legendary",
+  Godly = "godly"
 }
 
 export enum StaticCardAbilityId {

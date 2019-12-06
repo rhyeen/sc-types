@@ -19,4 +19,18 @@ export class CardConditions {
     cardConditions.exhausted = this.exhausted;
     return cardConditions;
   }
+
+  json():any {
+    const conditions = {};
+    if (this.exhausted) {
+      conditions['exhausted'] = this.exhausted;
+    }
+    if (this.shield) {
+      conditions['shield'] = this.shield;
+    }
+    if (!Object.keys(conditions).length) {
+      return null;
+    }
+    return conditions;
+  }
 }

@@ -34,11 +34,20 @@ export class CardAbility implements CardAbilityInterface {
   static targetsPlayer():boolean {
     return false;
   }
+
+  json():any {
+    const ability = {
+      id: this.id
+    };
+    if (this.tier) {
+      ability['tier'] = this.tier;
+    }
+    return ability;
+  }
 }
 
 export class StaticCardAbility extends CardAbility {
   id: StaticCardAbilityId;
-  tier?: CardAbilityTier;
 
   constructor(id: StaticCardAbilityId, tier?: CardAbilityTier) {
     super(id, tier);
@@ -60,6 +69,17 @@ export class VariableCardAbility extends CardAbility {
 
   copy():VariableCardAbility {
     return new VariableCardAbility(this.id, this.amount, this.tier);
+  }
+
+  json():any {
+    const ability = {
+      id: this.id,
+      amount: this.amount
+    };
+    if (this.tier) {
+      ability['tier'] = this.tier;
+    }
+    return ability;
   }
 }
 

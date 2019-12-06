@@ -15,10 +15,16 @@ export class FieldSlotBuilder {
     return new DungeonFieldSlot(card, backlog);
   }
 
-  private static buildBacklog(backlog: any[], cardSets: Record<string, CardSet>):Card[] {
+  private static buildBacklog(backlogData: any, cardSets: Record<string, CardSet>):Card[] {
     const cards = [];
-    for (const card of backlog) {
-      cards.push(FieldSlotBuilder.buildCard(card, cardSets));
+    if (backlogData.size || backlogData.size === 0) {
+      for (let i = 0; i < backlogData.size; i += 1) {
+        cards.push();
+      }
+    } else {
+      for (const card of backlogData.cards) {
+        cards.push(FieldSlotBuilder.buildCard(card, cardSets));
+      }
     }
     return cards;
   }
