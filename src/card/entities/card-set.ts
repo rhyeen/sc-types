@@ -41,6 +41,7 @@ export class CardSet {
 
   createInstance() {
     const instance = CardBuilder.buildCard(this.baseCard);
+    instance.generateNewId();
     this.instances[instance.id] = instance;
     return this.instances[instance.id];
   }

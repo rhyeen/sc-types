@@ -2,7 +2,7 @@ import { CardFinder } from '../../../card/services/card-finder';
 import { CardSet } from '../../../card/entities/card-set';
 import { Player } from '../../entities/player/player';
 import { Relic } from '../../../items/entities/relic';
-import { CardBuilder } from '../../../card/services/card-builder';
+import { CardBuilder } from '../../../card/services/builders/card-builder';
 import { Card } from '../../../card/entities/card/card';
 
 export class PlayerGenerator {

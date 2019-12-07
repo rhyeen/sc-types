@@ -38,7 +38,7 @@ export class Card implements CardInterface {
 
   get id():string {
     if (!this._id) {
-      this._id = GuidGenerator.generate('CR', 15);
+      this.generateNewId();
     }
     return this._id;
   }
@@ -57,6 +57,10 @@ export class Card implements CardInterface {
 
   set hash(hash: string) {
     this._hash = hash;
+  }
+
+  generateNewId() {
+    this._id = GuidGenerator.generate('CR', 15);
   }
 
   toString(): string {

@@ -62,6 +62,12 @@ export class DungeonFieldSlot extends FieldSlot {
     }
   }
 
+  refill() {
+    if (!this.card && this.backlog.length) {
+      this.card = this.backlog.shift();
+    }
+  }
+
   copy(cardSets: Record<string,CardSet>):FieldSlot {
     let card = this.card;
     if (card) {

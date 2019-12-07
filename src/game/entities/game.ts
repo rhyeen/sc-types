@@ -32,6 +32,11 @@ export class Game {
     return cardSets;
   }
 
+  start() {
+    this.player.drawHand();
+    this.dungeon.refillField();
+  }
+
   getCard(cardHash: string, cardId: string) {
     if (!(cardHash in this.cardSets)) {
       throw new Error(`cardHash: ${cardHash} does not exist in game's cardSets`);

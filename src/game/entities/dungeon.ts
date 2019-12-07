@@ -33,4 +33,10 @@ export class Dungeon {
     }
     return result;
   }
+
+  refillField() {
+    for (const fieldSlot of this.field) {
+      fieldSlot.refill();
+    }
+  }
 }

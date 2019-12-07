@@ -29,10 +29,10 @@ function defaultInitial() {
 function defaultDungeonCards() {
   const cards = [
     getDungeonCardData(CardRarity.Common, 1, "CD_1", 1),
-    getDungeonCardData(CardRarity.Common, 2, "CD_5", 5),
-    getDungeonCardData(CardRarity.Common, 1, "CD_6", 6),
+    getDungeonCardData(CardRarity.Common, 1, "CD_1", 1),
+    getDungeonCardData(CardRarity.Common, 1, "CD_1", 1),
     getDungeonCardData(CardRarity.Epic, 4, "CD_2", 2),
-    getDungeonCardData(CardRarity.Rare, 1, "CD_3", 3),
+    getDungeonCardData(CardRarity.Rare, 1, "CD_3", 1),
     getDungeonCardData(CardRarity.Legendary, 5, "CD_4", 4),
   ];
   const dungeonCards = {};
@@ -84,6 +84,9 @@ function defaultPlayerCards() {
     },
     getPlayerCardData(CardRarity.Standard, "CP_WS1", 1),
     getPlayerCardData(CardRarity.Standard, "CP_WS1", 1),
+    getPlayerCardData(CardRarity.Standard, "CP_WS1", 1),
+    getPlayerCardData(CardRarity.Standard, "CP_WS1", 1),
+    getPlayerCardData(CardRarity.Standard, "CP_WS1", 1),
   ]
 }
 
@@ -132,13 +135,18 @@ test('typical player base cards', () => {
   };
   const game = GameGenerator.generateFromSeed('GM_1', dungeonSeed, playerContext);
   expect(Object.keys(game.cardSets).length).toBe(2);
-  expect(game.player.drawDeck.cards.length).toBe(1);
-  expect(game.player.discardDeck.cards.length).toBe(4);
-  expect(game.player.drawDeck.cards[0].name).toBe("Energize");
-  expect(game.player.discardDeck.cards[0].name).toBe("Frontline Ravager");
-  expect(game.player.discardDeck.cards[1].name).toBe("Frontline Ravager");
-  expect(game.player.discardDeck.cards[2].name).toBe("Frontline Ravager");
-  expect(game.player.discardDeck.cards[3].name).toBe("Frontline Ravager");
+  console.log(game.player);
+  expect(game.player.hand.cards.length).toBe(5);
+  expect(game.player.drawDeck.cards.length).toBe(3);
+  expect(game.player.discardDeck.cards.length).toBe(0);
+  expect(game.player.hand.cards[0].name).toBe("Energize");
+  expect(game.player.hand.cards[1].name).toBe("Frontline Ravager");
+  expect(game.player.hand.cards[2].name).toBe("Frontline Ravager");
+  expect(game.player.hand.cards[3].name).toBe("Frontline Ravager");
+  expect(game.player.hand.cards[4].name).toBe("Frontline Ravager");
+  expect(game.player.drawDeck.cards[0].name).toBe("Frontline Ravager");
+  expect(game.player.drawDeck.cards[1].name).toBe("Frontline Ravager");
+  expect(game.player.drawDeck.cards[2].name).toBe("Frontline Ravager");
 });
 
 test('typical dungeon base cards', () => {
@@ -156,7 +164,7 @@ test('typical dungeon base cards', () => {
     baseCards: []
   };
   const game = GameGenerator.generateFromSeed('GM_1', dungeonSeed, playerContext);
-  expect(Object.keys(game.cardSets).length).toBe(6);
+  expect(Object.keys(game.cardSets).length).toBe(4);
   expect(game.dungeon.field[0].card.level).toBe(1);
   expect(game.dungeon.field[1].card.level).toBe(1);
   expect(game.dungeon.field[2].card.level).toBe(1);

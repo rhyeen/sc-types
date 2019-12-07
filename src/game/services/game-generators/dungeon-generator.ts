@@ -3,7 +3,7 @@ import { CardSet } from "../../../card/entities/card-set";
 import { DungeonFieldSlot } from "../../entities/field-slot";
 import { CardRarity } from "../../../card/enums/card-rarity";
 import { Card } from "../../../card/entities/card/card";
-import { CardBuilder } from "../../../card/services/card-builder";
+import { CardBuilder } from "../../../card/services/builders/card-builder";
 
 export class DungeonGenerator {
   static generateDungeon(dungeonSeed: any, cardSets: Record<string, CardSet>):Dungeon {

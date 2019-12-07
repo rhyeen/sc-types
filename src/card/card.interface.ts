@@ -77,6 +77,9 @@ export function copyCardAbilities(abilities: CardAbility[]):CardAbility[] {
 
 export function jsonCardAbilities(abilities: CardAbility[]):any[] {
   const abilitiesData = [];
+  if (!abilities) {
+    return abilitiesData;
+  }
   for (const ability of abilities) {
     abilitiesData.push(ability.json());
   }

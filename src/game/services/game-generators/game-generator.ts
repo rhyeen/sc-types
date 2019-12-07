@@ -1,7 +1,7 @@
 import { Game } from '../../entities/game';
 import { CardSet } from '../../../card/entities/card-set';
 import { Card } from '../../../card/entities/card/card';
-import { CardBuilder } from '../../../card/services/card-builder';
+import { CardBuilder } from '../../../card/services/builders/card-builder';
 import { DungeonGenerator } from './dungeon-generator';
 import { PlayerGenerator } from './player-generator';
 
@@ -10,7 +10,9 @@ export class GameGenerator {
     const cardSets = { ...GameGenerator.getPlayerStartingCards(playerContext), ...GameGenerator.getPossibleDungeonCards(dungeonSeed) };
     const player = PlayerGenerator.generatePlayer(dungeonSeed, playerContext, cardSets);    
     const dungeon = DungeonGenerator.generateDungeon(dungeonSeed, cardSets);
-    return new Game(gameId, player, dungeon, cardSets);
+    const game = new Game(gameId, player, dungeon, cardSets);
+    game.start();
+    return game;
   }
 
   private static getPlayerStartingCards(playerContext: any):Record<string, CardSet> {
