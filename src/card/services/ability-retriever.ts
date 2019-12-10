@@ -1,4 +1,4 @@
-import { CardBuilder } from "./card-builder";
+import { CardBuilder } from "./builders/card-builder";
 import { CardAbility } from "../entities/card-ability";
 
 export class AbilityRetriever {
