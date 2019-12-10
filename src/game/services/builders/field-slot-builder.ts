@@ -2,6 +2,8 @@ import { PlayerFieldSlot, DungeonFieldSlot } from "../../entities/field-slot";
 import { CardSet } from "../../../card/entities/card-set";
 import { CardIdentifier } from "../../../card/services/card-identifier";
 import { Card } from "../../../card/entities/card/card";
+import { CardRarity } from "../../../card/enums/card-rarity";
+import { CardType } from "../../../card/enums/card-type";
 
 export class FieldSlotBuilder {
   static buildPlayerFieldSlot(playerFieldSlotData: any, cardSets: Record<string, CardSet>):PlayerFieldSlot {
@@ -19,7 +21,7 @@ export class FieldSlotBuilder {
     const cards = [];
     if (backlogData.size || backlogData.size === 0) {
       for (let i = 0; i < backlogData.size; i += 1) {
-        cards.push();
+        cards.push(new Card(CardRarity.Undefined, CardType.Undefined));
       }
     } else {
       for (const card of backlogData.cards) {

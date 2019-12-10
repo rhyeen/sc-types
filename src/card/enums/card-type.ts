@@ -1,4 +1,5 @@
 export enum CardType {
   Minion = "minion",
-  Spell = "spell"
+  Spell = "spell",
+  Undefined = "undefined"
 }

@@ -7,12 +7,12 @@ import { CardAbility, CardAbilityEnergize, CardAbilityHaste, CardAbilityReach, C
 import { StaticCardAbilityId, VariableCardAbilityId } from "../../enums/card-ability";
 
 export class CardBuilder {
-  static buildCard(cardData: any):Card {
+  static buildCardInterface(cardData: any):CardInterface {
     if (!cardData) {
       throw new Error('param cardData is not initialized');
     }
     const abilities = CardBuilder.buildCardAbilities(cardData.abilities);
-    const card = {
+    return {
       name: cardData.name,
       id: cardData.id,
       type: cardData.type,
@@ -25,10 +25,13 @@ export class CardBuilder {
       attack: cardData.attack,
       level: cardData.level,
     };
-    return CardBuilder.getTypedCard(card);
   }
 
-  static buildCardAbilities(cardAbilitiesData: any): CardAbility[] {
+  static buildCard(cardData: any):Card {
+    return CardBuilder.getTypedCard(CardBuilder.buildCardInterface(cardData));
+  }
+
+  static buildCardAbilities(cardAbilitiesData: any):CardAbility[] {
     const result = [];
     if (!cardAbilitiesData || !cardAbilitiesData.length) {
       return result;
@@ -39,7 +42,7 @@ export class CardBuilder {
     return result;
   }
 
-  static buildCardAbility(abilityId: string, amount?: number): CardAbility {
+  static buildCardAbility(abilityId: string, amount?: number):CardAbility {
     let _amount = 0;
     if (amount) {
       _amount = amount;

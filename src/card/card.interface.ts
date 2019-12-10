@@ -81,6 +81,9 @@ export function jsonCardAbilities(abilities: CardAbility[]):any[] {
     return abilitiesData;
   }
   for (const ability of abilities) {
+    if (!(ability instanceof CardAbility)) {
+      throw new Error(`ability (typeof: ${typeof ability}) is not of type: CardAbility`);
+    }
     abilitiesData.push(ability.json());
   }
   return abilitiesData;

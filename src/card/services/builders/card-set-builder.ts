@@ -12,18 +12,18 @@ export class CardSetBuilder {
   }
 
   static buildCardSet(cardSetData: any):CardSet {
-    const instances = CardSetBuilder.buildInstances(cardSetData.instances);
-    const cardSet = new CardSet(cardSetData.baseCard); 
+    const instances = CardSetBuilder.buildInstances(cardSetData.baseCard, cardSetData.instances);
+    const cardSet = new CardSet(CardBuilder.buildCardInterface(cardSetData.baseCard)); 
     for (const instance of instances) {
       cardSet.setInstance(instance);
     }
     return cardSet;
   }
 
-  private static buildInstances(instancesData: any):Card[] {
+  private static buildInstances(baseCardData: any, instancesData: any):Card[] {
     const cards = [];
     for (const cardId in instancesData) {
-      cards.push(CardBuilder.buildCard(instancesData[cardId]));
+      cards.push(CardBuilder.buildCard({ ...baseCardData, ...instancesData[cardId] }));
     }
     return cards;
   }

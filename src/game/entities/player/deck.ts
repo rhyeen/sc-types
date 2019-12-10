@@ -2,6 +2,8 @@ import { ValueEnsurer } from '../../services/value-ensurer';
 import { CardSet } from '../../../card/entities/card-set';
 import { CardIdentifier } from '../../../card/services/card-identifier';
 import { Card } from '../../../card/entities/card/card';
+import { CardRarity } from '../../../card/enums/card-rarity';
+import { CardType } from '../../../card/enums/card-type';
 
 export class Deck {
   cards: Card[];
@@ -95,7 +97,7 @@ export class HiddenPlayerDrawDeck extends PlayerDrawDeck {
   constructor(size: number) {
     const cards = [];
     for (let i = 0; i < size; i += 1) {
-      cards.push();
+      cards.push(new Card(CardRarity.Undefined, CardType.Undefined));
     }
     super(cards);
   }
