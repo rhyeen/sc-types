@@ -29,7 +29,11 @@ export class Card implements CardInterface {
     if (cardId) {
       this.id = cardId;
     }
-    this.cost = cost;
+    if (cost || cost === 0) {
+      this.cost = cost;
+    } else {
+      this.cost = 0;
+    }
     this.conditions = new CardConditions();
     if (cardHash) {
       this.hash = cardHash;

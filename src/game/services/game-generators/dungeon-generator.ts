@@ -63,7 +63,7 @@ export class DungeonGenerator {
   }
   
   private static getCardSetsByLevel(rarity: CardRarity, dungeonSeed: any, cardSets: Record<string, CardSet>):CardSet[][] {
-    let cardSetsOfRarity = DungeonGenerator.extractCardSetsByRarity(rarity, dungeonSeed.dungeonCards, cardSets);
+    let cardSetsOfRarity = DungeonGenerator.extractCardSetsByRarity(rarity, dungeonSeed.dungeoncards, cardSets);
     if (!cardSetsOfRarity.length) {
       return [];
     }

@@ -8,7 +8,7 @@ import { PlayerGenerator } from './player-generator';
 export class GameGenerator {
   public static generateFromSeed(gameId: string, dungeonSeed: any, playerContext: any):Game {
     const cardSets = { ...GameGenerator.getPlayerStartingCards(playerContext), ...GameGenerator.getPossibleDungeonCards(dungeonSeed) };
-    const player = PlayerGenerator.generatePlayer(dungeonSeed, playerContext, cardSets);    
+    const player = PlayerGenerator.generatePlayer(dungeonSeed, playerContext, cardSets);
     const dungeon = DungeonGenerator.generateDungeon(dungeonSeed, cardSets);
     const game = new Game(gameId, player, dungeon, cardSets);
     game.start();
@@ -35,8 +35,8 @@ export class GameGenerator {
 
   private static getPossibleDungeonCards(dungeonSeed: any):Record<string, CardSet> {
     const cardSets = {};
-    for (const key in dungeonSeed.dungeonCards) {
-      GameGenerator.addCardToSets(cardSets, CardBuilder.buildCard(dungeonSeed.dungeonCards[key]));
+    for (const key in dungeonSeed.dungeoncards) {
+      GameGenerator.addCardToSets(cardSets, CardBuilder.buildCard(dungeonSeed.dungeoncards[key]));
     }
     return cardSets;
   }

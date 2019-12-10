@@ -35,11 +35,11 @@ function defaultDungeonCards() {
     getDungeonCardData(CardRarity.Rare, 1, "CD_3", 1),
     getDungeonCardData(CardRarity.Legendary, 5, "CD_4", 4),
   ];
-  const dungeonCards = {};
+  const dungeoncards = {};
   for (const card of cards) {
-    dungeonCards[card.hash] = card;
+    dungeoncards[card.hash] = card;
   }
-  return dungeonCards;
+  return dungeoncards;
 }
 
 function getDungeonCardData(rarity: CardRarity, level: number, forcedCardHash: string, hashBuster: number):CardInterface {
@@ -67,6 +67,7 @@ function getPlayerCardData(rarity: CardRarity, forcedCardHash: string, hashBuste
     attack: hashBuster,
     health: 1,
     range: 1,
+    cost: 3,
     abilities: [new CardAbilityHaste()]
   }
 }
@@ -99,7 +100,7 @@ function defaultIdentity() {
 
 test('init with no base cards', () => {
   const dungeonSeed = {
-    dungeonCards: [],
+    dungeoncards: [],
     initial: defaultInitial(),
     field: [
       defaultSlot(),
@@ -121,7 +122,7 @@ test('init with no base cards', () => {
 
 test('typical player base cards', () => {
   const dungeonSeed = {
-    dungeonCards: [],
+    dungeoncards: [],
     initial: defaultInitial(),
     field: [
       defaultSlot(),
@@ -150,7 +151,7 @@ test('typical player base cards', () => {
 
 test('typical dungeon base cards', () => {
   const dungeonSeed = {
-    dungeonCards: defaultDungeonCards(),
+    dungeoncards: defaultDungeonCards(),
     initial: defaultInitial(),
     field: [
       defaultSlot(),
@@ -171,4 +172,19 @@ test('typical dungeon base cards', () => {
   expect(game.dungeon.field[0].backlog[0].level).toBe(1);
   expect(game.dungeon.field[1].backlog[14].level).toBe(5);
   expect(game.dungeon.field[2].backlog[13].level).toBe(4);
+});
+
+
+test('same test as what is in sc-functions', () => {
+  const playerContext = {"identity":{"id":"US_1","name":"rhyeen"},"baseCards":[{"id":"CP_EN1","name":"Energize","rarity":"standard","type":"spell","abilities":[{"id":"energize","amount":1}]},{"id":"CP_WS1","name":"Common Wisp","rarity":"standard","type":"minion","attack":1,"range":2,"health":3},{"id":"CP_WS1","name":"Common Wisp","rarity":"standard","type":"minion","attack":1,"range":2,"health":3},{"id":"CP_WS1","name":"Common Wisp","rarity":"standard","type":"minion","attack":1,"range":2,"health":3},{"id":"CP_WS1","name":"Common Wisp","rarity":"standard","type":"minion","attack":1,"range":2,"health":3},{"id":"CP_WS1","name":"Common Wisp","rarity":"standard","type":"minion","attack":1,"range":2,"health":3},{"id":"CP_WS1","name":"Common Wisp","rarity":"standard","type":"minion","attack":1,"range":2,"health":3},{"id":"CP_WS1","name":"Common Wisp","rarity":"standard","type":"minion","attack":1,"range":2,"health":3},{"id":"CP_WS1","name":"Common Wisp","rarity":"standard","type":"minion","attack":1,"range":2,"health":3},{"id":"CP_WS1","name":"Common Wisp","rarity":"standard","type":"minion","attack":1,"range":2,"health":3}]};
+  const dungeonSeed = {"field":[{"backlogPartitions":{"common":{"size":7},"rare":{"size":5},"epic":{"size":3},"legendary":{"size":1}},"levelIncreaseChance":0},{"backlogPartitions":{"common":{"size":7},"rare":{"size":5},"epic":{"size":3},"legendary":{"size":1}},"levelIncreaseChance":0},{"backlogPartitions":{"common":{"size":7},"rare":{"size":5},"epic":{"size":3},"legendary":{"size":1}},"levelIncreaseChance":0}],"initial":{"player":{"energy":10,"handRefillSize":5,"health":20}},"name":"Default Delve","dungeoncards":{"CD_GP1":{"id":"CD_GP1","name":"Goblin Peon","rarity":"common", "attack": 1, "range": 2, "health": 2, "type": "minion", "level": 1, "hash": "CD_GP1"},"CD_IU1":{"id":"CD_IU1","name":"Imp Underling","rarity":"common", "attack": 1, "range": 1, "health": 3, "type": "minion", "level": 1, "hash": "CD_IU1"}}};
+  const game = GameGenerator.generateFromSeed('GM_1', dungeonSeed, playerContext);
+  expect(Object.keys(game.cardSets).length).toBe(4);
+  expect(game.dungeon.field[0].card.level).toBe(1);
+  expect(game.dungeon.field[1].card.level).toBe(1);
+  expect(game.dungeon.field[2].card.level).toBe(1);
+  expect(game.dungeon.field[0].backlog.length).toBe(6);
+  expect(game.dungeon.field[0].backlog[0].level).toBe(1);
+  expect(game.dungeon.field[1].backlog[5].level).toBe(1);
+  expect(game.dungeon.field[2].backlog[4].level).toBe(1);
 });
