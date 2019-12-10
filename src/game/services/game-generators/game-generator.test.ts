@@ -135,7 +135,6 @@ test('typical player base cards', () => {
   };
   const game = GameGenerator.generateFromSeed('GM_1', dungeonSeed, playerContext);
   expect(Object.keys(game.cardSets).length).toBe(2);
-  console.log(game.player);
   expect(game.player.hand.cards.length).toBe(5);
   expect(game.player.drawDeck.cards.length).toBe(3);
   expect(game.player.discardDeck.cards.length).toBe(0);

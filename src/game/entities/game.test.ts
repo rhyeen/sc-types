@@ -19,5 +19,6 @@ test('json with reduce and hidePrivate set to true', () => {
   const game = defaultGame();
   const result = game.json(true, true);
   expect(result.id).toEqual('GM_1');
-  expect(result.player.health).toEqual(20);
+  expect(result.player.health.current).toEqual(20);
+  expect(result.player.health.max).toEqual(20);
 });
