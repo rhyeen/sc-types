@@ -1,6 +1,8 @@
 import { CardSet } from "../../card/entities/card-set";
 import { CardIdentifier } from "../../card/services/card-identifier";
 import { Card } from "../../card/entities/card/card";
+import { CardRarity } from "../../card/enums/card-rarity";
+import { CardType } from "../../card/enums/card-type";
 
 export class FieldSlot {
   card?: Card;
@@ -110,5 +112,23 @@ export class DungeonFieldSlot extends FieldSlot {
     return {
       cards: backlog
     };
+  }
+}
+
+export class HiddenDungeonFieldSlot extends DungeonFieldSlot {
+  constructor(card?: Card, backlogSize?: number) {
+    const backlog = [];
+    for (let i = 0; i < backlogSize; i += 1) {
+      backlog.push(new Card(CardRarity.Undefined, CardType.Undefined));
+    }
+    super(card, backlog);
+  }
+
+  copy(cardSets: Record<string,CardSet>):FieldSlot {
+    let card = this.card;
+    if (card) {
+      card = CardIdentifier.findCard(card, cardSets);
+    }
+    return new HiddenDungeonFieldSlot(card, this.backlog.length);
   }
 }

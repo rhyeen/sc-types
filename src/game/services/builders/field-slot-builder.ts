@@ -1,9 +1,7 @@
-import { PlayerFieldSlot, DungeonFieldSlot } from "../../entities/field-slot";
+import { PlayerFieldSlot, DungeonFieldSlot, HiddenDungeonFieldSlot } from "../../entities/field-slot";
 import { CardSet } from "../../../card/entities/card-set";
 import { CardIdentifier } from "../../../card/services/card-identifier";
 import { Card } from "../../../card/entities/card/card";
-import { CardRarity } from "../../../card/enums/card-rarity";
-import { CardType } from "../../../card/enums/card-type";
 
 export class FieldSlotBuilder {
   static buildPlayerFieldSlot(playerFieldSlotData: any, cardSets: Record<string, CardSet>):PlayerFieldSlot {
@@ -13,20 +11,17 @@ export class FieldSlotBuilder {
 
   static buildDungeonFieldSlot(dungeonFieldSlotData: any, cardSets: Record<string, CardSet>):DungeonFieldSlot {
     const card = FieldSlotBuilder.buildCard(dungeonFieldSlotData.card, cardSets);
+    if (dungeonFieldSlotData.backlog.size || dungeonFieldSlotData.backlog.size === 0) {
+      return new HiddenDungeonFieldSlot(card, dungeonFieldSlotData.backlog.size);
+    }
     const backlog = FieldSlotBuilder.buildBacklog(dungeonFieldSlotData.backlog, cardSets);
     return new DungeonFieldSlot(card, backlog);
   }
 
   private static buildBacklog(backlogData: any, cardSets: Record<string, CardSet>):Card[] {
     const cards = [];
-    if (backlogData.size || backlogData.size === 0) {
-      for (let i = 0; i < backlogData.size; i += 1) {
-        cards.push(new Card(CardRarity.Undefined, CardType.Undefined));
-      }
-    } else {
-      for (const card of backlogData.cards) {
-        cards.push(FieldSlotBuilder.buildCard(card, cardSets));
-      }
+    for (const card of backlogData.cards) {
+      cards.push(FieldSlotBuilder.buildCard(card, cardSets));
     }
     return cards;
   }

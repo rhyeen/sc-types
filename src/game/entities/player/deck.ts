@@ -111,6 +111,10 @@ export class HiddenPlayerDrawDeck extends PlayerDrawDeck {
       size: this.cards.length
     };
   }
+
+  copy(cardSets: Record<string,CardSet>):HiddenPlayerDrawDeck {
+    return new HiddenPlayerDrawDeck(this.size());
+  }
 }
 
 export class DiscardDeck extends Deck {
