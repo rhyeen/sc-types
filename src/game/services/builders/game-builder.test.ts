@@ -1,4 +1,5 @@
 import { GameBuilder } from './game-builder';
+import { CardAbilityHaste } from '../../../card/entities/card-ability';
 
 const EXAMPLE_NEW_GAME = {
   "cardSets": {
@@ -267,5 +268,14 @@ test('ensure copy works', () => {
   const game = GameBuilder.buildGame(gameData);
   const newGame = game.copy();
   expect(newGame.json(true, true)).toEqual(gameData);
+});
+
+test('@REGRESSION: ensure haste copies correctly', () => {
+  const gameData = EXAMPLE_NEW_GAME;
+  gameData.cardSets.MS312.baseCard.abilities.push(new CardAbilityHaste());
+  const game = GameBuilder.buildGame(gameData);
+  const newGame = game.copy();
+  expect(newGame.json(true, true)).toEqual(gameData);
+  expect(newGame.cardSets['MS312'].baseCard.abilities[0].id).toBe('haste');
 });
 

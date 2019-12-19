@@ -74,20 +74,22 @@ export class PlaceMinionAction extends TurnAction {
     if (!playerTargetFieldSlot.card) {
       return 0;
     }
-    result.game.player.discardDeck.add(playerTargetFieldSlot.card);
+    const card = playerTargetFieldSlot.card;
+    result.game.player.discardDeck.add(card);
     result.recordGameChange(GameChange.PlayerDiscardDeck);
-    result.recordCardChange(playerTargetFieldSlot.card);
+    result.recordCardChange(card);
     playerTargetFieldSlot.clear();
     result.recordGameChange(GameChange.PlayerField);
-    if (!(playerTargetFieldSlot.card instanceof MinionCard)) {
+    if (!(card instanceof MinionCard)) {
       return 0;
     }
-    return playerTargetFieldSlot.card.health + playerTargetFieldSlot.card.conditions.shield;
+    return card.health + card.conditions.shield;
   }
 
   private prepareCardForField(result: TurnActionResult, shield: number) {
     const playerSourceHandCard = this.getPlayerSourceHandCard(result.game);
-    // @NOTE: even though technically only minions have shield, there's no reason that is required as it's just a standard conditon.
+    // @NOTE: even though technically only minions have shield, 
+    // there's no reason to check for MinionCard type on the card as it's just a standard conditon.
     playerSourceHandCard.conditions.shield += shield;
     if (!(playerSourceHandCard instanceof MinionCard) || !playerSourceHandCard.hasHaste()) {
       playerSourceHandCard.conditions.exhausted = true;
