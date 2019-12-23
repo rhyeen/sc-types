@@ -62,16 +62,14 @@ export class DungeonTurn {
       throw new Error(`dead card: ${card.hash}::${card.id} should be removed from field`);
     }
     if (game.canDungeonMinionAttackPlayer(fieldSlotIndex)) {
-      const targets = [new PlayerActionTarget()];
-      return new DungeonMinionAttackAction(fieldSlotIndex, targets);
+      return new DungeonMinionAttackAction(fieldSlotIndex, [new PlayerActionTarget()]);
     }
     const possibleTargets = game.getValidDungeonMinionAttackTargets(fieldSlotIndex);
     if (!possibleTargets.length) {
       return null;
     }
     const targetFieldIndex = DungeonTurn.getRandomArrayElement(possibleTargets);
-    const targets = [new PlayerMinionActionTarget(targetFieldIndex)];
-    return new DungeonMinionAttackAction(fieldSlotIndex, targets);
+    return new DungeonMinionAttackAction(fieldSlotIndex, [new PlayerMinionActionTarget(targetFieldIndex)]);
   }
 
   private static getRandomArrayElement(arr: any[]): any {
