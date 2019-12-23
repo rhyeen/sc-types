@@ -90,11 +90,11 @@ export class DungeonMinionAttackAction extends ActionWithTargets {
     attackingCard.exhaust();
     result.recordCardChange(attackingCard);
     result.recordCardChange(attackedCard);
-    if (attackingCard.health <= 0) {
+    if (attackingCard.isDead()) {
       result.game.dungeon.field[this.dungeonSourceFieldIndex].clear();
       result.recordGameChange(GameChange.DungeonField);
     }
-    if (attackedCard.health <= 0) {
+    if (attackedCard.isDead()) {
       result.game.player.discardDeck.add(attackingCard);
       result.game.player.field[targetPlayerFieldIndex].clear();
       result.recordGameChange(GameChange.PlayerDiscardDeck);

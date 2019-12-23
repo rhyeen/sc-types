@@ -25,7 +25,7 @@ test('place minion, attack with minion, and player minion dies', () => {
   if (!(result.game.dungeon.field[0].card instanceof MinionCard) || !(game.dungeon.field[0].card instanceof MinionCard)) {
     return;
   }
-  expect(result.game.dungeon.field[0].card.health).toBe(game.dungeon.field[0].card.health - 1);
+  expect(result.game.dungeon.field[0].card.remainingHealth).toBe(game.dungeon.field[0].card.remainingHealth - 1);
   expect(result.gameChanges.has(GameChange.PlayerField)).toBeTruthy();
   expect(result.gameChanges.has(GameChange.PlayerHand)).toBeTruthy();
   expect(result.gameChanges.has(GameChange.PlayerEnergy)).toBeTruthy();

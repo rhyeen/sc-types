@@ -83,13 +83,13 @@ export class PlayMinionAttackAction extends ActionWithTargets {
     attackingCard.exhaust();
     result.recordCardChange(attackingCard);
     result.recordCardChange(attackedCard);
-    if (attackingCard.health <= 0) {
+    if (attackingCard.isDead()) {
       result.game.player.discardDeck.add(attackingCard);
       result.game.player.field[this.playerSourceFieldIndex].clear();
       result.recordGameChange(GameChange.PlayerDiscardDeck);
       result.recordGameChange(GameChange.PlayerField);
     }
-    if (attackedCard.health <= 0) {
+    if (attackedCard.isDead()) {
       result.game.dungeon.field[targetOpponentFieldIndex].clear();
       result.recordGameChange(GameChange.DungeonField);
     }

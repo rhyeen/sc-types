@@ -83,7 +83,7 @@ export class PlaceMinionAction extends TurnAction {
     if (!(card instanceof MinionCard)) {
       return 0;
     }
-    return card.health + card.conditions.shield;
+    return card.remainingHealth + card.conditions.shield;
   }
 
   private prepareCardForField(result: TurnActionResult, shield: number) {

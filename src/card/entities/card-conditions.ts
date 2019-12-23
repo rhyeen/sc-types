@@ -1,6 +1,7 @@
 export class CardConditions {
   exhausted?: boolean;
   _shield?: number;
+  _damage?: number;
 
   get shield():number {
     if (this._shield && this._shield > 0) {
@@ -13,10 +14,22 @@ export class CardConditions {
     this._shield = shield;
   }
 
+  get damage():number {
+    if (this._damage && this._damage > 0) {
+      return this._damage;
+    }
+    return 0;
+  }
+
+  set damage(damage: number) {
+    this._damage = damage;
+  }
+
   copy():CardConditions {
     const cardConditions = new CardConditions();
     cardConditions.shield = this.shield;
     cardConditions.exhausted = this.exhausted;
+    cardConditions.damage = this.damage;
     return cardConditions;
   }
 
@@ -27,6 +40,9 @@ export class CardConditions {
     }
     if (this.shield) {
       conditions['shield'] = this.shield;
+    }
+    if (this.damage) {
+      conditions['damage'] = this.damage;
     }
     if (!Object.keys(conditions).length) {
       return null;

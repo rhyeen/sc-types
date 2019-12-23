@@ -18,7 +18,14 @@ export class MinionCard extends Card {
   }
 
   isDead(): boolean {
-    return this.health <= 0;
+    return this.remainingHealth <= 0;
+  }
+
+  get remainingHealth():number {
+    if (this.conditions.damage > this.health) {
+      return 0;
+    }
+    return this.health - this.conditions.damage;
   }
 
   isExhausted(): boolean {
@@ -45,7 +52,7 @@ export class MinionCard extends Card {
         attackedCard.conditions.shield = 0;
       }
     }
-    attackedCard.health -= attack;
+    attackedCard.conditions.damage += attack;
   }
 
   attackPlayerDamage():number {
