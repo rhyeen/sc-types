@@ -37,7 +37,7 @@ export function jsonCardInterface(cardInterface: CardInterface):any {
   if (cardInterface.level) {
     cardInterfaceData['level'] = cardInterface.level;
   }
-  if (cardInterface.type == CardType.Minion) {
+  if (cardInterface.type === CardType.Minion) {
     return {
       ...cardInterfaceData,
       health: cardInterface.health,

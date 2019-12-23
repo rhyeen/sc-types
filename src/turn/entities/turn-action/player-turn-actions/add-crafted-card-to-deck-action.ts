@@ -1,7 +1,7 @@
-import { TurnAction } from "./turn-action";
-import { ActionType } from "../../enums/action-type";
-import { Game } from "../../../game/entities/game";
-import { TurnActionResult } from "./turn-action-result";
+import { TurnAction } from "../turn-action";
+import { ActionType } from "../../../enums/action-type";
+import { Game } from "../../../../game/entities/game";
+import { TurnActionResult } from "../turn-action-result";
 
 export class AddCraftedCardToDeckAction extends TurnAction {
   forgeSlotIndex: number;

@@ -1,8 +1,8 @@
-import { ActionWithTargets } from "./turn-action";
-import { ActionTarget } from "../action-target";
-import { ActionType } from "../../enums/action-type";
-import { Game } from "../../../game/entities/game";
-import { TurnActionResult } from "./turn-action-result";
+import { ActionWithTargets } from "../turn-action";
+import { ActionTarget } from "../../action-target";
+import { ActionType } from "../../../enums/action-type";
+import { Game } from "../../../../game/entities/game";
+import { TurnActionResult } from "../turn-action-result";
 
 export class PlayMinionAbilityAction extends ActionWithTargets {
   playerSourceFieldIndex: number;

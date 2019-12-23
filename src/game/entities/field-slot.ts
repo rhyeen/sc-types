@@ -1,5 +1,5 @@
 import { CardSet } from "../../card/entities/card-set";
-import { CardIdentifier } from "../../card/services/card-identifier";
+import { CardFinder } from "../../card/services/card-finder";
 import { Card } from "../../card/entities/card/card";
 import { CardRarity } from "../../card/enums/card-rarity";
 import { CardType } from "../../card/enums/card-type";
@@ -26,7 +26,7 @@ export class FieldSlot {
   copy(cardSets: Record<string,CardSet>):FieldSlot {
     let card = this.card;
     if (card) {
-      card = CardIdentifier.findCard(card, cardSets);
+      card = CardFinder.findCard(card, cardSets);
     }
     return new FieldSlot(card);
   }
@@ -64,6 +64,13 @@ export class DungeonFieldSlot extends FieldSlot {
     }
   }
 
+  getTurnPriority() {
+    if (!this.card) {
+      return -1;
+    }
+    return 5;
+  }
+
   refill() {
     if (!this.card && this.backlog.length) {
       this.card = this.backlog.shift();
@@ -73,11 +80,11 @@ export class DungeonFieldSlot extends FieldSlot {
   copy(cardSets: Record<string,CardSet>):FieldSlot {
     let card = this.card;
     if (card) {
-      card = CardIdentifier.findCard(card, cardSets);
+      card = CardFinder.findCard(card, cardSets);
     }
     const backlog = [];
     for (const backlogCard of this.backlog) {
-      backlog.push(CardIdentifier.findCard(backlogCard, cardSets));
+      backlog.push(CardFinder.findCard(backlogCard, cardSets));
     }
     return new DungeonFieldSlot(card, this.backlog);
   }
@@ -127,7 +134,7 @@ export class HiddenDungeonFieldSlot extends DungeonFieldSlot {
   copy(cardSets: Record<string,CardSet>):FieldSlot {
     let card = this.card;
     if (card) {
-      card = CardIdentifier.findCard(card, cardSets);
+      card = CardFinder.findCard(card, cardSets);
     }
     return new HiddenDungeonFieldSlot(card, this.backlog.length);
   }

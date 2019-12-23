@@ -1,8 +1,14 @@
-import { CardInterface } from "../card.interface";
-import { CardNameGenerator } from "./card-name-generator";
-import { CardSet } from "../entities/card-set";
-import { Card } from "../entities/card/card";
-import { CardHasher } from "./card-hasher";
+import { CardSet } from '../entities/card-set';
+import { Card } from '../entities/card/card';
+import { CardInterface } from '../card.interface';
+import { CardNameGenerator } from './card-name-generator';
+
+enum CardHashes {
+  Energize = 'SS000|A;EN1',
+}
+
+const StartingHandCardHashes = new Set();
+StartingHandCardHashes.add(CardHashes.Energize);
 
 export class CardIdentifier {
   static generateCardName(card: CardInterface): string {
@@ -12,15 +18,15 @@ export class CardIdentifier {
     return CardNameGenerator.getRandomCardName(card);
   }
 
-  static findCard(card: Card, cardSets: Record<string,CardSet>):Card {
-    const hash = CardHasher.getCardHash(card);
-    return CardIdentifier.findCardFromIds(card.id, hash, cardSets);
+  static getEnergizeCard(cardSets: Record<string, CardSet>):Card {
+    const cardSet = cardSets[CardHashes.Energize];
+    if (!cardSet) {
+      throw new Error(`cardSets does not contain hash for energerize`);
+    }
+    return cardSet.getInstances()[0];
   }
 
-  static findCardFromIds(cardId: string, cardHash: string, cardSets: Record<string,CardSet>):Card {
-    if (!(cardHash in cardSets)) {
-      throw new Error(`card hash ${cardHash} does not exist within card sets`);
-    }
-    return cardSets[cardHash].getInstance(cardId);
+  static isStartingHandCard(card: Card):boolean {
+    return StartingHandCardHashes.has(card.hash);
   }
 }

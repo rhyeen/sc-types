@@ -1,23 +1,17 @@
-import { CardSet } from '../entities/card-set';
-import { Card } from '../entities/card/card';
-
-enum CardHashes {
-  Energize = 'SS000|A;EN1',
-}
-
-const StartingHandCardHashes = new Set();
-StartingHandCardHashes.add(CardHashes.Energize);
+import { CardSet } from "../entities/card-set";
+import { Card } from "../entities/card/card";
+import { CardHasher } from "./card-hasher";
 
 export class CardFinder {
-  static getEnergizeCard(cardSets: Record<string, CardSet>):Card {
-    const cardSet = cardSets[CardHashes.Energize];
-    if (!cardSet) {
-      throw new Error(`cardSets does not contain hash for energerize`);
-    }
-    return cardSet.getInstances()[0];
+  static findCard(card: Card, cardSets: Record<string,CardSet>):Card {
+    const hash = CardHasher.getCardHash(card);
+    return CardFinder.findCardFromIds(card.id, hash, cardSets);
   }
 
-  static isStartingHandCard(card: Card):boolean {
-    return StartingHandCardHashes.has(card.hash);
+  static findCardFromIds(cardId: string, cardHash: string, cardSets: Record<string,CardSet>):Card {
+    if (!(cardHash in cardSets)) {
+      throw new Error(`card hash ${cardHash} does not exist within card sets`);
+    }
+    return cardSets[cardHash].getInstance(cardId);
   }
 }

@@ -1,4 +1,4 @@
-import { CardFinder } from '../../../card/services/card-finder';
+import { CardIdentifier } from '../../../card/services/card-identifier';
 import { CardSet } from '../../../card/entities/card-set';
 import { Player } from '../../entities/player/player';
 import { Relic } from '../../../items/entities/relic';
@@ -18,7 +18,7 @@ export class PlayerGenerator {
     // @TODO: add all player cards to discardDeck.
     const cards = PlayerGenerator.extractCards(playerContext.baseCards, cardSets);
     for (const card of cards) {
-      if (CardFinder.isStartingHandCard(card)) {
+      if (CardIdentifier.isStartingHandCard(card)) {
         player.drawDeck.add(card);
       } else {
         player.discardDeck.add(card);

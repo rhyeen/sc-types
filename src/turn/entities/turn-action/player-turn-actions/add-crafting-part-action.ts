@@ -1,7 +1,7 @@
-import { ActionType } from "../../enums/action-type";
-import { TurnAction } from "./turn-action";
-import { Game } from "../../../game/entities/game";
-import { TurnActionResult } from "./turn-action-result";
+import { ActionType } from "../../../enums/action-type";
+import { TurnAction } from "../turn-action";
+import { Game } from "../../../../game/entities/game";
+import { TurnActionResult } from "../turn-action-result";
 
 export class AddCraftingPartAction extends TurnAction {
   craftingPartIndex: number;

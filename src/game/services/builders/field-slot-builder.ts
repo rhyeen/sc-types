@@ -1,6 +1,6 @@
 import { PlayerFieldSlot, DungeonFieldSlot, HiddenDungeonFieldSlot } from "../../entities/field-slot";
 import { CardSet } from "../../../card/entities/card-set";
-import { CardIdentifier } from "../../../card/services/card-identifier";
+import { CardFinder } from "../../../card/services/card-finder";
 import { Card } from "../../../card/entities/card/card";
 
 export class FieldSlotBuilder {
@@ -30,6 +30,6 @@ export class FieldSlotBuilder {
     if (!cardData) {
       return null;
     }
-    return CardIdentifier.findCardFromIds(cardData.id, cardData.hash, cardSets);
+    return CardFinder.findCardFromIds(cardData.id, cardData.hash, cardSets);
   }
 }

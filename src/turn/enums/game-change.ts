@@ -3,5 +3,6 @@ export enum GameChange {
   PlayerField = "playerField",
   DungeonField = "dungeonField",
   PlayerHand = "playerHand",
-  PlayerEnergy = "playerEnergy"
+  PlayerEnergy = "playerEnergy",
+  PlayerHealth = "playerHealth"
 }

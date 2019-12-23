@@ -1,11 +1,11 @@
-import { TurnAction } from "./turn-action";
-import { ActionType } from "../../enums/action-type";
-import { Game } from "../../../game/entities/game";
-import { MinionCard } from "../../../card/entities/card/minion-card";
-import { Card } from "../../../card/entities/card/card";
-import { PlayerFieldSlot } from "../../../game/entities/field-slot";
-import { TurnActionResult } from "./turn-action-result";
-import { GameChange } from "../../enums/game-change";
+import { TurnAction } from "../turn-action";
+import { ActionType } from "../../../enums/action-type";
+import { Game } from "../../../../game/entities/game";
+import { MinionCard } from "../../../../card/entities/card/minion-card";
+import { Card } from "../../../../card/entities/card/card";
+import { PlayerFieldSlot } from "../../../../game/entities/field-slot";
+import { TurnActionResult } from "../turn-action-result";
+import { GameChange } from "../../../enums/game-change";
 
 export class PlaceMinionAction extends TurnAction {
   playerSourceHandIndex: number;

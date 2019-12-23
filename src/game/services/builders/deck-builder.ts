@@ -1,7 +1,7 @@
 import { PlayerHand, PlayerDiscardDeck, PlayerLostDeck, PlayerDrawDeck, HiddenPlayerDrawDeck } from "../../entities/player/deck";
 import { CardSet } from "../../../card/entities/card-set";
 import { Card } from "../../../card/entities/card/card";
-import { CardIdentifier } from "../../../card/services/card-identifier";
+import { CardFinder } from "../../../card/services/card-finder";
 
 export class DeckBuilder {
   static buildPlayerHand(playerHandData: any, cardSets: Record<string, CardSet>):PlayerHand {
@@ -15,7 +15,7 @@ export class DeckBuilder {
     }
     const cards = [];
     for (const card of cardsData) {
-      cards.push(CardIdentifier.findCardFromIds(card.id, card.hash, cardSets));
+      cards.push(CardFinder.findCardFromIds(card.id, card.hash, cardSets));
     }
     return cards;
   }

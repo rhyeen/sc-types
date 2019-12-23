@@ -25,10 +25,16 @@ export class MinionCard extends Card {
     return !!this.conditions.exhausted;
   }
 
+  exhaust() {
+    this.conditions.exhausted = true;
+  }
+
   hasHaste(): boolean {
     return this.hasAbility(StaticCardAbilityId.Haste);
   }
 
+  // @NOTE: this does not exhaust the attacking card because it could
+  // be due to a retaliate.  The turn-action should handle the exhaustion.
   attackCard(attackedCard: MinionCard) {
     let attack = this.attack;
     if (attackedCard.conditions.shield) {
@@ -40,6 +46,10 @@ export class MinionCard extends Card {
       }
     }
     attackedCard.health -= attack;
+  }
+
+  attackPlayerDamage():number {
+    return this.attack;
   }
 
   copy():Card {

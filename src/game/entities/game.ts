@@ -63,16 +63,44 @@ export class Game {
 
   getValidPlayerMinionAttackTargets(playerSourceFieldIndex: number):number[] {
     const validAttackTargetFieldIndices = [];
-    const playerCard = this.player.field[playerSourceFieldIndex].card;
-    if (!(playerCard instanceof MinionCard)) {
-      return validAttackTargetFieldIndices;
+    const card = this.player.field[playerSourceFieldIndex].card;
+    if (!(card instanceof MinionCard)) {
+      return [];
     }
     for (let i = 0; i < this.dungeon.field.length; i += 1) {
-      if (playerCard.range <= Game.getRangeToTarget(playerSourceFieldIndex, i)) {
+      if (card.range >= Game.getRangeToTarget(playerSourceFieldIndex, i)) {
         validAttackTargetFieldIndices.push(i);
       }
     }
     return validAttackTargetFieldIndices;
+  }
+
+  getValidDungeonMinionAttackTargets(dungeonSourceFieldIndex: number):number[] {
+    const validAttackTargetFieldIndices = [];
+    const card = this.dungeon.field[dungeonSourceFieldIndex].card;
+    if (!(card instanceof MinionCard)) {
+      return [];
+    }
+    for (let i = 0; i < this.player.field.length; i += 1) {
+      if (card.range >= Game.getRangeToTarget(dungeonSourceFieldIndex, i)) {
+        validAttackTargetFieldIndices.push(i);
+      }
+    }
+    return validAttackTargetFieldIndices;
+  }
+
+  /**
+   * A dungeon minion can attack the player directly, if a player's field slot is in range
+   * and doesn't contain a minion card.
+   */
+  canDungeonMinionAttackPlayer(dungeonSourceFieldIndex: number):boolean {
+    const fieldIndices = this.getValidDungeonMinionAttackTargets(dungeonSourceFieldIndex);
+    for (const fieldIndex of fieldIndices) {
+      if (!this.player.field[fieldIndex].card) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private static getRangeToTarget(sourceIndex: number, targetIndex: number):number {
@@ -84,6 +112,14 @@ export class Game {
     if (!(targetCard instanceof MinionCard)) {
       return false;
     }
-    return targetCard.range <= Game.getRangeToTarget(playerSourceFieldIndex, dungeonTargetFieldIndex);
+    return targetCard.range >= Game.getRangeToTarget(playerSourceFieldIndex, dungeonTargetFieldIndex);
+  }
+
+  playerCardCanRetaliate(dungeonSourceFieldIndex: number, playerTargetFieldIndex: number):boolean {
+    const targetCard = this.player.field[playerTargetFieldIndex].card;
+    if (!(targetCard instanceof MinionCard)) {
+      return false;
+    }
+    return targetCard.range >= Game.getRangeToTarget(dungeonSourceFieldIndex, playerTargetFieldIndex);
   }
 }

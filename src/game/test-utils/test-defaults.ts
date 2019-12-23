@@ -10,6 +10,35 @@ import { CardRarity } from "../../card/enums/card-rarity";
 import { CardBuilder } from "../../card/services/builders/card-builder";
 import { CardAbilitySpellshot } from "../../card/entities/card-ability";
 
+export function typicalStartingGame():Game {
+  const cardSets = defaultCardSets();
+  return new Game('GM_1', defaultPlayer(cardSets), typicalStartingDungeon(cardSets), cardSets);
+}
+
+function typicalStartingDungeon(cardSets: Record<string,CardSet>):Dungeon {
+  const field = [
+    new DungeonFieldSlot(
+      cardSets['HS_1'].instances['CD_1_0'], 
+      [
+        cardSets['HS_1'].instances['CD_1_1'],
+      ]
+    ),
+    new DungeonFieldSlot(
+      cardSets['HS_1'].instances['CD_1_2'], 
+      [
+        cardSets['HS_1'].instances['CD_1_3'],
+      ]
+    ),
+    new DungeonFieldSlot(
+      cardSets['HS_1'].instances['CD_1_4'], 
+      [
+        cardSets['HS_1'].instances['CD_1_5'],
+      ]
+    ),
+  ];
+  return new Dungeon(field);
+}
+
 export function defaultGame():Game {
   const cardSets = defaultCardSets();
   return new Game('GM_1', defaultPlayer(cardSets), defaultDungeon(cardSets), cardSets);
@@ -30,12 +59,14 @@ export function defaultDungeon(cardSets: Record<string,CardSet>):Dungeon {
       [
         cardSets['HS_1'].instances['CD_1_1'],
         cardSets['HS_1'].instances['CD_1_2'],
-      ]),
-      new DungeonFieldSlot(
-        cardSets['HS_1'].instances['CD_1_3'], 
-        [
-          cardSets['HS_1'].instances['CD_1_4'],
-        ]),
+      ]
+    ),
+    new DungeonFieldSlot(
+      cardSets['HS_1'].instances['CD_1_3'], 
+      [
+        cardSets['HS_1'].instances['CD_1_4'],
+      ]
+    ),
     new DungeonFieldSlot()
   ];
   return new Dungeon(field);
@@ -52,7 +83,7 @@ export function defaultCardSets():Record<string, CardSet> {
     attack: 2,
     health: 5,
     range: 1
-  }, 5);
+  }, 10);
   cardSets[cardSet.baseCard.hash] = cardSet;
   cardSet = getCardSet({
     name: 'ranger',
@@ -64,7 +95,7 @@ export function defaultCardSets():Record<string, CardSet> {
     health: 2,
     range: 3,
     cost: 3
-  }, 5);
+  }, 10);
   cardSets[cardSet.baseCard.hash] = cardSet;
   cardSet = getCardSet({
     name: 'light lance',
@@ -74,7 +105,7 @@ export function defaultCardSets():Record<string, CardSet> {
     hash: 'HS_3',
     cost: 3,
     abilities: [ new CardAbilitySpellshot(1) ]
-  }, 5);
+  }, 10);
   cardSets[cardSet.baseCard.hash] = cardSet;
   return cardSets;
 }

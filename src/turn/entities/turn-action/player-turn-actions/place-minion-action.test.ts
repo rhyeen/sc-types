@@ -1,6 +1,6 @@
-import { defaultGame } from "../../../game/test-utils/test-defaults";
+import { defaultGame } from "../../../../game/test-utils/test-defaults";
 import { PlaceMinionAction } from "./place-minion-action";
-import { GameChange } from "../../enums/game-change";
+import { GameChange } from "../../../enums/game-change";
 
 test('execute once on an empty field, checking the copy was modified but not the original', () => {
   const game = defaultGame();

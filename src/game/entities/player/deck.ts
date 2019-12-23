@@ -1,6 +1,6 @@
 import { ValueEnsurer } from '../../services/value-ensurer';
 import { CardSet } from '../../../card/entities/card-set';
-import { CardIdentifier } from '../../../card/services/card-identifier';
+import { CardFinder } from '../../../card/services/card-finder';
 import { Card } from '../../../card/entities/card/card';
 import { CardRarity } from '../../../card/enums/card-rarity';
 import { CardType } from '../../../card/enums/card-type';
@@ -47,7 +47,7 @@ export class Deck {
   protected copyCards(cardSets: Record<string,CardSet>):Card[] {
     const result = [];
     for (const card of this.cards) {
-      result.push(CardIdentifier.findCard(card, cardSets));
+      result.push(CardFinder.findCard(card, cardSets));
     }
     return result;
   }
@@ -182,7 +182,7 @@ export class PlayerHand extends Hand {
   protected copyCards(cardSets: Record<string,CardSet>):Card[] {
     const result = [];
     for (const card of this.cards) {
-      result.push(CardIdentifier.findCard(card, cardSets));
+      result.push(CardFinder.findCard(card, cardSets));
     }
     return result;
   }

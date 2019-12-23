@@ -1,5 +1,6 @@
 import { Game } from "./game";
 import { defaultCardSets, defaultPlayer, defaultDungeon, defaultGame } from "../test-utils/test-defaults";
+import { MinionCard } from "../../card/entities/card/minion-card";
 
 test('init', () => {
   const cardSets = defaultCardSets();
@@ -21,4 +22,18 @@ test('json with reduce and hidePrivate set to true', () => {
   expect(result.id).toEqual('GM_1');
   expect(result.player.health.current).toEqual(20);
   expect(result.player.health.max).toEqual(20);
+});
+
+describe('getValidPlayerMinionAttackTargets', () => {
+  test('ensure dungeon cards excluded if out of range', () => {
+    const game = defaultGame();
+    game.player.field[2].fill(game.player.hand.cards.shift());
+    if (game.player.field[2].card instanceof MinionCard) {
+      game.player.field[2].card.range = 2;
+    }
+    const targets = game.getValidPlayerMinionAttackTargets(2);
+    expect(targets.length).toBe(2);
+    expect(targets[0]).toBe(1);
+    expect(targets[1]).toBe(2);
+  });
 });

@@ -1,8 +1,8 @@
-import { ActionWithTargets } from "./turn-action";
-import { ActionType } from "../../enums/action-type";
-import { ActionTarget } from "../action-target";
-import { Game } from "../../../game/entities/game";
-import { TurnActionResult } from "./turn-action-result";
+import { ActionWithTargets } from "../turn-action";
+import { ActionType } from "../../../enums/action-type";
+import { ActionTarget } from "../../action-target";
+import { Game } from "../../../../game/entities/game";
+import { TurnActionResult } from "../turn-action-result";
 
 export class PlaySpellAbilityAction extends ActionWithTargets {
   playerSourceHandIndex: number;
