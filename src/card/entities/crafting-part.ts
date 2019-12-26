@@ -5,57 +5,40 @@ import { CardAbilityTier } from "../enums/card-ability";
 export class CraftingPart {
 }
 
-export class StatCraftingPart extends CraftingPart {
-  stat: CraftingPartStat;
-  
-  constructor(stat: CraftingPartStat) {
-    super();
-    this.stat = stat;
-  }
-}
-
 export class AbilityCraftingPart extends CraftingPart {
   ability: CardAbility;
-  tier: CardAbilityTier;
 
-  constructor(ability: CardAbility, tier: CardAbilityTier) {
+  constructor(ability: CardAbility) {
     super();
     this.ability = ability;
-    this.tier = tier;
   }
 }
 
-export interface CraftingPartStat {
+export class StatCraftingPart extends CraftingPart {
   type: CraftingPartStatType;
   amount: number;
-}
-
-export class CraftingPartAttackStat implements CraftingPartStat {
-  type: CraftingPartStatType;
-  amount: number;
-
-  constructor(amount: number) {
-    this.type = CraftingPartStatType.Attack;
+  
+  constructor(type: CraftingPartStatType, amount: number) {
+    super();
+    this.type = type;
     this.amount = amount;
   }
 }
 
-export class CraftingPartHealthStat implements CraftingPartStat {
-  type: CraftingPartStatType;
-  amount: number;
-
+export class AttackStatCraftingPart extends StatCraftingPart {
   constructor(amount: number) {
-    this.type = CraftingPartStatType.Health;
-    this.amount = amount;
+    super(CraftingPartStatType.Attack, amount);
   }
 }
 
-export class CraftingPartRangeStat implements CraftingPartStat {
-  type: CraftingPartStatType;
-  amount: number;
-
+export class HealthStatCraftingPart extends StatCraftingPart {
   constructor(amount: number) {
-    this.type = CraftingPartStatType.Range;
-    this.amount = amount;
+    super(CraftingPartStatType.Health, amount);
+  }
+}
+
+export class RangeStatCraftingPart extends StatCraftingPart {
+  constructor(amount: number) {
+    super(CraftingPartStatType.Range, amount);
   }
 }
