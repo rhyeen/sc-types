@@ -25,6 +25,10 @@ export class CardConditions {
     this._damage = damage;
   }
 
+  refresh() {
+    this.exhausted = false;
+  }
+
   copy():CardConditions {
     const cardConditions = new CardConditions();
     cardConditions.shield = this.shield;

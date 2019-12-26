@@ -12,13 +12,14 @@ test('place minion, attack with minion, and player minion dies', () => {
   game.player.hand.cards[0].abilities.push(new CardAbilityHaste());
   const turnActions = [
     new PlaceMinionAction(0, 0),
-    // @NOTE: this killed the player minion
     new PlayMinionAttackAction(0, [new OpponentMinionActionTarget(0)])
   ];
   const result = PlayerTurn.execute(game, turnActions);
   expect(result.game.player.energy.current).toBe(7);
-  expect(result.game.player.field[0].card).toEqual(null);
+  expect(!result.game.player.field[0].card).toBeTruthy();
   expect(result.game.player.discardDeck.cards.length).toEqual(1);
+  expect(result.game.player.discardDeck.cards[0].conditions.damage).toEqual(0);
+  expect(result.game.player.discardDeck.cards[0].conditions.exhausted).toBeFalsy();
   expect(result.game.player.hand.size()).toBe(game.player.hand.size() - 1);
   expect(result.game.dungeon.field[0].card instanceof MinionCard).toBeTruthy();
   expect(game.dungeon.field[0].card instanceof MinionCard).toBeTruthy();

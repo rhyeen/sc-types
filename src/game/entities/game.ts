@@ -34,7 +34,9 @@ export class Game {
 
   start() {
     this.player.drawHand();
+    this.player.refresh();
     this.dungeon.refillField();
+    this.dungeon.refresh();
   }
 
   getCard(cardHash: string, cardId: string) {

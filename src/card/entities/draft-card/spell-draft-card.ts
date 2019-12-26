@@ -5,8 +5,8 @@ import { DraftCardAbilitySlot } from "../draft-card-ability-slot";
 import { SpellCard } from "../card/spell-card";
 
 export class SpellDraftCard extends DraftCard {
-  constructor(rarity: CardRarity, slots?: DraftCardAbilitySlot[], cost?: number) {
-    super(rarity, CardType.Spell, slots, cost);
+  constructor(rarity: CardRarity, slots?: DraftCardAbilitySlot[]) {
+    super(rarity, CardType.Spell, slots);
   }
 
   buildSpellCard():SpellCard {
@@ -15,7 +15,7 @@ export class SpellDraftCard extends DraftCard {
 
   regenerateCost() {
     const cost = this.getSpellStatsCost(0);
-    return this.finalizeCost(cost);
+    this._cost = this.finalizeCost(cost);
   }
 
   private getSpellStatsCost(cost: number):number {

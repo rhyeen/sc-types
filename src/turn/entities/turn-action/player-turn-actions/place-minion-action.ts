@@ -75,15 +75,16 @@ export class PlaceMinionAction extends TurnAction {
       return 0;
     }
     const card = playerTargetFieldSlot.card;
+    let shieldGained = 0;
+    if (card instanceof MinionCard) {
+      shieldGained = card.remainingHealth + card.conditions.shield;
+    }
     result.game.player.discardDeck.add(card);
     result.recordGameChange(GameChange.PlayerDiscardDeck);
     result.recordCardChange(card);
     playerTargetFieldSlot.clear();
     result.recordGameChange(GameChange.PlayerField);
-    if (!(card instanceof MinionCard)) {
-      return 0;
-    }
-    return card.remainingHealth + card.conditions.shield;
+    return shieldGained;
   }
 
   private prepareCardForField(result: TurnActionResult, shield: number) {

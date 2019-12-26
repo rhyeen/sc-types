@@ -9,7 +9,10 @@ export class TurnResult {
   cardChanges: Set<Card>;
   game: Game;
 
-  constructor() {
+  constructor(game?: Game) {
+    if (game) {
+      this.game = game;
+    }
     this.gameChanges = new Set();
     this.cardChanges = new Set();
   }

@@ -33,7 +33,7 @@ test('execute on a field that already has a card', () => {
   expect(result.gameChanges.has(GameChange.PlayerEnergy)).toBeTruthy();
   expect(result.gameChanges.has(GameChange.PlayerDiscardDeck)).toBeTruthy();
   expect(result.game.player.field[0].card.id).toEqual('CD_2_1');
-  expect(result.game.player.field[0].card.conditions._shield).toEqual(2);
+  expect(result.game.player.field[0].card.conditions.shield).toEqual(2);
   expect(result.game.player.discardDeck.cards[0].id).toEqual('CD_2_0');
   expect(result.cardChanges.has(result.game.player.field[0].card)).toBeTruthy();
   expect(result.cardChanges.has(result.game.player.discardDeck.cards[0])).toBeTruthy();
@@ -48,5 +48,5 @@ test('execute on a field that already has a card twice to ensure shield stacks',
   result = placeMinionAction.execute(result.game);
   placeMinionAction = new PlaceMinionAction(0, 0);
   result = placeMinionAction.execute(result.game);
-  expect(result.game.player.field[0].card.conditions._shield).toEqual(4);
+  expect(result.game.player.field[0].card.conditions.shield).toEqual(4);
 });

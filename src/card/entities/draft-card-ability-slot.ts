@@ -3,14 +3,37 @@ import { CardAbility, VariableCardAbility } from "./card-ability";
 import { CraftingPart, AbilityCraftingPart } from "./crafting-part";
 
 export class DraftCardAbilitySlot {
-  ability?: CardAbility;
+  _ability?: CardAbility;
 
-  constructor(ability?: CardAbility) {
-    this.ability = ability;
+  constructor(tier?: CardAbilityTier) {
+    this.tier = tier;
+  }
+
+  set ability(ability: CardAbility) {
+    let tier = this._ability.tier;
+    if (ability.tier) {
+      tier = ability.tier;
+    }
+    this._ability = ability;
+    this._ability.tier = tier;
+  }
+
+  get ability():CardAbility {
+    return this._ability;
+  }
+
+  set tier(tier: CardAbilityTier) {
+    this._ability.tier = tier;
+  }
+
+  get tier():CardAbilityTier {
+    return this._ability.tier;
   }
 
   static copy(slot: DraftCardAbilitySlot):DraftCardAbilitySlot {
-    return new DraftCardAbilitySlot(slot.ability.copy());
+    const copiedSlot = new DraftCardAbilitySlot();
+    copiedSlot.ability = slot.ability.copy();
+    return copiedSlot;
   }
 
   isFilled():boolean {
@@ -24,31 +47,31 @@ export class DraftCardAbilitySlot {
     if (!(part instanceof AbilityCraftingPart)) {
       return false;
     }
-    if (this.ability.tier === CardAbilityTier.Godly) {
+    if (this.tier === CardAbilityTier.Godly) {
       return true;
     }
-    if (this.ability.tier === CardAbilityTier.Legendary && part.tier !== CardAbilityTier.Godly) {
+    if (this.tier === CardAbilityTier.Legendary && part.tier !== CardAbilityTier.Godly) {
       return true;
     }
-    if (this.ability.tier === CardAbilityTier.Minion3) {
+    if (this.tier === CardAbilityTier.Minion3) {
       return part.tier === CardAbilityTier.Minion3 || part.tier === CardAbilityTier.Minion2 || part.tier === CardAbilityTier.Minion1;
     }
-    if (this.ability.tier === CardAbilityTier.Minion2) {
+    if (this.tier === CardAbilityTier.Minion2) {
       return part.tier === CardAbilityTier.Minion2 || part.tier === CardAbilityTier.Minion1;
     }
-    if (this.ability.tier === CardAbilityTier.Minion1) {
+    if (this.tier === CardAbilityTier.Minion1) {
       return part.tier === CardAbilityTier.Minion1;
     }
-    if (this.ability.tier === CardAbilityTier.Spell3) {
+    if (this.tier === CardAbilityTier.Spell3) {
       return part.tier === CardAbilityTier.Spell3 || part.tier === CardAbilityTier.Spell2 || part.tier === CardAbilityTier.Spell1;
     }
-    if (this.ability.tier === CardAbilityTier.Spell2) {
+    if (this.tier === CardAbilityTier.Spell2) {
       return part.tier === CardAbilityTier.Spell2 || part.tier === CardAbilityTier.Spell1;
     }
-    if (this.ability.tier === CardAbilityTier.Spell1) {
+    if (this.tier === CardAbilityTier.Spell1) {
       return part.tier === CardAbilityTier.Spell1;
     }
-    throw new Error(`unexpected ability tier: ${this.ability.tier}`);    
+    throw new Error(`unexpected ability tier: ${this.tier}`);    
   }
 
   fill(part: CraftingPart) {

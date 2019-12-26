@@ -110,4 +110,8 @@ export class Card implements CardInterface {
     }
     return card;
   }
+
+  refresh() {
+    this.conditions.refresh();
+  }
 }

@@ -8,24 +8,36 @@ import { CraftingPart, AbilityCraftingPart } from "../crafting-part";
 import { StaticCardAbilityId, VariableCardAbilityId } from "../../enums/card-ability";
 
 export class DraftCard implements DraftCardInterface {
-  type: CardType;
-  rarity: CardRarity;
-  slots?: DraftCardAbilitySlot[];
-  cost?: number;
+  _type: CardType;
+  _rarity: CardRarity;
+  _slots?: DraftCardAbilitySlot[];
+  _cost?: number;
 
-  constructor(rarity: CardRarity, cardType: CardType, slots?: DraftCardAbilitySlot[], cost?: number) {
-    this.type = cardType;
-    this.rarity = rarity;
+  constructor(rarity: CardRarity, cardType: CardType, slots?: DraftCardAbilitySlot[]) {
+    this._type = cardType;
+    this._rarity = rarity;
     if (slots) {
-      this.slots = slots;
+      this._slots = slots;
     } else {
-      this.slots = [];
+      this._slots = [];
     }
-    if (cost) {
-      this.cost = cost;
-    } else {
-      this.cost = 0;
-    }
+    this.regenerateCost();
+  }
+
+  get slots(): DraftCardAbilitySlot[] {
+    return this._slots;
+  }
+
+  get cost():number {
+    return this._cost;
+  }
+
+  get rarity():CardRarity {
+    return this._rarity;
+  }
+
+  get type():CardType {
+    return this._type;
   }
 
   static copy(draftCard: DraftCard):DraftCard {
@@ -33,7 +45,7 @@ export class DraftCard implements DraftCardInterface {
     for (const slot of draftCard.slots) {
       slots.push(DraftCardAbilitySlot.copy(slot));
     }
-    return new DraftCard(draftCard.rarity, draftCard.type, slots, draftCard.cost);
+    return new DraftCard(draftCard.rarity, draftCard.type, slots);
   }
 
   buildCard():Card {
@@ -58,7 +70,7 @@ export class DraftCard implements DraftCardInterface {
   }
 
   regenerateCost() {
-    return this.finalizeCost(0);
+    this._cost = this.finalizeCost(0);
   }
 
   addCraftingPart(part: CraftingPart):boolean {

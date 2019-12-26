@@ -95,7 +95,7 @@ export class DungeonMinionAttackAction extends ActionWithTargets {
       result.recordGameChange(GameChange.DungeonField);
     }
     if (attackedCard.isDead()) {
-      result.game.player.discardDeck.add(attackingCard);
+      result.game.player.discardDeck.add(attackedCard);
       result.game.player.field[targetPlayerFieldIndex].clear();
       result.recordGameChange(GameChange.PlayerDiscardDeck);
       result.recordGameChange(GameChange.PlayerField);

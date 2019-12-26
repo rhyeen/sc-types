@@ -21,6 +21,7 @@ export class Deck {
   }
 
   add(card: Card) {
+    card.clearConditions();
     this.cards.push(card);
   }
 
@@ -103,7 +104,7 @@ export class HiddenPlayerDrawDeck extends PlayerDrawDeck {
   }
 
   add(card: Card) {
-    this.cards.push();
+    this.cards.push(new Card(CardRarity.Undefined, CardType.Undefined));
   }
 
   json():any {
@@ -127,12 +128,6 @@ export class PlayerDiscardDeck extends DiscardDeck {
   constructor(cards?: Card[]) {
     super(cards);
   }
-
-  // @MUTATES: card
-  add(card: Card) {
-    card.clearConditions();
-    this.cards.push(card);
-  }
 }
 
 export class LostDeck extends Deck {
@@ -144,12 +139,6 @@ export class LostDeck extends Deck {
 export class PlayerLostDeck extends LostDeck {
   constructor(cards?: Card[]) {
     super(cards);
-  }
-
-  // @MUTATES: card
-  add(card: Card) {
-    card.clearConditions();
-    this.cards.push(card);
   }
 }
 

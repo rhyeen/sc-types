@@ -16,9 +16,9 @@ test('player field empty.  All three attacks should be against player', () => {
       !(result.game.dungeon.field[2].card instanceof MinionCard)) {
     return;
   }
-  expect(result.game.dungeon.field[0].card.isExhausted()).toBeTruthy();
-  expect(result.game.dungeon.field[1].card.isExhausted()).toBeTruthy();
-  expect(result.game.dungeon.field[2].card.isExhausted()).toBeTruthy();
+  expect(result.game.dungeon.field[0].card.isExhausted()).toBeFalsy();
+  expect(result.game.dungeon.field[1].card.isExhausted()).toBeFalsy();
+  expect(result.game.dungeon.field[2].card.isExhausted()).toBeFalsy();
   expect(result.gameChanges.size).toBe(1);
   expect(result.gameChanges.has(GameChange.PlayerHealth)).toBeTruthy();
   expect(result.cardChanges.size).toBe(3);
@@ -27,7 +27,7 @@ test('player field empty.  All three attacks should be against player', () => {
   expect(result.cardChanges.has(result.game.dungeon.field[2].card)).toBeTruthy();
 });
 
-test('player field has one minion.  Attack should be against a minion, the rest against the player', () => {
+test('player field has one minion.  Attack should be against a minion, killing it, and the rest against the player', () => {
   const game = typicalStartingGame();
   let actionResult = new PlaceMinionAction(0, 0).execute(game);
   const result = DungeonTurn.execute(actionResult.game);
@@ -40,9 +40,9 @@ test('player field has one minion.  Attack should be against a minion, the rest 
       !(result.game.dungeon.field[2].card instanceof MinionCard)) {
     return;
   }
-  expect(result.game.dungeon.field[0].card.isExhausted()).toBeTruthy();
-  expect(result.game.dungeon.field[1].card.isExhausted()).toBeTruthy();
-  expect(result.game.dungeon.field[2].card.isExhausted()).toBeTruthy();
+  expect(result.game.dungeon.field[0].card.isExhausted()).toBeFalsy();
+  expect(result.game.dungeon.field[1].card.isExhausted()).toBeFalsy();
+  expect(result.game.dungeon.field[2].card.isExhausted()).toBeFalsy();
   expect(result.gameChanges.size).toBe(3);
   expect(result.gameChanges.has(GameChange.PlayerHealth)).toBeTruthy();
   expect(result.gameChanges.has(GameChange.PlayerField)).toBeTruthy();
@@ -74,4 +74,33 @@ test('player field has one minion, but dungeon minions have range 2.  All attack
   expect(result.cardChanges.has(result.game.dungeon.field[0].card)).toBeTruthy();
   expect(result.cardChanges.has(result.game.dungeon.field[1].card)).toBeTruthy();
   expect(result.cardChanges.has(result.game.dungeon.field[2].card)).toBeTruthy();
+});
+
+test('player field has one minion with enough attack to kill dungeon minion. Dungeon should be refilled', () => {
+  const game = typicalStartingGame();
+  const handCard = game.player.hand.cards[0];
+  expect(handCard instanceof MinionCard).toBeTruthy();
+  if (!(handCard instanceof MinionCard)) {
+    return;
+  }
+  handCard.attack = 9;
+  let actionResult = new PlaceMinionAction(0, 0).execute(game);
+  const result = DungeonTurn.execute(actionResult.game);
+  expect(result.game.dungeon.field[0].card instanceof MinionCard).toBeTruthy();
+  if (!(result.game.dungeon.field[0].card instanceof MinionCard)) {
+    return;
+  }
+  expect(result.game.dungeon.field[0].card.isExhausted()).toBeFalsy();
+  expect(result.game.dungeon.field[0].backlog.length).toBe(game.dungeon.field[0].backlog.length - 1);
+  expect(result.gameChanges.size).toBe(4);
+  expect(result.gameChanges.has(GameChange.PlayerHealth)).toBeTruthy();
+  expect(result.gameChanges.has(GameChange.PlayerField)).toBeTruthy();
+  expect(result.gameChanges.has(GameChange.PlayerDiscardDeck)).toBeTruthy();
+  expect(result.gameChanges.has(GameChange.DungeonField)).toBeTruthy();
+  expect(result.cardChanges.size).toBe(5);
+  expect(result.cardChanges.has(result.game.dungeon.field[0].card)).toBeTruthy();
+  expect(result.cardChanges.has(result.game.dungeon.field[1].card)).toBeTruthy();
+  expect(result.cardChanges.has(result.game.dungeon.field[2].card)).toBeTruthy();
+  expect(result.cardChanges.has(result.game.player.discardDeck.cards[0])).toBeTruthy();
+  expect(result.game.player.discardDeck.cards[0].conditions.damage).toBe(0);
 });

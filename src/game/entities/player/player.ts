@@ -30,6 +30,16 @@ export class Player {
     this.lostDeck = new PlayerLostDeck();
   }
 
+  refresh() {
+    this.refreshField();
+  }
+
+  private refreshField() {
+    for (const fieldSlot of this.field) {
+      fieldSlot.refresh();
+    }
+  }
+
   drawHand() {
     this.flushHand();
     this.drawFromDrawDeck();

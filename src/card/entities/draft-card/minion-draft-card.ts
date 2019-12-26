@@ -6,15 +6,27 @@ import { MinionCard } from "../card/minion-card";
 import { CraftingPart, CraftingPartAttackStat, CraftingPartHealthStat, CraftingPartRangeStat, StatCraftingPart } from "../crafting-part";
 
 export class MinionDraftCard extends DraftCard {
-  health: number;
-  attack: number;
-  range: number;
+  _health: number;
+  _attack: number;
+  _range: number;
 
-  constructor(rarity: CardRarity, health: number, attack: number, range: number, slots?: DraftCardAbilitySlot[], cost?: number) {
-    super(rarity, CardType.Minion, slots, cost);
-    this.health = health;
-    this.attack = attack;
-    this.range = range;
+  constructor(rarity: CardRarity, health: number, attack: number, range: number, slots?: DraftCardAbilitySlot[]) {
+    super(rarity, CardType.Minion, slots);
+    this._health = health;
+    this._attack = attack;
+    this._range = range;
+  }
+
+  get health():number {
+    return this._health;
+  }
+
+  get attack():number {
+    return this._attack;
+  }
+
+  get range():number {
+    return this._range;
   }
 
   buildCard():MinionCard {
@@ -29,17 +41,17 @@ export class MinionDraftCard extends DraftCard {
       return false;
     }
     if (part.stat instanceof CraftingPartHealthStat) {
-      this.health = part.stat.amount;
+      this._health = part.stat.amount;
       this.regenerateCost();
       return true;
     }
     if (part.stat instanceof CraftingPartAttackStat) {
-      this.attack = part.stat.amount;
+      this._attack = part.stat.amount;
       this.regenerateCost();
       return true;
     }
     if (part.stat instanceof CraftingPartRangeStat) {
-      this.range = part.stat.amount;
+      this._range = part.stat.amount;
       this.regenerateCost();
       return true;
     }
@@ -48,7 +60,7 @@ export class MinionDraftCard extends DraftCard {
 
   regenerateCost() {
     const cost = this.getMinionStatsCost(0);
-    return this.finalizeCost(cost);
+    this._cost = this.finalizeCost(cost);
   }
 
   private getMinionStatsCost(cost: number):number {

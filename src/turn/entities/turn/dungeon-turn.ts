@@ -5,17 +5,49 @@ import { TurnAction } from "../turn-action/turn-action";
 import { MinionCard } from "../../../card/entities/card/minion-card";
 import { DungeonMinionAttackAction } from "../turn-action/dungeon-turn-actions/dungeon-minion-attack-action";
 import { PlayerActionTarget, PlayerMinionActionTarget } from "../action-target";
+import { GameChange } from "../../enums/game-change";
 
 const MAX_ITERATIONS = 10;
 
 export class DungeonTurn {
   static execute(game: Game):TurnResult {
-    const turnResult = new TurnResult();
+    const turnResult = new TurnResult(game);
+    DungeonTurn.executeFieldSlotsActions(turnResult);
+    let result = DungeonTurn.refillFieldSlots(turnResult.game);
+    turnResult.recordTurnActionResult(result);
+    result = DungeonTurn.refresh(turnResult.game);
+    turnResult.recordTurnActionResult(result);
+    return turnResult;
+  }
+
+  static refresh(game: Game):TurnActionResult {
+    const result = new TurnActionResult(game);
+    result.game.dungeon.refresh();
+    for (const field of result.game.dungeon.field) {
+      if (field.card) {
+        result.recordCardChange(field.card);
+      }
+    }
+    return result;
+  }
+
+  private static refillFieldSlots(game: Game):TurnActionResult {
     let result = new TurnActionResult(game);
+    for (const field of result.game.dungeon.field) {
+      if (!field.card) {
+        field.refill();
+        result.recordGameChange(GameChange.DungeonField);
+      }
+    }
+    return result;
+  }
+
+  private static executeFieldSlotsActions(turnResult: TurnResult) {
+    let result = new TurnActionResult(turnResult.game);
     let turnAction: TurnAction;
-    let iteration = 0;
     const turnOrder = DungeonTurn.getFieldSlotIndexTurnOrder(result.game);
     for (const fieldSlotIndex of turnOrder) {
+      let iteration = 0;
       // @NOTE: a dungeon minion may perform more than 1 turn action per turn, so loop until there is
       // nothing left for it to do.
       while (true || iteration > MAX_ITERATIONS) {

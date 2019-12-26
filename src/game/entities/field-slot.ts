@@ -3,6 +3,7 @@ import { CardFinder } from "../../card/services/card-finder";
 import { Card } from "../../card/entities/card/card";
 import { CardRarity } from "../../card/enums/card-rarity";
 import { CardType } from "../../card/enums/card-type";
+import { MinionCard } from "../../card/entities/card/minion-card";
 
 export class FieldSlot {
   card?: Card;
@@ -44,6 +45,17 @@ export class FieldSlot {
       }
     };
   }
+
+  refresh() {
+    this.refreshCard();
+  }
+
+  private refreshCard() {
+    if (!this.card) {
+      return;
+    }
+    this.card.refresh();
+  }
 }
 
 export class PlayerFieldSlot extends FieldSlot {
@@ -53,7 +65,8 @@ export class PlayerFieldSlot extends FieldSlot {
 }
 
 export class DungeonFieldSlot extends FieldSlot {
-  backlog?: Card[];
+  _backlog?: Card[];
+  _initialBacklogSize: number;
 
   constructor(card?: Card, backlog?: Card[]) {
     super(card);
@@ -62,6 +75,19 @@ export class DungeonFieldSlot extends FieldSlot {
     } else {
       this.backlog = [];
     }
+  }
+
+  set backlog(backlog) {
+    this._backlog = backlog;
+    this._initialBacklogSize = this.backlog.length;
+  }
+
+  get backlog(): Card[] {
+    return this._backlog;
+  }
+
+  get initialBacklogSize(): number {
+    return this._initialBacklogSize;
   }
 
   getTurnPriority() {
@@ -74,6 +100,9 @@ export class DungeonFieldSlot extends FieldSlot {
   refill() {
     if (!this.card && this.backlog.length) {
       this.card = this.backlog.shift();
+      if (this.card instanceof MinionCard) {
+        this.card.exhaust();
+      }
     }
   }
 
@@ -86,7 +115,7 @@ export class DungeonFieldSlot extends FieldSlot {
     for (const backlogCard of this.backlog) {
       backlog.push(CardFinder.findCard(backlogCard, cardSets));
     }
-    return new DungeonFieldSlot(card, this.backlog);
+    return new DungeonFieldSlot(card, backlog);
   }
 
   json(hidePrivate?: boolean):any {
