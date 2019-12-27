@@ -1,6 +1,5 @@
 import { CraftingPartStatType } from "../enums/crafting-part";
 import { CardAbility } from "./card-ability";
-import { CardAbilityTier } from "../enums/card-ability";
 
 export class CraftingPart {
 }

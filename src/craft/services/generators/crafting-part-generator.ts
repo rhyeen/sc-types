@@ -8,7 +8,7 @@ import { CraftingPartBuilder, StatPartData } from "../../../card/services/builde
 
 interface AbilityPart {
   id: string;
-  amount: number;
+  amount?: number;
 }
 
 interface PartTypeWeight extends Weight {
