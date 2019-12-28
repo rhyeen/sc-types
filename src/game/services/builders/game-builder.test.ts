@@ -205,6 +205,7 @@ const EXAMPLE_NEW_GAME = {
       "baseCardsAmount": 1,
       "craftingParts": [],
       "craftingPartsAmount": 3,
+      "maxCraftingPartsUsed": 1,
       "forge": [ { "card": null }, { "card": null } ]
     },
     "discardDeck": {

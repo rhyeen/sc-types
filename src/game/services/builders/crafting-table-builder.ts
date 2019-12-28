@@ -10,7 +10,7 @@ export class CraftingTableBuilder {
     if (!craftingTableData) {
       return new CraftingTable();
     }
-    const craftingTable = new CraftingTable(craftingTableData.forge.length, craftingTableData.baseCardsAmount, craftingTableData.craftingPartsAmount);
+    const craftingTable = new CraftingTable(craftingTableData.forge.length, craftingTableData.baseCardsAmount, craftingTableData.craftingPartsAmount, craftingTableData.maxCraftingPartsUsed);
     craftingTable.baseCards = CraftingTableBuilder.buildBaseCards(craftingTableData.baseCards);
     craftingTable.forge = CraftingTableBuilder.buildForge(craftingTableData.forge);
     craftingTable.craftingParts = CraftingTableBuilder.buildCraftingParts(craftingTableData.craftingParts);

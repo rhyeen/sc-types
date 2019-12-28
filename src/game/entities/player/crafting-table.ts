@@ -5,6 +5,7 @@ import { CraftingPart } from "../../../card/entities/crafting-part";
 const DEFAULT_FORGE_SLOTS = 2;
 const DEFAULT_BASE_CARDS = 1;
 const DEFAULT_CRAFTING_PARTS = 3;
+const DEFAULT_MAX_CRAFTING_PARTS_USED = 1;
 
 export class CraftingTable {
   forge: CraftingForge[];
@@ -12,8 +13,9 @@ export class CraftingTable {
   baseCardsAmount: number;
   craftingParts: CraftingPart[];
   craftingPartsAmount: number;
+  maxCraftingPartsUsed: number;
 
-  constructor(forgeSlotsAmount?: number, baseCardsAmount?: number, craftingPartsAmount?: number) {
+  constructor(forgeSlotsAmount?: number, baseCardsAmount?: number, craftingPartsAmount?: number, maxCraftingPartsUsed?: number) {
     this.forge = [];
     let _forgeSlotsAmount = DEFAULT_FORGE_SLOTS;
     if (forgeSlotsAmount || forgeSlotsAmount === 0) {
@@ -36,10 +38,15 @@ export class CraftingTable {
     } else {
       this.craftingPartsAmount = DEFAULT_CRAFTING_PARTS;
     }
+    if (maxCraftingPartsUsed || maxCraftingPartsUsed === 0) {
+      this.maxCraftingPartsUsed = maxCraftingPartsUsed;
+    } else {
+      this.maxCraftingPartsUsed = DEFAULT_MAX_CRAFTING_PARTS_USED;
+    }
   }
 
   copy():CraftingTable {
-    const craftingTable = new CraftingTable(this.forge.length, this.baseCardsAmount, this.craftingPartsAmount);
+    const craftingTable = new CraftingTable(this.forge.length, this.baseCardsAmount, this.craftingPartsAmount, this.maxCraftingPartsUsed);
     craftingTable.baseCards = this.copyBaseCards();
     craftingTable.forge = this.copyForge();
     craftingTable.craftingParts = this.copyCraftingParts();
@@ -76,7 +83,8 @@ export class CraftingTable {
       baseCards: this.jsonBaseCards(),
       baseCardsAmount: this.baseCardsAmount,
       craftingParts: this.jsonCraftingParts(),
-      craftingPartsAmount: this.craftingPartsAmount
+      craftingPartsAmount: this.craftingPartsAmount,
+      maxCraftingPartsUsed: this.maxCraftingPartsUsed,
     };
   }
   
