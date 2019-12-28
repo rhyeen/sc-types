@@ -80,7 +80,7 @@ export class CraftingTable {
     };
   }
   
-  private jsonBaseCards():DraftCard[] {
+  jsonBaseCards():DraftCard[] {
     const result = [];
     for (const card of this.baseCards) {
       result.push(card.json());
@@ -88,7 +88,7 @@ export class CraftingTable {
     return result;
   }
 
-  private jsonForge():CraftingForge[] {
+  jsonForge():CraftingForge[] {
     const result = [];
     for (const forgeSlot of this.forge) {
       result.push(forgeSlot.json());
@@ -96,7 +96,7 @@ export class CraftingTable {
     return result;
   }
 
-  private jsonCraftingParts():CraftingPart[] {
+  jsonCraftingParts():CraftingPart[] {
     const result = [];
     for (const craftingPart of this.craftingParts) {
       result.push(craftingPart.json());

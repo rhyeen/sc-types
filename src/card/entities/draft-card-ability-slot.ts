@@ -23,6 +23,9 @@ export class DraftCardAbilitySlot {
   }
 
   set tier(tier: CardAbilityTier) {
+    if (!this._ability) {
+      this._ability = new CardAbility(null);
+    }
     this._ability.tier = tier;
   }
 

@@ -37,17 +37,17 @@ export class CardBuilder {
       return result;
     }
     for (const cardAbilityData of cardAbilitiesData) {
-      result.push(CardBuilder.buildCardAbility(cardAbilityData.id, cardAbilityData.amount));
+      result.push(CardBuilder.buildCardAbility(cardAbilityData));
     }
     return result;
   }
 
-  static buildCardAbility(abilityId: string, amount?: number):CardAbility {
+  static buildCardAbility(cardAbilityData: any):CardAbility {
     let _amount = 0;
-    if (amount) {
-      _amount = amount;
+    if (cardAbilityData.amount) {
+      _amount = cardAbilityData.amount;
     }
-    switch(abilityId) {
+    switch(cardAbilityData.id) {
       case StaticCardAbilityId.Haste:
         return new CardAbilityHaste();
       case VariableCardAbilityId.Energize:
@@ -57,7 +57,7 @@ export class CardBuilder {
       case VariableCardAbilityId.Spellshot:
         return new CardAbilitySpellshot(_amount);
       default:
-        throw new Error(`unexpected ability id: ${abilityId}`);
+        throw new Error(`unexpected ability id: ${cardAbilityData.id}`);
     }
   }
 

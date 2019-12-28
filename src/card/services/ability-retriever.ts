@@ -3,6 +3,6 @@ import { CardAbility } from "../entities/card-ability";
 
 export class AbilityRetriever {
   static getDefaultedAbility(abilityId: string): CardAbility {
-    return CardBuilder.buildCardAbility(abilityId);
+    return CardBuilder.buildCardAbility({id: abilityId });
   }
 }

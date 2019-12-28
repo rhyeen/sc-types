@@ -6,6 +6,8 @@ import { OpponentMinionActionTarget } from "../action-target";
 import { GameChange } from "../../enums/game-change";
 import { CardAbilityHaste } from "../../../card/entities/card-ability";
 import { MinionCard } from "../../../card/entities/card/minion-card";
+import { CraftingPart } from "../../../card/entities/crafting-part";
+import { DraftCard } from "../../../card/entities/draft-card/draft-card";
 
 test('place minion, attack with minion, and player minion dies', () => {
   const game = defaultGame();
@@ -32,4 +34,14 @@ test('place minion, attack with minion, and player minion dies', () => {
   expect(result.gameChanges.has(GameChange.PlayerEnergy)).toBeTruthy();
   expect(result.gameChanges.has(GameChange.PlayerDiscardDeck)).toBeTruthy();
   expect(result.cardChanges.has(game.player.hand.cards[0])).toBeFalsy();
+  // validate craftingTable changes
+  expect(result.craftingParts.length).toBe(3);
+  expect(result.baseDraftCards.length).toBe(1);
+  expect(result.craftingParts[0] instanceof CraftingPart).toBeTruthy();
+  expect(result.baseDraftCards[0] instanceof DraftCard).toBeTruthy();
+  expect(result.game.player.craftingTable.craftingParts.length).toBe(3);
+  expect(result.game.player.craftingTable.baseCards.length).toBe(1);
+  expect(result.craftingParts[0]).toBe(result.game.player.craftingTable.craftingParts[0]);
+  expect(result.baseDraftCards[0]).toBe(result.game.player.craftingTable.baseCards[0]);
+
 });

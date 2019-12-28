@@ -136,25 +136,49 @@ export function getDefaultBaseDraftCardRandomConditions():any {
       {
         cardRarity: CardRarity.Common,
         weights: [
-          { weight: 1, value: { tier: CardAbilityTier.Minion3 }}
+          { weight: 10, value: [
+            { tier: CardAbilityTier.Minion3 }
+          ]},
+          { weight: 1, value: [
+            { tier: CardAbilityTier.Minion3 },
+            { tier: CardAbilityTier.Minion3 }
+          ]}
         ]
       },
       {
         cardRarity: CardRarity.Rare,
         weights: [
-          { weight: 1, value: { tier: CardAbilityTier.Minion3 }}
+          { weight: 10, value: [
+            { tier: CardAbilityTier.Minion3 }
+          ]},
+          { weight: 1, value: [
+            { tier: CardAbilityTier.Minion3 },
+            { tier: CardAbilityTier.Minion3 }
+          ]}
         ]
       },
       {
         cardRarity: CardRarity.Epic,
         weights: [
-          { weight: 1, value: { tier: CardAbilityTier.Minion3 }}
+          { weight: 10, value: [
+            { tier: CardAbilityTier.Minion3 }
+          ]},
+          { weight: 1, value: [
+            { tier: CardAbilityTier.Minion3 },
+            { tier: CardAbilityTier.Minion3 }
+          ]}
         ]
       },
       {
         cardRarity: CardRarity.Legendary,
         weights: [
-          { weight: 1, value: { tier: CardAbilityTier.Minion3 }}
+          { weight: 10, value: [
+            { tier: CardAbilityTier.Minion3 }
+          ]},
+          { weight: 1, value: [
+            { tier: CardAbilityTier.Minion3 },
+            { tier: CardAbilityTier.Minion3 }
+          ]}
         ]
       }
     ],
@@ -192,25 +216,49 @@ export function getDefaultBaseDraftCardRandomConditions():any {
       {
         cardRarity: CardRarity.Common,
         weights: [
-          { weight: 1, value: { tier: CardAbilityTier.Spell3 }}
+          { weight: 10, value: [
+            { tier: CardAbilityTier.Spell3 }
+          ]},
+          { weight: 1, value: [
+            { tier: CardAbilityTier.Spell3 },
+            { tier: CardAbilityTier.Spell3 }
+          ]}
         ]
       },
       {
         cardRarity: CardRarity.Rare,
         weights: [
-          { weight: 1, value: { tier: CardAbilityTier.Spell3 }}
+          { weight: 10, value: [
+            { tier: CardAbilityTier.Spell3 }
+          ]},
+          { weight: 1, value: [
+            { tier: CardAbilityTier.Spell3 },
+            { tier: CardAbilityTier.Spell3 }
+          ]}
         ]
       },
       {
         cardRarity: CardRarity.Epic,
         weights: [
-          { weight: 1, value: { tier: CardAbilityTier.Spell3 }}
+          { weight: 10, value: [
+            { tier: CardAbilityTier.Spell3 }
+          ]},
+          { weight: 1, value: [
+            { tier: CardAbilityTier.Spell3 },
+            { tier: CardAbilityTier.Spell3 }
+          ]}
         ]
       },
       {
         cardRarity: CardRarity.Legendary,
         weights: [
-          { weight: 1, value: { tier: CardAbilityTier.Spell3 }}
+          { weight: 10, value: [
+            { tier: CardAbilityTier.Spell3 }
+          ]},
+          { weight: 1, value: [
+            { tier: CardAbilityTier.Spell3 },
+            { tier: CardAbilityTier.Spell3 }
+          ]}
         ]
       }
     ],
