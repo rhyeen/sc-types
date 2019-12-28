@@ -1,7 +1,15 @@
 import { CraftingPartStatType } from "../enums/crafting-part";
 import { CardAbility } from "./card-ability";
+import { CardAbilityTier } from "../enums/card-ability";
 
 export class CraftingPart {
+  json():any {
+    throw new Error(`root CraftingPart object cannot be jsonified`);
+  }
+
+  copy():CraftingPart {
+    throw new Error(`root CraftingPart object cannot be copied`);
+  }
 }
 
 export class AbilityCraftingPart extends CraftingPart {
@@ -10,6 +18,21 @@ export class AbilityCraftingPart extends CraftingPart {
   constructor(ability: CardAbility) {
     super();
     this.ability = ability;
+  }
+
+  get tier():CardAbilityTier {
+    return this.ability.tier;
+  }
+
+  json():any {
+    return {
+      ability: this.ability.json(),
+      tier: this.tier
+    };
+  }
+
+  copy():CraftingPart {
+    return new AbilityCraftingPart(this.ability);
   }
 }
 
@@ -21,6 +44,17 @@ export class StatCraftingPart extends CraftingPart {
     super();
     this.type = type;
     this.amount = amount;
+  }
+
+  json():any {
+    return {
+      type: this.type,
+      amount: this.amount
+    };
+  }
+
+  copy():CraftingPart {
+    return new StatCraftingPart(this.type, this.amount);
   }
 }
 

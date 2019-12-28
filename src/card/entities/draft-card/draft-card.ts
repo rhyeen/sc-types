@@ -40,12 +40,24 @@ export class DraftCard implements DraftCardInterface {
     return this._type;
   }
 
-  static copy(draftCard: DraftCard):DraftCard {
+  copy():DraftCard {
     const slots = [];
-    for (const slot of draftCard.slots) {
-      slots.push(DraftCardAbilitySlot.copy(slot));
+    for (const slot of this.slots) {
+      slots.push(slot.copy());
     }
-    return new DraftCard(draftCard.rarity, draftCard.type, slots);
+    return new DraftCard(this.rarity, this.type, slots);
+  }
+
+  json():any {
+    const slots = [];
+    for (const slot of this.slots) {
+      slots.push(slot.json());
+    }
+    return {
+      type: this.type,
+      rarity: this.rarity,
+      slots
+    };
   }
 
   buildCard():Card {

@@ -46,13 +46,17 @@ export interface RandomConditions {
   abilityCraftingParts: AbilityCraftingPartsWeightRanges[];
 }
 
-const DEFAULT_NUMBER_OF_CRAFTING_PARTS = 3;
-
 export class CraftingPartGenerator {
   randomConditions: RandomConditions;
 
   constructor(randomConditions: RandomConditions) {
     this.randomConditions = randomConditions;
+  }
+
+  // @MUTATES: game
+  setGeneratedCraftingParts(game: Game) {
+    const craftingParts = this.generateCraftingParts(game);
+    game.player.craftingTable.craftingParts = craftingParts;
   }
 
   generateCraftingParts(game: Game):CraftingPart[] {
@@ -65,8 +69,7 @@ export class CraftingPartGenerator {
   }
 
   private getNumberOfCraftingParts(game: Game):number {
-    // @TODO: check player relics
-    return DEFAULT_NUMBER_OF_CRAFTING_PARTS;
+    return game.player.craftingTable.craftingPartsAmount;
   }
 
   generateCraftingPart(game: Game):CraftingPart {

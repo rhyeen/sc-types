@@ -4,6 +4,7 @@ import { StatusBuilder } from "./status-builder";
 import { DeckBuilder } from "./deck-builder";
 import { PlayerFieldSlot } from "../../entities/field-slot";
 import { FieldSlotBuilder } from "./field-slot-builder";
+import { CraftingTableBuilder } from "./crafting-table-builder";
 
 export class PlayerBuilder {
   static buildPlayer(playerData: any, cardSets: Record<string, CardSet>):Player {
@@ -15,6 +16,7 @@ export class PlayerBuilder {
     player.drawDeck = DeckBuilder.buildPlayerDrawDeck(playerData.drawDeck, cardSets);
     player.discardDeck = DeckBuilder.buildPlayerDiscardDeck(playerData.discardDeck, cardSets);
     player.lostDeck = DeckBuilder.buildPlayerLostDeck(playerData.lostDeck, cardSets);
+    player.craftingTable = CraftingTableBuilder.buildCraftingTable(playerData.craftingTable);
     return player;
   }
 

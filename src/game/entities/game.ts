@@ -2,18 +2,25 @@ import { Player } from './player/player';
 import { Dungeon } from './dungeon';
 import { CardSet } from '../../card/entities/card-set';
 import { MinionCard } from '../../card/entities/card/minion-card';
+import { GamePhase } from '../enums/game-phase';
 
 export class Game {
   id: string;
   player: Player;
   dungeon: Dungeon;
   cardSets: Record<string,CardSet>;
+  phase: GamePhase;
 
-  constructor(id: string, player: Player, dungeon: Dungeon, cardSets: Record<string,CardSet>) {
+  constructor(id: string, player: Player, dungeon: Dungeon, cardSets: Record<string,CardSet>, phase?: GamePhase) {
     this.id = id;
     this.player = player;
     this.dungeon = dungeon;
     this.cardSets = cardSets;
+    if (phase) {
+      this.phase = phase;
+    } else {
+      this.phase = GamePhase.Battle;
+    }
   }
 
   copy():Game {
@@ -21,7 +28,7 @@ export class Game {
     // @NOTE: the reason we need to pass through the cardsets is so that the copies of cards
     // within things like decks/fields uses the reference of the copied card sets so that
     // editing a card in a deck/field, edits the card within the card set.
-    return new Game(this.id, this.player.copy(cardSets), this.dungeon.copy(cardSets), cardSets);
+    return new Game(this.id, this.player.copy(cardSets), this.dungeon.copy(cardSets), cardSets, this.phase);
   }
 
   private copyCardSets():Record<string,CardSet> {
@@ -51,7 +58,8 @@ export class Game {
       id: this.id,
       player: this.player.json(hidePrivate),
       dungeon: this.dungeon.json(hidePrivate),
-      cardSets: this.jsonCardSets(reduce)
+      cardSets: this.jsonCardSets(reduce),
+      phase: this.phase
     };
   }
 

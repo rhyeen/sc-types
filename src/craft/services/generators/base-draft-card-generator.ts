@@ -78,6 +78,25 @@ export class BaseDraftCardGenerator {
     this.randomConditions = randomConditions;
   }
 
+  // @MUTATES: game
+  setGeneratedBaseDraftCard(game: Game) {
+    const baseCards = this.generateBaseDraftCards(game);
+    game.player.craftingTable.baseCards = baseCards;
+  }
+
+  generateBaseDraftCards(game: Game):DraftCard[] {
+    const numberOfCards = this.getNumberOfBaseDraftCard(game);
+    const cards = [];
+    for (let i = 0; i < numberOfCards; i++) {
+      cards.push(this.generateBaseDraftCard(game));
+    }
+    return cards;
+  }
+
+  private getNumberOfBaseDraftCard(game: Game):number {
+    return game.player.craftingTable.baseCardsAmount;
+  }
+
   generateBaseDraftCard(game: Game):DraftCard {
     const cardType = this.getRandomCardType();
     const rarity = this.getRandomCardRarity(game);

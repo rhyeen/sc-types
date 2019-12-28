@@ -10,7 +10,7 @@ export class DraftCardModifier {
   static addCraftingPart(draftCard: DraftCard, craftingPart: CraftingPart, mutateParams?: boolean):AddCraftingPartReturn {
     let returnDraftCard = draftCard;
     if (mutateParams) {
-      returnDraftCard = DraftCard.copy(draftCard);
+      returnDraftCard = draftCard.copy();
     }
     const wasModified = returnDraftCard.addCraftingPart(craftingPart);
     return {

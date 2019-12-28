@@ -8,6 +8,6 @@ export class GameBuilder {
     const cardSets = CardSetBuilder.buildCardSets(gameData.cardSets);
     const player = PlayerBuilder.buildPlayer(gameData.player, cardSets);
     const dungeon = DungeonBuilder.buildDungeon(gameData.dungeon, cardSets);
-    return new Game(gameData.id, player, dungeon, cardSets);
+    return new Game(gameData.id, player, dungeon, cardSets, gameData.phase);
   }
 }

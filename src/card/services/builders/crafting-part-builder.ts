@@ -1,5 +1,6 @@
-import { StatCraftingPart, AttackStatCraftingPart, HealthStatCraftingPart, RangeStatCraftingPart } from "../../entities/crafting-part";
+import { StatCraftingPart, AttackStatCraftingPart, HealthStatCraftingPart, RangeStatCraftingPart, CraftingPart, AbilityCraftingPart } from "../../entities/crafting-part";
 import { CraftingPartStatType } from "../../enums/crafting-part";
+import { CardBuilder } from "./card-builder";
 
 export interface StatPartData {
   type: CraftingPartStatType;
@@ -7,6 +8,14 @@ export interface StatPartData {
 }
 
 export class CraftingPartBuilder {
+  static buildCraftingPart(craftingPartData: any):CraftingPart {
+    if (craftingPartData.type) {
+      return CraftingPartBuilder.buildStatCraftingPart(craftingPartData);
+    } else {
+      return CraftingPartBuilder.buildAbilityCraftingPart(craftingPartData);
+    }
+  }
+
   static buildStatCraftingPart(statCraftingPartsData: StatPartData):StatCraftingPart {
     switch (statCraftingPartsData.type) {
       case CraftingPartStatType.Attack:
@@ -18,5 +27,9 @@ export class CraftingPartBuilder {
       default:
         throw new Error(`unexpected crafting part stat type: ${statCraftingPartsData.type}`);
     }
+  }
+
+  static buildAbilityCraftingPart(abilityCraftingPartData: any):AbilityCraftingPart {
+    return new AbilityCraftingPart(CardBuilder.buildCardAbility(abilityCraftingPartData.ability));
   }
 }

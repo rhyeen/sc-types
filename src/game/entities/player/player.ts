@@ -2,6 +2,7 @@ import { Status } from '../status';
 import { PlayerFieldSlot } from '../field-slot';
 import { PlayerHand, PlayerDiscardDeck, PlayerDrawDeck, PlayerLostDeck } from './deck';
 import { CardSet } from '../../../card/entities/card-set';
+import { CraftingTable} from './crafting-table';
 
 export class Player {
   id: string;
@@ -13,6 +14,7 @@ export class Player {
   drawDeck: PlayerDrawDeck;
   discardDeck: PlayerDiscardDeck;
   lostDeck: PlayerLostDeck;
+  craftingTable: CraftingTable;
 
   constructor(id: string, name: string, maxHealth: number, maxEnergy: number, handRefillSize: number) {
     this.id = id;
@@ -28,6 +30,7 @@ export class Player {
     this.drawDeck = new PlayerDrawDeck();
     this.discardDeck = new PlayerDiscardDeck();
     this.lostDeck = new PlayerLostDeck();
+    this.craftingTable = new CraftingTable();
   }
 
   refresh() {
@@ -77,6 +80,7 @@ export class Player {
     player.drawDeck = this.drawDeck.copy(cardSets);
     player.discardDeck = this.discardDeck.copy(cardSets);
     player.lostDeck = this.lostDeck.copy(cardSets);
+    player.craftingTable = this.craftingTable.copy();
     return player;
   }
 
@@ -99,6 +103,7 @@ export class Player {
       drawDeck: this.drawDeck.json(hidePrivate),
       discardDeck: this.discardDeck.json(),
       lostDeck: this.lostDeck.json(),
+      craftingTable: this.craftingTable.json(),
     }
   }
 

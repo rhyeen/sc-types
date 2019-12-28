@@ -30,10 +30,20 @@ export class DraftCardAbilitySlot {
     return this._ability.tier;
   }
 
-  static copy(slot: DraftCardAbilitySlot):DraftCardAbilitySlot {
+  copy():DraftCardAbilitySlot {
     const copiedSlot = new DraftCardAbilitySlot();
-    copiedSlot.ability = slot.ability.copy();
+    copiedSlot.ability = this.ability.copy();
     return copiedSlot;
+  }
+
+  json():any {
+    const result = {
+      tier: this.tier
+    };
+    if (this.ability.id) {
+      result['ability'] = this.ability.json();
+    }
+    return result;
   }
 
   isFilled():boolean {
