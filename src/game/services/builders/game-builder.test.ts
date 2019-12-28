@@ -2,6 +2,7 @@ import { GameBuilder } from './game-builder';
 import { CardAbilityHaste } from '../../../card/entities/card-ability';
 
 const EXAMPLE_NEW_GAME = {
+  "phase": "battle",
   "cardSets": {
     "CD_GP1": {
       "baseCard": {
@@ -199,6 +200,13 @@ const EXAMPLE_NEW_GAME = {
   },
   "id": "sfqABiRkytj6yY4QigBI",
   "player": {
+    "craftingTable": {
+      "baseCards": [],
+      "baseCardsAmount": 1,
+      "craftingParts": [],
+      "craftingPartsAmount": 3,
+      "forge": [ { "card": null }, { "card": null } ]
+    },
     "discardDeck": {
       "cards": []
     },

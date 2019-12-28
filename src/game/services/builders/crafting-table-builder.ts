@@ -7,6 +7,9 @@ import { CraftingPartBuilder } from "../../../card/services/builders/crafting-pa
 
 export class CraftingTableBuilder {
   static buildCraftingTable(craftingTableData: any):CraftingTable {
+    if (!craftingTableData) {
+      return new CraftingTable();
+    }
     const craftingTable = new CraftingTable(craftingTableData.forge.length, craftingTableData.baseCardsAmount, craftingTableData.craftingPartsAmount);
     craftingTable.baseCards = CraftingTableBuilder.buildBaseCards(craftingTableData.baseCards);
     craftingTable.forge = CraftingTableBuilder.buildForge(craftingTableData.forge);

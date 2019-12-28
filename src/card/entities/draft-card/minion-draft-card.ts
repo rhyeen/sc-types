@@ -3,7 +3,7 @@ import { CardType } from "../../enums/card-type"
 import { CardRarity } from "../../enums/card-rarity";
 import { DraftCardAbilitySlot } from "../draft-card-ability-slot";
 import { MinionCard } from "../card/minion-card";
-import { CraftingPart, CraftingPartAttackStat, CraftingPartHealthStat, CraftingPartRangeStat, StatCraftingPart } from "../crafting-part";
+import { CraftingPart, StatCraftingPart, AttackStatCraftingPart, HealthStatCraftingPart, RangeStatCraftingPart } from "../crafting-part";
 
 export class MinionDraftCard extends DraftCard {
   _health: number;
@@ -40,22 +40,22 @@ export class MinionDraftCard extends DraftCard {
     if (!(part instanceof StatCraftingPart)) {
       return false;
     }
-    if (part.stat instanceof CraftingPartHealthStat) {
-      this._health = part.stat.amount;
+    if (part instanceof HealthStatCraftingPart) {
+      this._health = part.amount;
       this.regenerateCost();
       return true;
     }
-    if (part.stat instanceof CraftingPartAttackStat) {
-      this._attack = part.stat.amount;
+    if (part instanceof AttackStatCraftingPart) {
+      this._attack = part.amount;
       this.regenerateCost();
       return true;
     }
-    if (part.stat instanceof CraftingPartRangeStat) {
-      this._range = part.stat.amount;
+    if (part instanceof RangeStatCraftingPart) {
+      this._range = part.amount;
       this.regenerateCost();
       return true;
     }
-    throw new Error(`unexpected stat modifier: ${part.stat.type}`);
+    throw new Error(`unexpected stat modifier: ${part.type}`);
   }
 
   regenerateCost() {
