@@ -43,7 +43,7 @@ export class DraftCardAbilitySlot {
     const result = {
       tier: this.tier
     };
-    if (this.ability.id) {
+    if (this.isFilled()) {
       result['ability'] = this.ability.json();
     }
     return result;
