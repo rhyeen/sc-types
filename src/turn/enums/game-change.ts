@@ -4,5 +4,8 @@ export enum GameChange {
   DungeonField = "dungeonField",
   PlayerHand = "playerHand",
   PlayerEnergy = "playerEnergy",
-  PlayerHealth = "playerHealth"
+  PlayerHealth = "playerHealth",
+  PlayerBaseCards = "playerBaseCards",
+  PlayerForge = "playerForge",
+  PlayerCraftingParts = "playerCraftingParts",
 }

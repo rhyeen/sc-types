@@ -9,7 +9,7 @@ export class SpellDraftCard extends DraftCard {
     super(rarity, CardType.Spell, slots);
   }
 
-  buildSpellCard():SpellCard {
+  buildCard():SpellCard {
     return new SpellCard(this.rarity, this.buildAbilities(), this.buildCost());
   }
 
@@ -21,5 +21,17 @@ export class SpellDraftCard extends DraftCard {
   private getSpellStatsCost(cost: number):number {
     // @NOTE: there are none, yet.
     return cost;
+  }
+
+  copy():SpellDraftCard {
+    return new SpellDraftCard(this.rarity, this.copySlots());
+  }
+
+  json():any {
+    return {
+      type: this.type,
+      rarity: this.rarity,
+      slots: this.jsonSlots()
+    };
   }
 }

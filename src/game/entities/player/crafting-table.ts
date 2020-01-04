@@ -1,11 +1,17 @@
 import { CraftingForge } from "./crafting-forge";
 import { DraftCard } from "../../../card/entities/draft-card/draft-card";
 import { CraftingPart } from "../../../card/entities/crafting-part";
+import { CardRarity } from "../../../card/enums/card-rarity";
 
 const DEFAULT_FORGE_SLOTS = 2;
 const DEFAULT_BASE_CARDS = 1;
 const DEFAULT_CRAFTING_PARTS = 3;
 const DEFAULT_MAX_CRAFTING_PARTS_USED = 1;
+const DEFAULT_MAX_DRAFTED_INSTANCES = <Record<CardRarity, number>>{};
+DEFAULT_MAX_DRAFTED_INSTANCES[CardRarity.Common] = 5;
+DEFAULT_MAX_DRAFTED_INSTANCES[CardRarity.Rare] = 3;
+DEFAULT_MAX_DRAFTED_INSTANCES[CardRarity.Epic] = 2;
+DEFAULT_MAX_DRAFTED_INSTANCES[CardRarity.Legendary] = 1;
 
 export class CraftingTable {
   forge: CraftingForge[];
@@ -14,6 +20,7 @@ export class CraftingTable {
   craftingParts: CraftingPart[];
   craftingPartsAmount: number;
   maxCraftingPartsUsed: number;
+  private _maxDraftedInstances: Record<CardRarity, number>;
 
   constructor(forgeSlotsAmount?: number, baseCardsAmount?: number, craftingPartsAmount?: number, maxCraftingPartsUsed?: number) {
     this.forge = [];
@@ -43,6 +50,7 @@ export class CraftingTable {
     } else {
       this.maxCraftingPartsUsed = DEFAULT_MAX_CRAFTING_PARTS_USED;
     }
+    this._maxDraftedInstances = DEFAULT_MAX_DRAFTED_INSTANCES;
   }
 
   copy():CraftingTable {
@@ -110,5 +118,18 @@ export class CraftingTable {
       result.push(craftingPart.json());
     }
     return result;
+  }
+
+  fillForge(forgeSlotIndex, baseCardIndex):DraftCard {
+    const card = this.baseCards.splice(baseCardIndex, 1)[0];
+    this.forge[forgeSlotIndex].fill(card);
+    return card;
+  }
+
+  getMaxNumberOfDraftedInstances(cardRarity: CardRarity):number {
+    if (!(cardRarity in this._maxDraftedInstances)) {
+      throw new Error(`unexpected card rarity: ${cardRarity}`);
+    }
+    return this._maxDraftedInstances[cardRarity];
   }
 }

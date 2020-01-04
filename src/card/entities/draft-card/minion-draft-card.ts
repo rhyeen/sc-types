@@ -18,14 +18,27 @@ export class MinionDraftCard extends DraftCard {
   }
 
   get health():number {
+    if (!this._health || this._health < 0) {
+      return 0;
+    }
     return this._health;
   }
 
+  get remainingHealth():number {
+    return this.health;
+  }
+
   get attack():number {
+    if (!this._attack || this._attack < 0) {
+      return 0;
+    }
     return this._attack;
   }
 
   get range():number {
+    if (!this._range || this._range < 0) {
+      return 0;
+    }
     return this._range;
   }
 
@@ -75,5 +88,20 @@ export class MinionDraftCard extends DraftCard {
     }
     _cost += this.health * 0.25;
     return _cost;
+  }
+
+  copy():MinionDraftCard {
+    return new MinionDraftCard(this.rarity, this.health, this.attack, this.range, this.copySlots());
+  }
+
+  json():any {
+    return {
+      type: this.type,
+      rarity: this.rarity,
+      health: this.health,
+      attack: this.attack,
+      range: this.range,
+      slots: this.jsonSlots()
+    };
   }
 }

@@ -9,6 +9,15 @@ import { CardType } from "../../card/enums/card-type";
 import { CardRarity } from "../../card/enums/card-rarity";
 import { CardBuilder } from "../../card/services/builders/card-builder";
 import { CardAbilitySpellshot } from "../../card/entities/card-ability";
+import { PlayerTurn } from "../../turn/entities/turn/player-turn";
+
+
+export function gameOnCraftingTurn():Game {
+  const cardSets = defaultCardSets();
+  const game = new Game('GM_1', defaultPlayer(cardSets), typicalStartingDungeon(cardSets), cardSets);
+  const result = PlayerTurn.executeBattlePhase(game, []);
+  return result.game;
+}
 
 export function typicalStartingGame():Game {
   const cardSets = defaultCardSets();

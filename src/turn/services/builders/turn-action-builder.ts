@@ -30,7 +30,7 @@ export class TurnActionBuilder {
             case ActionType.PlaySpellAbility:
                 return new PlaySpellAbilityAction(turnActionData.source.handIndex, targets);
             case ActionType.CraftBaseCard:
-                return new CraftBaseCardAction(turnActionData.forgeSlotIndex);
+                return new CraftBaseCardAction(turnActionData.baseCardIndex, turnActionData.forgeSlotIndex);
             case ActionType.AddCraftingPart:
                 return new AddCraftingPartAction(turnActionData.craftingPartIndex, turnActionData.forgeSlotIndex);
             case ActionType.AddCraftedCardToDeck:

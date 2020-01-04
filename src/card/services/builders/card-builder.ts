@@ -47,7 +47,7 @@ export class CardBuilder {
     if (cardAbilityData.amount) {
       _amount = cardAbilityData.amount;
     }
-    switch(cardAbilityData.id) {
+    switch (cardAbilityData.id) {
       case StaticCardAbilityId.Haste:
         return new CardAbilityHaste();
       case VariableCardAbilityId.Energize:

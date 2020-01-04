@@ -41,23 +41,27 @@ export class DraftCard implements DraftCardInterface {
   }
 
   copy():DraftCard {
+    throw new Error(`draft card of type ${this.type} is base class, but must be an extended class`);
+  }
+
+  protected copySlots():DraftCardAbilitySlot[] {
     const slots = [];
     for (const slot of this.slots) {
       slots.push(slot.copy());
     }
-    return new DraftCard(this.rarity, this.type, slots);
+    return slots;
   }
 
   json():any {
+    throw new Error(`draft card of type ${this.type} is base class, but must be an extended class`);
+  }
+
+  protected jsonSlots():any[] {
     const slots = [];
     for (const slot of this.slots) {
       slots.push(slot.json());
     }
-    return {
-      type: this.type,
-      rarity: this.rarity,
-      slots
-    };
+    return slots;
   }
 
   buildCard():Card {

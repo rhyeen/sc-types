@@ -1,5 +1,10 @@
 import { GameBuilder } from './game-builder';
 import { CardAbilityHaste } from '../../../card/entities/card-ability';
+import { CardType } from '../../../card/enums/card-type';
+import { CardRarity } from '../../../card/enums/card-rarity';
+import { MinionDraftCard } from '../../../card/entities/draft-card/minion-draft-card';
+import { SpellDraftCard } from '../../../card/entities/draft-card/spell-draft-card';
+import { DraftCard } from '../../../card/entities/draft-card/draft-card';
 
 const EXAMPLE_NEW_GAME = {
   "phase": "battle",
@@ -288,3 +293,28 @@ test('@REGRESSION: ensure haste copies correctly', () => {
   expect(newGame.cardSets['MS312'].baseCard.abilities[0].id).toBe('haste');
 });
 
+test('@REGRESSION: ensure base draft cards are specific draft card types', () => {
+  const gameData = EXAMPLE_NEW_GAME;
+  gameData.player.craftingTable.baseCards = [
+    {
+      type: CardType.Minion,
+      rarity: CardRarity.Common,
+      attack: 1,
+      health: 2,
+      range: 1,
+      slots: []
+    },
+    {
+      type: CardType.Spell,
+      rarity: CardRarity.Common,
+      slots: []
+    }
+  ];
+  const game = GameBuilder.buildGame(gameData);
+  expect(game.player.craftingTable.baseCards[0] instanceof DraftCard).toBeTruthy();
+  expect(game.player.craftingTable.baseCards[1] instanceof DraftCard).toBeTruthy();
+  expect(game.player.craftingTable.baseCards[0] instanceof MinionDraftCard).toBeTruthy();
+  expect(game.player.craftingTable.baseCards[1] instanceof SpellDraftCard).toBeTruthy();
+  const newGame = game.copy();
+  expect(newGame.json(true, true)).toEqual(gameData);
+});
