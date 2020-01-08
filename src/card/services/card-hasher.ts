@@ -1,13 +1,13 @@
 import { CardInterface } from "../card.interface";
 import { CardType } from "../enums/card-type";
 import { CardRarity } from "../enums/card-rarity";
-import { CardAbility, VariableCardAbility } from "../entities/card-ability";
+import { CardAbility, VariableCardAbility, CardAbilityHaste, CardAbilityReach, CardAbilitySpellshot, CardAbilityEnergize } from "../entities/card-ability";
 import { StaticCardAbilityId, VariableCardAbilityId } from "../enums/card-ability";
 export class CardHasher {
   
   private static NEGATIVE_HASH_NUMBERS = '0abcdefghijklmnopqrstuvwxyz-';
   private static POSITIVE_HASH_NUMBERS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ+';
-
+  
   static getCardHash(card: CardInterface, ignoreCurrentHash?: true): string {
     /*
     [0]: TYPE: M=MINION | S=SPELL
@@ -25,15 +25,15 @@ export class CardHasher {
       return card.hash;
     }
     let hash = "";
-    hash += this.getCardHashType(card.type);
-    hash += this.getCardHashRarity(card.rarity);
-    hash += this.getCardHashNumber(card.health);
-    hash += this.getCardHashNumber(card.attack);
-    hash += this.getCardHashNumber(card.range);
+    hash += CardHasher.getCardHashType(card.type);
+    hash += CardHasher.getCardHashRarity(card.rarity);
+    hash += CardHasher.getCardHashNumber(card.health);
+    hash += CardHasher.getCardHashNumber(card.attack);
+    hash += CardHasher.getCardHashNumber(card.range);
     if (card.abilities && card.abilities.length) {
       hash += "|A";
       for (const ability of card.abilities) {
-        hash += this.getCardHashAbility(ability);
+        hash += CardHasher.getCardHashAbility(ability);
       }
     }
     return hash;
@@ -77,23 +77,23 @@ export class CardHasher {
     }
     if (_value < 0) {
       _value = _value * -1;
-      if (_value >= this.NEGATIVE_HASH_NUMBERS.length) {
-        return this.NEGATIVE_HASH_NUMBERS[this.NEGATIVE_HASH_NUMBERS.length - 1];
+      if (_value >= CardHasher.NEGATIVE_HASH_NUMBERS.length) {
+        return CardHasher.NEGATIVE_HASH_NUMBERS[CardHasher.NEGATIVE_HASH_NUMBERS.length - 1];
       }
-      return this.NEGATIVE_HASH_NUMBERS[_value];
+      return CardHasher.NEGATIVE_HASH_NUMBERS[_value];
     }
-    if (_value >= this.POSITIVE_HASH_NUMBERS.length) {
-      return this.POSITIVE_HASH_NUMBERS[this.POSITIVE_HASH_NUMBERS.length - 1];
+    if (_value >= CardHasher.POSITIVE_HASH_NUMBERS.length) {
+      return CardHasher.POSITIVE_HASH_NUMBERS[CardHasher.POSITIVE_HASH_NUMBERS.length - 1];
     }
-    return this.POSITIVE_HASH_NUMBERS[_value];
+    return CardHasher.POSITIVE_HASH_NUMBERS[_value];
   }
 
   private static getCardHashAbility(ability: CardAbility): string {
     let abilityAmount = "";
     if (ability instanceof VariableCardAbility) {
-      abilityAmount = this.getCardHashNumber(ability.amount);
+      abilityAmount = CardHasher.getCardHashNumber(ability.amount);
     }
-    return ';' + this.getAbilityHashId(ability.id) + abilityAmount;
+    return ';' + CardHasher.getAbilityHashId(ability.id) + abilityAmount;
   }
 
   private static getAbilityHashId(abilityId: string): string {
@@ -109,5 +109,109 @@ export class CardHasher {
       default:
         throw new Error(`unexpected ability id: ${abilityId}`);
     }
+  }
+
+  static getCard(cardHash: string): CardInterface {
+    const card = <CardInterface>{
+      type: CardHasher.getCardType(cardHash),
+      rarity: CardHasher.getCardRarity(cardHash),
+      abilities: CardHasher.getCardAbilities(cardHash)
+    };
+    if (card.type === CardType.Minion) {
+      card.health = CardHasher.getCardStatNumber(cardHash, 2);
+      card.attack = CardHasher.getCardStatNumber(cardHash, 3);
+      card.range = CardHasher.getCardStatNumber(cardHash, 4);
+    }
+    return card;
+  }
+
+  private static getCardType(cardHash: string): CardType {
+    const cardTypeChar = cardHash[0];
+    switch(cardTypeChar) {
+      case 'M':
+        return CardType.Minion;
+      case 'S':
+        return CardType.Spell;
+      default:
+        throw new Error(`unexpected card type for hash: ${cardHash}`);
+    }
+  }
+
+  private static getCardRarity(cardHash: string): CardRarity {
+    const cardRarityChar = cardHash[1];
+    switch(cardRarityChar) {
+      case 'C':
+        return CardRarity.Common;
+      case 'R':
+        return CardRarity.Rare;
+      case 'E':
+        return CardRarity.Epic;
+      case 'L':
+        return CardRarity.Legendary;
+      case 'S':
+        return CardRarity.Standard;
+      case 'U':
+        return CardRarity.Undefined;
+      default:
+        throw new Error(`unexpected card rarity for hash: ${cardHash}`);
+    }
+  }
+
+  private static getCardAbilities(cardHash: string):CardAbility[] {
+    const result = [];
+    if (cardHash.length < 'TRHAR|A;XY'.length) {
+      return result;
+    }
+    const cardParts = cardHash.split('|A');
+    if (cardParts.length <= 1) {
+      return result;
+    }
+    const cardAbilityParts = cardParts[1].split(';');
+    for (const cardAbilityPart of cardAbilityParts) {
+      if (!cardAbilityPart) {
+        continue;
+      }
+      const abilityId = cardAbilityPart.substring(0, 2);
+      let abilityAmount = 0;
+      if (cardAbilityPart.length > 2) {
+        abilityAmount = CardHasher.getCardStatNumber(cardAbilityPart, 2);
+      }
+      result.push(CardHasher.getCardAbility(abilityId, abilityAmount));
+    }
+    return result;
+  }
+
+  private static getCardAbility(abilityId: string, abilityAmount: number): CardAbility {
+    switch(abilityId) {
+      case 'HS':
+        return new CardAbilityHaste();
+      case 'RC':
+        return new CardAbilityReach(abilityAmount);
+      case 'SS':
+        return new CardAbilitySpellshot(abilityAmount);
+      case 'EN':
+        return new CardAbilityEnergize(abilityAmount);
+      default:
+        throw new Error(`unexpected hashed ability id: ${abilityId}`);
+    }
+  }
+
+  private static getCardStatNumber(cardHash: string, numberIndexInHash: number): number {
+    if (cardHash.length <= numberIndexInHash) {
+      return 0;
+    }
+    const numberChar = cardHash[numberIndexInHash];
+    if (numberChar === '0') {
+      return 0;
+    }
+    let index = this.POSITIVE_HASH_NUMBERS.indexOf(numberChar);
+    if (index > 0) {
+      return index;
+    }
+    index = this.NEGATIVE_HASH_NUMBERS.indexOf(numberChar);
+    if (index > 0) {
+      return index * -1;
+    }
+    throw new Error(`card hash: ${cardHash} at index: ${numberIndexInHash} is not a valid stat number`);
   }
 }

@@ -32,7 +32,7 @@ export class DungeonTurn {
   }
 
   private static refillFieldSlots(game: Game):TurnActionResult {
-    let result = new TurnActionResult(game);
+    const result = new TurnActionResult(game);
     for (const field of result.game.dungeon.field) {
       if (!field.card) {
         field.refill();
