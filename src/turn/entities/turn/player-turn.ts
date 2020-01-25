@@ -7,6 +7,7 @@ import { GamePhase } from "../../../game/enums/game-phase";
 import { BaseDraftCardGenerator } from "../../../craft/services/generators/base-draft-card-generator";
 import { getDefaultCraftingPartRandomConditions, getDefaultBaseDraftCardRandomConditions } from "../../../craft/services/generators/default-random-conditions";
 import { CraftingPartGenerator } from "../../../craft/services/generators/crafting-part-generator";
+import { GameChange } from "../../enums/game-change";
 
 export class PlayerTurn {
   static execute(game: Game, turnActions: TurnAction[]):TurnResult {
@@ -29,6 +30,8 @@ export class PlayerTurn {
     }
     result = PlayerTurn.refresh(turnResult.game);
     turnResult.recordTurnActionResult(result);
+    result = PlayerTurn.switchPhase(turnResult.game);
+    turnResult.recordTurnActionResult(result);
     const draftGenerationResult = PlayerTurn.generateCraftingTableComponents(turnResult.game);
     turnResult.recordDraftGenerationResult(draftGenerationResult);
     return turnResult;
@@ -42,6 +45,13 @@ export class PlayerTurn {
         result.recordCardChange(field.card);
       }
     }
+    return result;
+  }
+
+  private static switchPhase(game: Game):TurnActionResult {
+    const result = new TurnActionResult(game);
+    result.game.shiftPhase();
+    result.recordGameChange(GameChange.GamePhase);
     return result;
   }
 
@@ -59,6 +69,11 @@ export class PlayerTurn {
   }
 
   private static executeDraftPhase(game: Game, turnActions: TurnAction[]):TurnResult {
+    const turnResult = new TurnResult(game);
+    let result = new TurnActionResult(turnResult.game);
+    result = PlayerTurn.switchPhase(turnResult.game);
+    turnResult.recordTurnActionResult(result);
     throw new Error(`not implemented yet`);
+    return turnResult;
   }
 }

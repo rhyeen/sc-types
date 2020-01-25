@@ -4,6 +4,7 @@ import { Game } from "../../../../game/entities/game";
 import { TurnActionResult } from "../turn-action-result";
 import { DraftCard } from "../../../../card/entities/draft-card/draft-card";
 import { GameChange } from "../../../enums/game-change";
+import { GamePhase } from "../../../../game/enums/game-phase";
 
 export class CraftBaseCardAction extends TurnAction {
   baseCardIndex: number;
@@ -31,6 +32,9 @@ export class CraftBaseCardAction extends TurnAction {
   }
 
   validate(game: Game) {
+    if (game.phase !== GamePhase.Draft) {
+      throw new Error(`game phase: ${game.phase} should be ${GamePhase.Draft}`);
+    }
     if (game.player.craftingTable.baseCards.length <= this.baseCardIndex) {
       throw new Error(`invalid base card index: ${this.baseCardIndex} with ${game.player.craftingTable.baseCards.length} base card(s) to pick from`);
     }

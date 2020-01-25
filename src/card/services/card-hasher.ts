@@ -113,6 +113,7 @@ export class CardHasher {
 
   static getCard(cardHash: string): CardInterface {
     const card = <CardInterface>{
+      hash: cardHash,
       type: CardHasher.getCardType(cardHash),
       rarity: CardHasher.getCardRarity(cardHash),
       abilities: CardHasher.getCardAbilities(cardHash)

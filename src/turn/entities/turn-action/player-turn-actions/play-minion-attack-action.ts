@@ -5,6 +5,7 @@ import { Game } from "../../../../game/entities/game";
 import { TurnActionResult } from "../turn-action-result";
 import { MinionCard } from "../../../../card/entities/card/minion-card";
 import { GameChange } from "../../../enums/game-change";
+import { GamePhase } from "../../../../game/enums/game-phase";
 
 export class PlayMinionAttackAction extends ActionWithTargets {
   playerSourceFieldIndex: number;
@@ -36,6 +37,9 @@ export class PlayMinionAttackAction extends ActionWithTargets {
   }
 
   validate(game: Game) {
+    if (game.phase !== GamePhase.Battle) {
+      throw new Error(`game phase: ${game.phase} should be ${GamePhase.Battle}`);
+    }
     if (game.player.field.length <= this.playerSourceFieldIndex) {
       throw new Error(`invalid player field index: ${this.playerSourceFieldIndex} with player field of size: ${game.player.field.length}`);
     }

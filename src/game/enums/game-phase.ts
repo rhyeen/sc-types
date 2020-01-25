@@ -1,4 +1,6 @@
 export enum GamePhase {
     Draft = "draft",
-    Battle = "battle"
+    Battle = "battle",
+    Win = "win",
+    Lose = "lose",
 };

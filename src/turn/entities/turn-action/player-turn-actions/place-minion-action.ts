@@ -6,6 +6,7 @@ import { Card } from "../../../../card/entities/card/card";
 import { PlayerFieldSlot } from "../../../../game/entities/field-slot";
 import { TurnActionResult } from "../turn-action-result";
 import { GameChange } from "../../../enums/game-change";
+import { GamePhase } from "../../../../game/enums/game-phase";
 
 export class PlaceMinionAction extends TurnAction {
   playerSourceHandIndex: number;
@@ -40,6 +41,9 @@ export class PlaceMinionAction extends TurnAction {
   }
 
   validate(game: Game) {
+    if (game.phase !== GamePhase.Battle) {
+      throw new Error(`game phase: ${game.phase} should be ${GamePhase.Battle}`);
+    }
     if (game.player.field.length <= this.playerTargetFieldIndex) {
       throw new Error(`invalid player field index: ${this.playerTargetFieldIndex} with player field of size: ${game.player.field.length}`);
     }

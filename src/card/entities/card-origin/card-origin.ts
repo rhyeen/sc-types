@@ -1,3 +1,5 @@
+import { DateFormatter } from "../../../utils/date-formatter";
+
 export interface CardOriginOriginalData {
   playerId: string;
   gameId: string;
@@ -13,13 +15,20 @@ export class CardArt {
   imageSource: string;
   credit: CardArtCredit;
 
+  constructor() {
+    this.credit = {
+      artistId: null,
+      creditedAt: null
+    };
+  }
+
   json():any {
     return {
       imageSource: this.imageSource,
       credit: {
         artistId: this.credit.artistId,
         originalSource: this.credit.originalSource,
-        creditedAt: this.credit.creditedAt
+        creditedAt: DateFormatter.toString(this.credit.creditedAt)
       }
     };
   }
@@ -51,6 +60,13 @@ export class CardOrigin {
   art?: CardArt;
   history?: CardOriginChange[];
 
+  constructor() {
+    this.original = {
+      playerId: null,
+      gameId: null,
+    };
+  }
+
   json():any {
     return {
       id: this.id,
@@ -59,10 +75,10 @@ export class CardOrigin {
         playerId: this.original.playerId,
         gameId: this.original.gameId
       },
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
-      deletedAt: this.deletedAt,
-      art: this.art.json(),
+      createdAt: DateFormatter.toString(this.createdAt),
+      updatedAt: DateFormatter.toString(this.updatedAt),
+      deletedAt: DateFormatter.toString(this.deletedAt),
+      art: this.art ? this.art.json() : null,
       history: this.jsonHistory()
     };
   }

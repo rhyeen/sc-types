@@ -13,6 +13,10 @@ export class CraftingForge {
       this.card = card;
     }
 
+    empty() {
+      this.card = null;
+    }
+
     json():any {
       if (!this.card) {
         return {

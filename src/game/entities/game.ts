@@ -46,6 +46,19 @@ export class Game {
     this.dungeon.refresh();
   }
 
+  shiftPhase() {
+    switch (this.phase) {
+      case GamePhase.Battle:
+        this.phase = GamePhase.Draft;
+        return;
+      case GamePhase.Draft:
+        this.phase = GamePhase.Battle;
+        return;
+      default:
+        throw new Error(`unexpected game phase: ${this.phase}`);
+    }
+  }
+
   getCard(cardHash: string, cardId: string) {
     if (!(cardHash in this.cardSets)) {
       throw new Error(`cardHash: ${cardHash} does not exist in game's cardSets`);
@@ -61,6 +74,10 @@ export class Game {
       cardSets: this.jsonCardSets(reduce),
       phase: this.phase
     };
+  }
+
+  setCardSet(cardSet: CardSet) {
+    this.cardSets[cardSet.baseCard.hash] = cardSet;
   }
 
   private jsonCardSets(reduce?: boolean):any {

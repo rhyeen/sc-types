@@ -8,6 +8,8 @@ import { PlaySpellAbilityAction } from "../../entities/turn-action/player-turn-a
 import { CraftBaseCardAction } from "../../entities/turn-action/player-turn-actions/craft-base-card-action";
 import { AddCraftingPartAction } from "../../entities/turn-action/player-turn-actions/add-crafting-part-action";
 import { AddCraftedCardToDeckAction } from "../../entities/turn-action/player-turn-actions/add-crafted-card-to-deck-action";
+import { CardOrigin } from "../../../card/entities/card-origin/card-origin";
+import { CardOriginBuilder } from "../../../card/services/builders/card-origin-builder";
 
 export class TurnActionBuilder {
     static buildTurnActions(turnActionsData: any[]):TurnAction[] {
@@ -20,6 +22,7 @@ export class TurnActionBuilder {
 
     static buildTurnAction(turnActionData: any):TurnAction {
         const targets = TurnActionBuilder.buildActionTargets(turnActionData.targets);
+        const cardOrigin = TurnActionBuilder.buildCardOrigin(turnActionData.cardOrigin);
         switch (turnActionData.type) {
             case ActionType.PlaceMinion:
                 return new PlaceMinionAction(turnActionData.source.handIndex, turnActionData.target.fieldIndex);
@@ -34,7 +37,7 @@ export class TurnActionBuilder {
             case ActionType.AddCraftingPart:
                 return new AddCraftingPartAction(turnActionData.craftingPartIndex, turnActionData.forgeSlotIndex);
             case ActionType.AddCraftedCardToDeck:
-                return new AddCraftedCardToDeckAction(turnActionData.forgeSlotIndex, turnActionData.numberOfInstances, turnActionData.cardId, turnActionData.cardName);
+                return new AddCraftedCardToDeckAction(turnActionData.forgeSlotIndex, turnActionData.numberOfInstances, cardOrigin);
             default:
                 throw new Error(`unexpected turn action type: ${turnActionData.type}`);
         }
@@ -64,5 +67,12 @@ export class TurnActionBuilder {
             default:
                 throw new Error(`unexpected action target type: ${actionTargetData.type}`);
         }
+    }
+
+    private static buildCardOrigin(cardOriginData: any):CardOrigin {
+        if (!cardOriginData) {
+            return null;
+        }
+        return CardOriginBuilder.buildCardOrigin(cardOriginData);
     }
 }

@@ -8,4 +8,5 @@ export enum GameChange {
   PlayerBaseCards = "playerBaseCards",
   PlayerForge = "playerForge",
   PlayerCraftingParts = "playerCraftingParts",
+  GamePhase = "gamePhase",
 }
