@@ -62,16 +62,28 @@ export class AttackStatCraftingPart extends StatCraftingPart {
   constructor(amount: number) {
     super(CraftingPartStatType.Attack, amount);
   }
+
+  copy():AttackStatCraftingPart {
+    return new AttackStatCraftingPart(this.amount);
+  }
 }
 
 export class HealthStatCraftingPart extends StatCraftingPart {
   constructor(amount: number) {
     super(CraftingPartStatType.Health, amount);
   }
+
+  copy():HealthStatCraftingPart {
+    return new HealthStatCraftingPart(this.amount);
+  }
 }
 
 export class RangeStatCraftingPart extends StatCraftingPart {
   constructor(amount: number) {
     super(CraftingPartStatType.Range, amount);
+  }
+
+  copy():RangeStatCraftingPart {
+    return new RangeStatCraftingPart(this.amount);
   }
 }
