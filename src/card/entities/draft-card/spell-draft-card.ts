@@ -3,6 +3,7 @@ import { CardType } from "../../enums/card-type"
 import { CardRarity } from "../../enums/card-rarity";
 import { DraftCardAbilitySlot } from "../draft-card-ability-slot";
 import { SpellCard } from "../card/spell-card";
+import { CraftingPart } from "../crafting-part";
 
 export class SpellDraftCard extends DraftCard {
   constructor(rarity: CardRarity, slots?: DraftCardAbilitySlot[]) {
@@ -11,6 +12,10 @@ export class SpellDraftCard extends DraftCard {
 
   buildCard():SpellCard {
     return new SpellCard(this.rarity, this.buildAbilities(), this.buildCost());
+  }
+
+  addCraftingPart(part: CraftingPart):boolean {
+    return this.addCraftingPartToSlot(part);
   }
 
   regenerateCost() {

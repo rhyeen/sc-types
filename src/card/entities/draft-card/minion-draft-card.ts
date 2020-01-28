@@ -54,17 +54,17 @@ export class MinionDraftCard extends DraftCard {
       return false;
     }
     if (part instanceof HealthStatCraftingPart) {
-      this._health = part.amount;
+      this._health += part.amount;
       this.regenerateCost();
       return true;
     }
     if (part instanceof AttackStatCraftingPart) {
-      this._attack = part.amount;
+      this._attack += part.amount;
       this.regenerateCost();
       return true;
     }
     if (part instanceof RangeStatCraftingPart) {
-      this._range = part.amount;
+      this._range += part.amount;
       this.regenerateCost();
       return true;
     }

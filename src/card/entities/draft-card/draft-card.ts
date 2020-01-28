@@ -90,7 +90,7 @@ export class DraftCard implements DraftCardInterface {
   }
 
   addCraftingPart(part: CraftingPart):boolean {
-    return this.addCraftingPartToSlot(part);
+    throw new Error(`must be implemented by extended class`);
   }
 
   protected addCraftingPartToSlot(part: CraftingPart):boolean {

@@ -7,11 +7,8 @@ export interface AddCraftingPartReturn {
 }
 
 export class DraftCardModifier {
-  static addCraftingPart(draftCard: DraftCard, craftingPart: CraftingPart, mutateParams?: boolean):AddCraftingPartReturn {
-    let returnDraftCard = draftCard;
-    if (mutateParams) {
-      returnDraftCard = draftCard.copy();
-    }
+  static addCraftingPart(draftCard: DraftCard, craftingPart: CraftingPart):AddCraftingPartReturn {
+    const returnDraftCard = draftCard.copy();
     const wasModified = returnDraftCard.addCraftingPart(craftingPart);
     return {
       draftCard: returnDraftCard,
