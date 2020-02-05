@@ -22,13 +22,8 @@ export class PlayerTurn {
   }
 
   static executeBattlePhase(game: Game, turnActions: TurnAction[]):TurnResult {
-    const turnResult = new TurnResult(game);
-    let result = new TurnActionResult(turnResult.game);
-    for (const turnAction of turnActions) {
-      result = turnAction.execute(result.game);
-      turnResult.recordTurnActionResult(result);
-    }
-    result = PlayerTurn.refresh(turnResult.game);
+    const turnResult = PlayerTurn.executeTurnActions(game, turnActions);
+    let result = PlayerTurn.refresh(turnResult.game);
     turnResult.recordTurnActionResult(result);
     result = PlayerTurn.switchPhase(turnResult.game);
     turnResult.recordTurnActionResult(result);
@@ -69,11 +64,29 @@ export class PlayerTurn {
   }
 
   private static executeDraftPhase(game: Game, turnActions: TurnAction[]):TurnResult {
+    const turnResult = PlayerTurn.executeTurnActions(game, turnActions);
+    let result = PlayerTurn.switchPhase(turnResult.game);
+    turnResult.recordTurnActionResult(result);
+    result = PlayerTurn.draw(turnResult.game);
+    turnResult.recordTurnActionResult(result);
+    return turnResult;
+  }
+
+  private static draw(game: Game):TurnActionResult {
+    const result = new TurnActionResult(game);
+    result.game.player.drawHand();
+    result.recordGameChange(GameChange.PlayerDiscardDeck);
+    result.recordGameChange(GameChange.PlayerHand);
+    return result;
+  }
+
+  static executeTurnActions(game: Game, turnActions: TurnAction[]):TurnResult {
     const turnResult = new TurnResult(game);
     let result = new TurnActionResult(turnResult.game);
-    result = PlayerTurn.switchPhase(turnResult.game);
-    turnResult.recordTurnActionResult(result);
-    throw new Error(`not implemented yet`);
+    for (const turnAction of turnActions) {
+      result = turnAction.execute(result.game);
+      turnResult.recordTurnActionResult(result);
+    }
     return turnResult;
   }
 }

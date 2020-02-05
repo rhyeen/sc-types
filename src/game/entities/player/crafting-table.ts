@@ -53,6 +53,14 @@ export class CraftingTable {
     this._maxDraftedInstances = DEFAULT_MAX_DRAFTED_INSTANCES;
   }
 
+  get remainingUsableCraftingParts():number {
+    return this.maxCraftingPartsUsed - this.craftingPartsUsed;
+  }
+
+  get craftingPartsUsed():number {
+    return this.craftingPartsAmount - this.craftingParts.length;
+  }
+
   copy():CraftingTable {
     const craftingTable = new CraftingTable(this.forge.length, this.baseCardsAmount, this.craftingPartsAmount, this.maxCraftingPartsUsed);
     craftingTable.baseCards = this.copyBaseCards();
@@ -131,5 +139,9 @@ export class CraftingTable {
       throw new Error(`unexpected card rarity: ${cardRarity}`);
     }
     return this._maxDraftedInstances[cardRarity];
+  }
+
+  removeCraftingPart(craftingPartIndex: number) {
+    this.craftingParts.splice(craftingPartIndex, 1);
   }
 }

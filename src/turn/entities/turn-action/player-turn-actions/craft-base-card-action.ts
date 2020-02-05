@@ -46,7 +46,7 @@ export class CraftBaseCardAction extends TurnAction {
     }
   }
 
-  placeCardOnForge(result: TurnActionResult) {
+  private placeCardOnForge(result: TurnActionResult) {
     result.game.player.craftingTable.fillForge(this.forgeSlotIndex, this.baseCardIndex);
     result.gameChanges.add(GameChange.PlayerBaseCards);
     result.gameChanges.add(GameChange.PlayerForge);

@@ -55,7 +55,7 @@ export class AddCraftedCardToDeckAction extends TurnAction {
     }
   }
 
-  createCardSet(result: TurnActionResult):CardSet {
+  private createCardSet(result: TurnActionResult):CardSet {
     const draftCard = result.game.player.craftingTable.forge[this.forgeSlotIndex].card;
     const card = draftCard.buildCard();
     card.name = this.cardOrigin.name;
@@ -68,7 +68,7 @@ export class AddCraftedCardToDeckAction extends TurnAction {
     return cardSet;
   }
 
-  addCardsToDiscard(result: TurnActionResult, cardSet: CardSet) {
+  private addCardsToDiscard(result: TurnActionResult, cardSet: CardSet) {
     const instances = cardSet.getInstances();
     for (const instance of instances) {
       result.game.player.discardDeck.add(instance);
@@ -76,7 +76,7 @@ export class AddCraftedCardToDeckAction extends TurnAction {
     result.recordGameChange(GameChange.PlayerDiscardDeck);
   }
 
-  removeDraftCardFromForge(result: TurnActionResult) {
+  private removeDraftCardFromForge(result: TurnActionResult) {
     result.game.player.craftingTable.forge[this.forgeSlotIndex].empty();
     result.recordGameChange(GameChange.PlayerForge);
   }
