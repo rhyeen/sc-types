@@ -114,4 +114,12 @@ export class Player {
     }
     return result;
   }
+
+  isDead():boolean {
+    return this.health.current <= 0;
+  }
+
+  incrementTurn() {
+    this.field.forEach(fieldSlot => fieldSlot.incrementTurn());
+  }
 }

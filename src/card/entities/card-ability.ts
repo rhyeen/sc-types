@@ -19,6 +19,11 @@ export class CardAbility implements CardAbilityInterface {
     return new CardAbility(this.id, this.tier);
   }
 
+  // @TODO: this should be put on a trigger later
+  incrementTurn() {
+    return;
+  }
+
   static targetsOpponentMinion():boolean {
     return false;
   }
@@ -115,6 +120,16 @@ export class CardAbilityReach extends VariableCardAbility {
   }
 
   static targetsPlayerMinion():boolean {
+    return true;
+  }
+}
+
+export class CardAbilityDirectHit extends VariableCardAbility {
+  constructor(amount: number) {
+    super(VariableCardAbilityId.DirectHit, amount, CardAbilityTier.Minion1);
+  }
+
+  static targetsOpponent():boolean {
     return true;
   }
 }

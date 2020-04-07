@@ -3,6 +3,7 @@ import { Dungeon } from './dungeon';
 import { CardSet } from '../../card/entities/card-set';
 import { MinionCard } from '../../card/entities/card/minion-card';
 import { GamePhase } from '../enums/game-phase';
+import { Card } from '../../card/entities/card/card';
 
 export class Game {
   id: string;
@@ -47,6 +48,9 @@ export class Game {
   }
 
   shiftPhase() {
+    if (this.setIsOver()) {
+      return;
+    }
     switch (this.phase) {
       case GamePhase.Battle:
         this.phase = GamePhase.Draft;
@@ -59,7 +63,37 @@ export class Game {
     }
   }
 
-  getCard(cardHash: string, cardId: string) {
+  setIsOver():boolean {
+    return this.setIsWon() || this.setIsLost();
+  }
+
+  isOver():boolean {
+    return this.isWon() || this.isLost();
+  }
+
+  private setIsWon():boolean {
+    if (this.isWon()) {
+      this.phase = GamePhase.Win;
+    }
+    return this.isWon();
+  }
+
+  private isWon():boolean {
+    return this.phase === GamePhase.Win || this.dungeon.isCleared();
+  }
+
+  private setIsLost():boolean {
+    if (this.isLost()) {
+      this.phase = GamePhase.Lose;
+    }
+    return this.isLost();
+  }
+
+  private isLost():boolean {
+    return this.phase === GamePhase.Lose || this.player.isDead();
+  }
+
+  getCard(cardHash: string, cardId: string):Card {
     if (!(cardHash in this.cardSets)) {
       throw new Error(`cardHash: ${cardHash} does not exist in game's cardSets`);
     }

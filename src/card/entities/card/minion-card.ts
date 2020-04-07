@@ -62,6 +62,38 @@ export class MinionCard extends Card {
   copy():Card {
     const card = new MinionCard(this.rarity, this.health, this.attack, this.range, copyCardAbilities(this.abilities), this.cost, this.name, this.id, this.hash);
     card.conditions = this.conditions.copy();
+    if (this.eliteState) {
+      card.eliteState = this.eliteState.copy();
+    }
     return card;
+  }
+
+  incrementTurnOnField() {
+    if (this.eliteState) {
+      this.eliteState.incrementTurn();
+    }
+    if (this.abilities) {
+      this.abilities.forEach(ability => ability.incrementTurn());
+    }
+  }
+
+  attemptApplyEliteState() {
+    if (!this.eliteState) {
+      return;
+    }
+    if (this.eliteState.appliedEliteState) {
+      return;
+    }
+    if (!this.eliteState.readyForEliteState) {
+      return;
+    }
+    this.eliteState.appliedEliteState = true;
+    this.health += this.eliteState.extraHealth;
+    this.range += this.eliteState.extraRange;
+    this.attack += this.eliteState.extraAttack;
+    if (!this.abilities) {
+      this.abilities = [];
+    }
+    this.eliteState.extraAbilities.forEach(ability => this.abilities.push(ability));
   }
 }

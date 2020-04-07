@@ -22,11 +22,17 @@ export class PlayerTurn {
   }
 
   static executeBattlePhase(game: Game, turnActions: TurnAction[]):TurnResult {
-    const turnResult = PlayerTurn.executeTurnActions(game, turnActions);
-    let result = PlayerTurn.refresh(turnResult.game);
+    const turnResult = new TurnResult(game);
+    let result = PlayerTurn.incrementTurn(turnResult.game);
+    turnResult.recordTurnActionResult(result);
+    PlayerTurn.executeTurnActions(turnResult, turnActions);
+    result = PlayerTurn.refresh(turnResult.game);
     turnResult.recordTurnActionResult(result);
     result = PlayerTurn.switchPhase(turnResult.game);
     turnResult.recordTurnActionResult(result);
+    if (PlayerTurn.isGameOver(result)) {
+      return turnResult;
+    }
     const draftGenerationResult = PlayerTurn.generateCraftingTableComponents(turnResult.game);
     turnResult.recordDraftGenerationResult(draftGenerationResult);
     return turnResult;
@@ -43,9 +49,31 @@ export class PlayerTurn {
     return result;
   }
 
+  static incrementTurn(game: Game):TurnActionResult {
+    const result = new TurnActionResult(game);
+    result.game.player.incrementTurn();
+    for (const field of result.game.player.field) {
+      if (field.card) {
+        result.recordCardChange(field.card);
+      }
+    }
+    return result;
+  }
+
   private static switchPhase(game: Game):TurnActionResult {
     const result = new TurnActionResult(game);
     result.game.shiftPhase();
+    result.recordGameChange(GameChange.GamePhase);
+    return result;
+  }
+
+  private static isGameOver(turnResult: TurnActionResult):boolean {
+    return turnResult.game.isOver();
+  }
+
+  private static setIsGameOver(game: Game):TurnActionResult {
+    const result = new TurnActionResult(game);
+    result.game.setIsOver();
     result.recordGameChange(GameChange.GamePhase);
     return result;
   }
@@ -64,9 +92,13 @@ export class PlayerTurn {
   }
 
   private static executeDraftPhase(game: Game, turnActions: TurnAction[]):TurnResult {
-    const turnResult = PlayerTurn.executeTurnActions(game, turnActions);
+    const turnResult = new TurnResult(game);
+    PlayerTurn.executeTurnActions(turnResult, turnActions);
     let result = PlayerTurn.switchPhase(turnResult.game);
     turnResult.recordTurnActionResult(result);
+    if (PlayerTurn.isGameOver(result)) {
+      return turnResult;
+    }
     result = PlayerTurn.draw(turnResult.game);
     turnResult.recordTurnActionResult(result);
     return turnResult;
@@ -80,13 +112,16 @@ export class PlayerTurn {
     return result;
   }
 
-  static executeTurnActions(game: Game, turnActions: TurnAction[]):TurnResult {
-    const turnResult = new TurnResult(game);
+  static executeTurnActions(turnResult: TurnResult, turnActions: TurnAction[]) {
     let result = new TurnActionResult(turnResult.game);
     for (const turnAction of turnActions) {
+      if (PlayerTurn.isGameOver(result)) {
+        turnResult.recordTurnActionResult(PlayerTurn.setIsGameOver(result.game));
+        return;
+      }
       result = turnAction.execute(result.game);
       turnResult.recordTurnActionResult(result);
     }
-    return turnResult;
+    return;
   }
 }

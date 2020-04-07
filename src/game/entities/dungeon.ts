@@ -49,4 +49,17 @@ export class Dungeon {
       fieldSlot.refill();
     }
   }
+
+  isCleared():boolean {
+    for (const fieldSlot of this.field) {
+      if (!fieldSlot.isCleared()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  incrementTurn() {
+    this.field.forEach(fieldSlot => fieldSlot.incrementTurn());
+  }
 }

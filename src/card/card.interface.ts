@@ -2,6 +2,7 @@ import { CardRarity } from "./enums/card-rarity";
 import { CardType } from "./enums/card-type";
 import { CardAbility } from "./entities/card-ability";
 import { DraftCardAbilitySlot } from "./entities/draft-card-ability-slot";
+import { EliteState } from "./entities/elite-state";
 
 export interface CardInterface {
   name: string;
@@ -10,11 +11,12 @@ export interface CardInterface {
   rarity: CardRarity;
   hash?: string;
   abilities?: CardAbility[];
-  cost?: number;
+  cost?: number; // @NOTE: only for player cards
   health?: number;
   range?: number;
   attack?: number;
   level?: number; // @NOTE: only for dungeon cards
+  eliteState?: EliteState; // @NOTE: only for dungeon cards
 }
 
 export interface DraftCardInterface {
@@ -37,6 +39,9 @@ export function jsonCardInterface(cardInterface: CardInterface):any {
   if (cardInterface.level) {
     cardInterfaceData['level'] = cardInterface.level;
   }
+  if (cardInterface.eliteState) {
+    cardInterfaceData['eliteState'] = cardInterface.eliteState.json();
+  }
   if (cardInterface.type === CardType.Minion) {
     return {
       ...cardInterfaceData,
@@ -49,6 +54,10 @@ export function jsonCardInterface(cardInterface: CardInterface):any {
 }
 
 export function copyCardInterface(cardInterface: CardInterface):CardInterface {
+  let eliteState = undefined;
+  if (cardInterface.eliteState) {
+    eliteState = cardInterface.eliteState.copy();
+  }
   return {
     name: cardInterface.name,
     id: cardInterface.id,
@@ -60,7 +69,8 @@ export function copyCardInterface(cardInterface: CardInterface):CardInterface {
     health: cardInterface.health,
     range: cardInterface.range,
     attack: cardInterface.attack,
-    level: cardInterface.level
+    level: cardInterface.level,
+    eliteState,
   };
 }
 

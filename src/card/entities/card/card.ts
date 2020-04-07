@@ -5,6 +5,7 @@ import { CardConditions } from "../card-conditions";
 import { CardType } from "../../enums/card-type";
 import { CardHasher } from "../../services/card-hasher";
 import { GuidGenerator } from "../../services/_generate-guid";
+import { EliteState } from "../elite-state";
 
 export class Card implements CardInterface {
   name: string;
@@ -16,6 +17,7 @@ export class Card implements CardInterface {
   _hash?: string;
   conditions: CardConditions;
   level?: number;
+  eliteState?: EliteState;
 
   constructor(rarity: CardRarity, type: CardType, abilities?: CardAbility[], cost?: number, cardName?: string, cardId?: string, cardHash?: string) {
     this.type = type;
@@ -107,6 +109,9 @@ export class Card implements CardInterface {
     const conditions = this.conditions.json();
     if (conditions) {
       card['conditions'] = conditions;
+    }
+    if (this.eliteState) {
+      card['eliteState'] = this.eliteState.json();
     }
     return card;
   }

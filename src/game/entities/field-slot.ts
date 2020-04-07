@@ -14,6 +14,13 @@ export class FieldSlot {
     }
   }
 
+  incrementTurn() {
+    if (this.card && this.card instanceof MinionCard) {
+      this.card.incrementTurnOnField();
+      this.card.attemptApplyEliteState();
+    }
+  }
+
   clear():Card {
     const temp = this.card;
     this.card = null;
@@ -95,6 +102,10 @@ export class DungeonFieldSlot extends FieldSlot {
       return -1;
     }
     return 5;
+  }
+
+  isCleared() {
+    return !this.card && !this.backlog.length;
   }
 
   refill() {

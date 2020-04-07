@@ -16,5 +16,6 @@ export enum StaticCardAbilityId {
 export enum VariableCardAbilityId {
   Spellshot = "spellshot",
   Reach = "reach",
-  Energize = "energize"
+  Energize = "energize",
+  DirectHit = "directHit",
 }

@@ -12,17 +12,41 @@ const MAX_ITERATIONS = 10;
 export class DungeonTurn {
   static execute(game: Game):TurnResult {
     const turnResult = new TurnResult(game);
+    let result = DungeonTurn.incrementTurn(turnResult.game);
+    turnResult.recordTurnActionResult(result);
     DungeonTurn.executeFieldSlotsActions(turnResult);
-    let result = DungeonTurn.refillFieldSlots(turnResult.game);
+    result = DungeonTurn.refillFieldSlots(turnResult.game);
     turnResult.recordTurnActionResult(result);
     result = DungeonTurn.refresh(turnResult.game);
     turnResult.recordTurnActionResult(result);
     return turnResult;
   }
 
+  private static isGameOver(turnResult: TurnActionResult):boolean {
+    return turnResult.game.isOver();
+  }
+
+  private static setIsGameOver(game: Game):TurnActionResult {
+    const result = new TurnActionResult(game);
+    result.game.setIsOver();
+    result.recordGameChange(GameChange.GamePhase);
+    return result;
+  }
+
   static refresh(game: Game):TurnActionResult {
     const result = new TurnActionResult(game);
     result.game.dungeon.refresh();
+    for (const field of result.game.dungeon.field) {
+      if (field.card) {
+        result.recordCardChange(field.card);
+      }
+    }
+    return result;
+  }
+
+  static incrementTurn(game: Game):TurnActionResult {
+    const result = new TurnActionResult(game);
+    result.game.dungeon.incrementTurn();
     for (const field of result.game.dungeon.field) {
       if (field.card) {
         result.recordCardChange(field.card);
@@ -51,6 +75,10 @@ export class DungeonTurn {
       // @NOTE: a dungeon minion may perform more than 1 turn action per turn, so loop until there is
       // nothing left for it to do.
       while (true || iteration > MAX_ITERATIONS) {
+        if (DungeonTurn.isGameOver(result)) {
+          turnResult.recordTurnActionResult(DungeonTurn.setIsGameOver(result.game));
+          return turnResult;
+        }
         turnAction = DungeonTurn.generateFieldTurnAction(result.game, fieldSlotIndex);
         if (!turnAction) {
           break;
