@@ -2,7 +2,7 @@ import { TurnAction } from "../../entities/turn-action/turn-action";
 import { PlaceMinionAction } from "../../entities/turn-action/player-turn-actions/place-minion-action";
 import { ActionType, ActionTargetType } from "../../enums/action-type";
 import { PlayMinionAttackAction } from "../../entities/turn-action/player-turn-actions/play-minion-attack-action";
-import { ActionTarget, OpponentActionTarget, OpponentMinionActionTarget, PlayerActionTarget, PlayerMinionActionTarget } from "../../entities/action-target";
+import { ActionTarget, DungeonActionTarget, DungeonMinionActionTarget, PlayerActionTarget, PlayerMinionActionTarget } from "../../entities/action-target";
 import { PlayMinionAbilityAction } from "../../entities/turn-action/player-turn-actions/play-minion-ability-action";
 import { PlaySpellAbilityAction } from "../../entities/turn-action/player-turn-actions/play-spell-ability-action";
 import { CraftBaseCardAction } from "../../entities/turn-action/player-turn-actions/craft-base-card-action";
@@ -57,9 +57,9 @@ export class TurnActionBuilder {
     private static buildActionTarget(actionTargetData: any):ActionTarget {
         switch (actionTargetData.type) {
             case ActionTargetType.TargetOponnet:
-                return new OpponentActionTarget();
-            case ActionTargetType.TargetOpponentMinion:
-                return new OpponentMinionActionTarget(actionTargetData.fieldIndex);
+                return new DungeonActionTarget();
+            case ActionTargetType.TargetDungeonMinion:
+                return new DungeonMinionActionTarget(actionTargetData.fieldIndex);
             case ActionTargetType.TargetPlayer:
                 return new PlayerActionTarget();
             case ActionTargetType.TargetPlayerMinion:

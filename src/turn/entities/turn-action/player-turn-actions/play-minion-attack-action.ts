@@ -1,6 +1,6 @@
 import { ActionWithTargets } from "../turn-action";
 import { ActionType } from "../../../enums/action-type";
-import { ActionTarget, OpponentMinionActionTarget } from "../../action-target";
+import { ActionTarget, DungeonMinionActionTarget } from "../../action-target";
 import { Game } from "../../../../game/entities/game";
 import { TurnActionResult } from "../turn-action-result";
 import { MinionCard } from "../../../../card/entities/card/minion-card";
@@ -29,8 +29,8 @@ export class PlayMinionAttackAction extends ActionWithTargets {
     this.validate(game);
     const result = new TurnActionResult(game);
     for (const target of this.targets) {
-      if (target instanceof OpponentMinionActionTarget) {
-        this.attackDungeonMinionTarget(result, target.targetOpponentFieldIndex);
+      if (target instanceof DungeonMinionActionTarget) {
+        this.attackDungeonMinionTarget(result, target.targetDungeonFieldIndex);
       }
     }
     return result;
@@ -54,34 +54,34 @@ export class PlayMinionAttackAction extends ActionWithTargets {
       throw new Error(`player minion card should have exactly 1 target, found: ${this.targets.length}`);
     }
     for (const target of this.targets) {
-      if (target instanceof OpponentMinionActionTarget) {
-        if (game.dungeon.field.length <= target.targetOpponentFieldIndex) {
-          throw new Error(`invalid opponent field index: ${target.targetOpponentFieldIndex} with dungeon field of size: ${game.dungeon.field.length}`);
+      if (target instanceof DungeonMinionActionTarget) {
+        if (game.dungeon.field.length <= target.targetDungeonFieldIndex) {
+          throw new Error(`invalid dungeon field index: ${target.targetDungeonFieldIndex} with dungeon field of size: ${game.dungeon.field.length}`);
         }
-        const attackedCard = game.dungeon.field[target.targetOpponentFieldIndex].card;
+        const attackedCard = game.dungeon.field[target.targetDungeonFieldIndex].card;
         if (!attackedCard || !(attackedCard instanceof MinionCard)) {
-          throw new Error(`player minion card must attack field: ${target.targetOpponentFieldIndex} that contains a minion card`);
+          throw new Error(`player minion card must attack field: ${target.targetDungeonFieldIndex} that contains a minion card`);
         }
-        if (!(game.getValidPlayerMinionAttackTargets(this.playerSourceFieldIndex).includes(target.targetOpponentFieldIndex))) {
-          throw new Error(`player minion card cannot reach: ${target.targetOpponentFieldIndex}`);
+        if (!(game.getValidPlayerMinionAttackTargets(this.playerSourceFieldIndex).includes(target.targetDungeonFieldIndex))) {
+          throw new Error(`player minion card cannot reach: ${target.targetDungeonFieldIndex}`);
         }
       } else {
-        throw new Error(`invalid target type: ${typeof target}.  Should be of type: OpponentMinionActionTarget`);
+        throw new Error(`invalid target type: ${typeof target}.  Should be of type: DungeonMinionActionTarget`);
       }
     }
   }
 
-  private attackDungeonMinionTarget(result: TurnActionResult, targetOpponentFieldIndex: number) {
+  private attackDungeonMinionTarget(result: TurnActionResult, targetDungeonFieldIndex: number) {
     const attackingCard = result.game.player.field[this.playerSourceFieldIndex].card;
     if (!(attackingCard instanceof MinionCard)) {
       return;
     }
-    const attackedCard = result.game.dungeon.field[targetOpponentFieldIndex].card;
+    const attackedCard = result.game.dungeon.field[targetDungeonFieldIndex].card;
     if (!(attackedCard instanceof MinionCard)) {
       return;
     }
     attackingCard.attackCard(attackedCard);
-    if (result.game.dungeonCardCanRetaliate(this.playerSourceFieldIndex, targetOpponentFieldIndex)) {
+    if (result.game.dungeonCardCanRetaliate(this.playerSourceFieldIndex, targetDungeonFieldIndex)) {
       attackedCard.attackCard(attackingCard);
     }
     attackingCard.exhaust();
@@ -94,7 +94,7 @@ export class PlayMinionAttackAction extends ActionWithTargets {
       result.recordGameChange(GameChange.PlayerField);
     }
     if (attackedCard.isDead()) {
-      result.game.dungeon.field[targetOpponentFieldIndex].clear();
+      result.game.dungeon.field[targetDungeonFieldIndex].clear();
       result.recordGameChange(GameChange.DungeonField);
     }
   }

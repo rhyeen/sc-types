@@ -9,26 +9,37 @@ export interface CardAbilityInterface {
 export class CardAbility implements CardAbilityInterface {
   id: string;
   tier?: CardAbilityTier;
+  private _used: boolean;
 
   constructor(id: string, tier?: CardAbilityTier) {
     this.id = id;
     this.tier = tier;
+    this._used = false;
+  }
+
+  use() {
+    this._used = true;
+  }
+
+  get used():boolean {
+    return this._used;
   }
 
   copy():CardAbility {
     return new CardAbility(this.id, this.tier);
   }
 
-  // @TODO: this should be put on a trigger later
+  // @TODO: this should be put on a trigger as well later
   incrementTurn() {
+    this._used = false;
     return;
   }
 
-  static targetsOpponentMinion():boolean {
+  static targetsDungeonMinion():boolean {
     return false;
   }
 
-  static targetsOpponent():boolean {
+  static targetsDungeon():boolean {
     return false;
   }
 
@@ -109,7 +120,7 @@ export class CardAbilitySpellshot extends VariableCardAbility {
     super(VariableCardAbilityId.Spellshot, amount, CardAbilityTier.Spell1);
   }
 
-  static targetsOpponentMinion():boolean {
+  static targetsDungeonMinion():boolean {
     return true;
   }
 }
@@ -129,7 +140,7 @@ export class CardAbilityDirectHit extends VariableCardAbility {
     super(VariableCardAbilityId.DirectHit, amount, CardAbilityTier.Minion1);
   }
 
-  static targetsOpponent():boolean {
+  static targetsDungeon():boolean {
     return true;
   }
 }

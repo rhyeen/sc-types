@@ -1,13 +1,13 @@
 import { TurnActionBuilder } from './turn-action-builder';
 import { PlaceMinionAction } from '../../entities/turn-action/player-turn-actions/place-minion-action';
 import { PlayMinionAttackAction } from '../../entities/turn-action/player-turn-actions/play-minion-attack-action';
-import { OpponentMinionActionTarget } from '../../entities/action-target';
+import { DungeonMinionActionTarget } from '../../entities/action-target';
 
 describe('buildTurnActions', () => {
   test('build place minion and attack with minion action', () => {
     const turnActions = [
       {"type":"placeMinion","source":{"handIndex":1},"target":{"fieldIndex":1}},
-      {"type":"playMinionAttack","source":{"fieldIndex":1},"targets":[{"type":"targetOpponentMinion","fieldIndex":1}]}
+      {"type":"playMinionAttack","source":{"fieldIndex":1},"targets":[{"type":"targetDungeonMinion","fieldIndex":1}]}
     ];
     const result = TurnActionBuilder.buildTurnActions(turnActions);
     expect(result.length).toBe(2);
@@ -23,10 +23,10 @@ describe('buildTurnActions', () => {
     expect(resultB.playerSourceFieldIndex).toBe(1);
     expect(resultB.targets.length).toBe(1);
     const resultBtargetA = resultB.targets[0];
-    expect(resultBtargetA instanceof OpponentMinionActionTarget).toBeTruthy();
-    if (!(resultBtargetA instanceof OpponentMinionActionTarget)) {
+    expect(resultBtargetA instanceof DungeonMinionActionTarget).toBeTruthy();
+    if (!(resultBtargetA instanceof DungeonMinionActionTarget)) {
       return;
     }
-    expect(resultBtargetA.targetOpponentFieldIndex).toBe(1);
+    expect(resultBtargetA.targetDungeonFieldIndex).toBe(1);
   });
 });

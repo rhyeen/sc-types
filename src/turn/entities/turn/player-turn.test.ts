@@ -2,7 +2,7 @@ import { defaultGame } from "../../../game/test-utils/test-defaults";
 import { PlayerTurn } from "./player-turn";
 import { PlaceMinionAction } from "../turn-action/player-turn-actions/place-minion-action";
 import { PlayMinionAttackAction } from "../turn-action/player-turn-actions/play-minion-attack-action";
-import { OpponentMinionActionTarget } from "../action-target";
+import { DungeonMinionActionTarget } from "../action-target";
 import { GameChange } from "../../enums/game-change";
 import { CardAbilityHaste } from "../../../card/entities/card-ability";
 import { MinionCard } from "../../../card/entities/card/minion-card";
@@ -14,7 +14,7 @@ test('place minion, attack with minion, and player minion dies', () => {
   game.player.hand.cards[0].abilities.push(new CardAbilityHaste());
   const turnActions = [
     new PlaceMinionAction(0, 0),
-    new PlayMinionAttackAction(0, [new OpponentMinionActionTarget(0)])
+    new PlayMinionAttackAction(0, [new DungeonMinionActionTarget(0)])
   ];
   const result = PlayerTurn.execute(game, turnActions);
   expect(result.game.player.energy.current).toBe(7);

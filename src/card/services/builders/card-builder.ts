@@ -5,6 +5,7 @@ import { MinionCard } from "../../entities/card/minion-card";
 import { SpellCard } from "../../entities/card/spell-card";
 import { CardAbility, CardAbilityEnergize, CardAbilityHaste, CardAbilityReach, CardAbilitySpellshot } from "../../entities/card-ability";
 import { StaticCardAbilityId, VariableCardAbilityId } from "../../enums/card-ability";
+import { EliteState } from "../../entities/elite-state";
 
 export class CardBuilder {
   static buildCardInterface(cardData: any):CardInterface {
@@ -12,18 +13,20 @@ export class CardBuilder {
       throw new Error('param cardData is not initialized');
     }
     const abilities = CardBuilder.buildCardAbilities(cardData.abilities);
+    const eliteState = CardBuilder.buildEliteState(cardData.eliteState);
     return {
       name: cardData.name,
       id: cardData.id,
       type: cardData.type,
       rarity: cardData.rarity,
       hash: cardData.hash,
-      abilities: abilities,
+      abilities,
       cost: cardData.cost,
       health: cardData.health,
       range: cardData.range,
       attack: cardData.attack,
       level: cardData.level,
+      eliteState,
     };
   }
 
@@ -76,5 +79,22 @@ export class CardBuilder {
       typedCard.level = card.level;
     }
     return typedCard;
+  }
+
+  static buildEliteState(eliteStateData?: any):EliteState | undefined {
+    if (!eliteStateData) {
+      return undefined;
+    }
+    return new EliteState(
+      eliteStateData.turnsUntilElite,
+      eliteStateData.turnsUntilExplode,
+      eliteStateData.appliedEliteState,
+      eliteStateData.turnCounter,
+      CardBuilder.buildCardAbilities(eliteStateData.extraAbilities),
+      CardBuilder.buildCardAbilities(eliteStateData.explodeAbilities),
+      eliteStateData.extraHealth,
+      eliteStateData.extraAttack,
+      eliteStateData.extraRange,
+    );
   }
 }

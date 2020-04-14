@@ -1,8 +1,8 @@
 export enum ActionTargetType {
-  TargetOpponentMinion = "targetOpponentMinion",
+  TargetDungeonMinion = "targetDungeonMinion",
   TargetPlayerMinion = "targetPlayerMinion",
   TargetPlayer = "targetPlayer",
-  TargetOponnet = "targetOpponent"
+  TargetOponnet = "targetDungeon"
 }
 
 export enum ActionType {
@@ -12,5 +12,5 @@ export enum ActionType {
   PlaceMinion = "placeMinion",
   CraftBaseCard = "craftBaseCard",
   AddCraftedCardToDeck = "addCraftedCardToDeck",
-  AddCraftingPart = "addCraftingPart"
+  AddCraftingPart = "addCraftingPart",
 }

@@ -14,18 +14,18 @@ export class ActionTarget {
   }
 }
 
-export class OpponentMinionActionTarget extends ActionTarget {
-  targetOpponentFieldIndex: number;
+export class DungeonMinionActionTarget extends ActionTarget {
+  targetDungeonFieldIndex: number;
 
-  constructor(targetOpponentFieldIndex: number) {
-    super(ActionTargetType.TargetOpponentMinion);
-    this.targetOpponentFieldIndex = targetOpponentFieldIndex;
+  constructor(targetDungeonFieldIndex: number) {
+    super(ActionTargetType.TargetDungeonMinion);
+    this.targetDungeonFieldIndex = targetDungeonFieldIndex;
   }
 
   json() {
     return {
       type: this.type,
-      fieldIndex: this.targetOpponentFieldIndex
+      fieldIndex: this.targetDungeonFieldIndex
     };
   }
 }
@@ -52,7 +52,7 @@ export class PlayerActionTarget extends ActionTarget {
   }
 }
 
-export class OpponentActionTarget extends ActionTarget {
+export class DungeonActionTarget extends ActionTarget {
   constructor() {
     super(ActionTargetType.TargetOponnet);
   }

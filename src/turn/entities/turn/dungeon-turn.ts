@@ -6,6 +6,8 @@ import { MinionCard } from "../../../card/entities/card/minion-card";
 import { DungeonMinionAttackAction } from "../turn-action/dungeon-turn-actions/dungeon-minion-attack-action";
 import { PlayerActionTarget, PlayerMinionActionTarget } from "../action-target";
 import { GameChange } from "../../enums/game-change";
+import { AbilityTargets } from "../../services/ability-targets";
+import { DungeonMinionPlayAbilityAction } from "../turn-action/dungeon-turn-actions/dungeon-minion-play-ability-action";
 
 const MAX_ITERATIONS = 10;
 
@@ -120,6 +122,15 @@ export class DungeonTurn {
     }
     if (card.isDead()) {
       throw new Error(`dead card: ${card.hash}::${card.id} should be removed from field`);
+    }
+    if (card.eliteState && card.eliteState.readyToExplode) {
+      for (let i = 0; i < card.eliteState.explodeAbilities.length; i++) {
+        const ability = card.eliteState.explodeAbilities[i];
+        if (!ability.used) {
+          const targets = AbilityTargets.getDungeonMinionAbilityTargets(card, fieldSlotIndex, game);
+          return new DungeonMinionPlayAbilityAction(fieldSlotIndex, i, targets);
+        }
+      }
     }
     if (game.canDungeonMinionAttackPlayer(fieldSlotIndex)) {
       return new DungeonMinionAttackAction(fieldSlotIndex, [new PlayerActionTarget()]);

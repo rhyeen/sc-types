@@ -20,8 +20,8 @@ export class EliteState {
     extraAbilities?: CardAbility[],
     explodeAbilities?: CardAbility[],
     extraHealth?: number,
+    extraAttack?: number,
     extraRange?: number,
-    extraAttack?: number
   ) {
     this.eliteStateTurnCount = turnsUntilElite;
     this.explodeStateTurnCount = turnsUntilExplodeAfterElite;
@@ -40,22 +40,22 @@ export class EliteState {
     } else {
       this.explodeAbilities = AbilityRetriever.getDefaultEliteMinionExplodeAbilities();
     }
-    if (this.extraHealth) {
+    if (extraHealth) {
       this.extraHealth = extraHealth;
     } else {
       this.extraHealth = 0;
     }
-    if (this.extraRange) {
-      this.extraRange = extraRange;
-    } else {
-      this.extraRange = 0;
-    }
-    if (this.extraAttack) {
+    if (extraAttack) {
       this.extraAttack = extraAttack;
     } else {
       this.extraAttack = 0;
     }
-    if (this.appliedEliteState) {
+    if (extraRange) {
+      this.extraRange = extraRange;
+    } else {
+      this.extraRange = 0;
+    }
+    if (appliedEliteState) {
       this.appliedEliteState = appliedEliteState;
     } else {
       this.appliedEliteState = false;
@@ -99,8 +99,8 @@ export class EliteState {
       this.copyAbilities(this.extraAbilities),
       this.copyAbilities(this.explodeAbilities),
       this.extraHealth,
-      this.extraRange,
       this.extraAttack,
+      this.extraRange,
     );
   }
 
@@ -117,8 +117,8 @@ export class EliteState {
       extraAbilities: this.jsonAbilities(this.extraAbilities),
       explodeAbilities: this.jsonAbilities(this.explodeAbilities),
       extraHealth: this.extraHealth,
-      extraRange: this.extraRange,
       extraAttack: this.extraAttack,
+      extraRange: this.extraRange,
     };
   }
 
