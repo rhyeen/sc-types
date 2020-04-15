@@ -1,3 +1,5 @@
+// @NOTE: this will be what game.ts (and everything below it) references since
+// CardAbility itself references game and we don't want a cyclical dependency.
 export class CardAbilityStub {
   id: string;
   isUsed: boolean;
