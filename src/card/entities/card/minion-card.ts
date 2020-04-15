@@ -43,16 +43,19 @@ export class MinionCard extends Card {
   // @NOTE: this does not exhaust the attacking card because it could
   // be due to a retaliate.  The turn-action should handle the exhaustion.
   attackCard(attackedCard: MinionCard) {
-    let attack = this.attack;
-    if (attackedCard.conditions.shield) {
-      if (attackedCard.conditions.shield > attack) {
-        attackedCard.conditions.shield -= attack;
+    attackedCard.handleDamage(this.attack);
+  }
+
+  handleDamage(damage: number) {
+    if (this.conditions.shield) {
+      if (this.conditions.shield > damage) {
+        this.conditions.shield -= damage;
       } else {
-        attack -= attackedCard.conditions.shield;
-        attackedCard.conditions.shield = 0;
+        damage -= this.conditions.shield;
+        this.conditions.shield = 0;
       }
     }
-    attackedCard.conditions.damage += attack;
+    this.conditions.damage += damage;
   }
 
   attackPlayerDamage():number {
